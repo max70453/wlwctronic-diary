@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wlwctronic Diary - Кабинет ученика</title>
+    <!-- Material-UI CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/fonts/index.css" />
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #ff4081;
+            --background-color: #f5f7fa;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* AppBar styles */
+        .app-bar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: #ffd700;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .nav-link:hover {
+            color: #ffd700;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .dashboard-container {
+            padding: 12px 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+
+        .MuiPaper-root {
+            margin-bottom: 16px;
+            padding: 18px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .MuiPaper-root:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .MuiPaper-root h3 {
+            margin: 0 0 20px 0;
+            color: #1976d2;
+            font-size: 20px;
+            font-weight: 600;
+            border-bottom: 2px solid #e3f2fd;
+            padding-bottom: 12px;
+        }
+
+        .widgets-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .widget {
+            padding: 18px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+            position: relative;
+            border: 1px solid #e3f2fd;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 160px;
+        }
+
+        .widget:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(25, 118, 210, 0.15);
+        }
+
+        .widget-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #1976d2;
+        }
+
+        .widget h4 {
+            margin-top: 0;
+            color: #1976d2;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .widget ul {
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .schedule-list, .grades-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .schedule-item, .grade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e3f2fd;
+            transition: background-color 0.3s ease;
+        }
+
+        .schedule-item:hover, .grade-item:hover {
+            background-color: rgba(25, 118, 210, 0.05);
+            border-radius: 6px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .schedule-time {
+            font-weight: 600;
+            color: #1976d2;
+            font-size: 14px;
+            min-width: 100px;
+        }
+
+        .schedule-room {
+            color: #666;
+            font-size: 12px;
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .grade-value {
+            font-weight: 700;
+            font-size: 18px;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .grade-good {
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .grade-mid {
+            color: #FF9800;
+            background: rgba(255, 152, 0, 0.1);
+        }
+
+        .grade-bad {
+            color: #F44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-item h4 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+        }
+
+        .stat-item small {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .no-data {
+            color: #777;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px dashed #dee2e6;
+        }
+
+        /* Стили для таблиц */
+        .schedule-table, .grades-table, .subject-stats-table, .homework-table {
+            width: 100%;
+            max-width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            table-layout: fixed;
+            box-sizing: border-box;
+        }
+
+        .schedule-table th, .grades-table th, .subject-stats-table th, .homework-table th {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .schedule-table td, .grades-table td, .subject-stats-table td, .homework-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e3f2fd;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 13px;
+        }
+
+        /* Распределение ширины колонок для таблиц */
+        .schedule-table th:nth-child(1), .schedule-table td:nth-child(1) { width: 15%; }
+        .schedule-table th:nth-child(2), .schedule-table td:nth-child(2) { width: 20%; }
+        .schedule-table th:nth-child(3), .schedule-table td:nth-child(3) { width: 35%; }
+        .schedule-table th:nth-child(4), .schedule-table td:nth-child(4) { width: 20%; }
+        .schedule-table th:nth-child(5), .schedule-table td:nth-child(5) { width: 10%; }
+
+        .grades-table th:nth-child(1), .grades-table td:nth-child(1) { width: 30%; }
+        .grades-table th:nth-child(2), .grades-table td:nth-child(2) { width: 15%; }
+        .grades-table th:nth-child(3), .grades-table td:nth-child(3) { width: 20%; }
+        .grades-table th:nth-child(4), .grades-table td:nth-child(4) { width: 35%; }
+
+        .schedule-table tr:hover, .grades-table tr:hover, .subject-stats-table tr:hover, .homework-table tr:hover {
+            background-color: rgba(25, 118, 210, 0.05);
+        }
+
+        .schedule-table tr:last-child td, .grades-table tr:last-child td, 
+        .subject-stats-table tr:last-child td, .homework-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Стили для объявлений */
+        .announcements-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .announcement-item {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .announcement-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .announcement-item.important {
+            border-left-color: #f44336;
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        }
+
+        .announcement-item h4 {
+            margin: 0 0 10px 0;
+            color: #1976d2;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .announcement-date {
+            color: #666;
+            font-size: 12px;
+            margin: 0 0 10px 0;
+        }
+
+        /* Стили для учебных материалов */
+        .learning-materials-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .subject-materials {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e3f2fd;
+        }
+
+        .subject-materials h4 {
+            margin: 0 0 15px 0;
+            color: #1976d2;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 2px solid #e3f2fd;
+            padding-bottom: 10px;
+        }
+
+        .material-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .material-item:hover {
+            background: #e3f2fd;
+            transform: translateY(-2px);
+        }
+
+        .material-item h5 {
+            margin: 0 0 8px 0;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .material-item p {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .material-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: rgba(25, 118, 210, 0.1);
+            border-radius: 6px;
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .material-link:hover {
+            background: rgba(25, 118, 210, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .profile-settings h3, .notifications-settings h3 {
+            margin-top: 0;
+            color: #1976d2;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .profile-field {
+            margin-bottom: 16px;
+            padding: 5px;
+            background: rgba(25, 118, 210, 0.02);
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-field label {
+            color: #1976d2;
+            font-weight: 500;
+            margin: 0;
+            min-width: 80px;
+        }
+
+        .profile-field span {
+            color: #333;
+            font-weight: 400;
+            flex: 1;
+            text-align: right;
+        }
+
+        .profile-field input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .profile-field input:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+        }
+
+        .MuiButton-root {
+            margin-right: 12px;
+            margin-top: 12px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+        }
+
+        .MuiButton-root:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+        }
+
+        .MuiButton-containedSecondary {
+            background: linear-gradient(135deg, #f50057 0%, #c51162 100%);
+            box-shadow: 0 2px 8px rgba(245, 0, 87, 0.3);
+        }
+
+        .MuiButton-containedSecondary:hover {
+            box-shadow: 0 4px 12px rgba(245, 0, 87, 0.4);
+        }
+
+        .notification-item {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+            transition: transform 0.3s;
+        }
+
+        .notification-item:hover {
+            transform: translateX(4px);
+        }
+
+        .notification-item h4 {
+            margin: 0 0 8px 0;
+            color: #1976d2;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .notification-item small {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            background-color: rgba(25, 118, 210, 0.05);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #1976d2;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            margin: 0;
+            font-size: 14px;
+            color: #333;
+            user-select: none;
+        }
+
+        /* Two-column layout for settings - теперь только для профиля */
+        .settings-container {
+            display: block;
+            margin-bottom: 25px;
+            padding: 0 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .profile-settings {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Стили для уведомлений в основном контенте */
+        .main-content .MuiPaper-root {
+            margin-bottom: 20px;
+        }
+
+        .main-content .notification-settings-section {
+            margin-bottom: 20px;
+        }
+
+        .main-content .notification-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .main-content .notification-history-section {
+            margin-top: 20px;
+        }
+
+        .profile-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .notification-settings-section,
+        .notification-history-section {
+            margin-bottom: 25px;
+        }
+
+        .notification-settings-section h4,
+        .notification-history-section h4 {
+            margin: 0 0 15px 0;
+            color: #1976d2;
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid #e3f2fd;
+            padding-bottom: 8px;
+        }
+
+        .notification-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .notification-options label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .notification-options label:hover {
+            background-color: rgba(25, 118, 210, 0.05);
+        }
+
+        /* Responsive design for settings */
+        @media (max-width: 968px) {
+            .settings-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Compact and beautiful layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .left-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-right: 8px;
+            box-sizing: border-box;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* .content-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        } */
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Enhanced widget styles */
+        .widgets-panel {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 0;
+        }
+
+        .widget {
+            padding: 18px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .widget:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Compact card styles */
+        .MuiPaper-root {
+            margin-bottom: 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .MuiPaper-root:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Student info compact */
+        .student-info-card {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(25, 118, 210, 0.3);
+        }
+
+        .student-info-card h3 {
+            margin: 0 0 15px 0;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .student-info-card p {
+            margin: 8px 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .student-info-card strong {
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Responsive grid */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .widgets-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .widget {
+                margin-bottom: 0;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .dashboard-container {
+                max-width: 100%;
+                padding: 15px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .widgets-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .learning-materials-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 10px;
+                max-width: 100%;
+            }
+            
+            .MuiPaper-root {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .MuiPaper-root h3 {
+                font-size: 16px;
+            }
+            
+            .widget {
+                padding: 15px;
+                min-height: 150px;
+            }
+            
+            .schedule-item, .grade-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .schedule-time {
+                min-width: auto;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+            
+            .schedule-table, .grades-table, .subject-stats-table, .homework-table {
+                font-size: 12px;
+            }
+            
+            .schedule-table th, .grades-table th, .subject-stats-table th, .homework-table th,
+            .schedule-table td, .grades-table td, .subject-stats-table td, .homework-table td {
+                padding: 8px;
+                font-size: 12px;
+            }
+            
+            /* Мобильные таблицы с горизонтальной прокруткой */
+            .table-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .schedule-table, .grades-table, .subject-stats-table, .homework-table {
+                min-width: 600px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-container {
+                padding: 8px;
+            }
+            
+            .MuiPaper-root {
+                padding: 12px;
+            }
+            
+            .widget {
+                padding: 12px;
+                min-height: 120px;
+            }
+            
+            .stat-value {
+                font-size: 20px;
+            }
+            
+            .schedule-table, .grades-table, .subject-stats-table, .homework-table {
+                font-size: 11px;
+                min-width: 500px;
+            }
+            
+            .schedule-table th, .grades-table th, .subject-stats-table th, .homework-table th,
+            .schedule-table td, .grades-table td, .subject-stats-table td, .homework-table td {
+                padding: 6px;
+                font-size: 11px;
+            }
+        }
+
+        /* Footer styles */
+        .footer {
+            background-color: #1e283c;
+            color: white;
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            margin-top: 30px;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Material-UI AppBar -->
+    <div id="app-bar"></div>
+
+    <script>
+        // Инициализация AppBar с улучшенным дизайном
+        document.addEventListener('DOMContentLoaded', function() {
+            const appBar = document.getElementById('app-bar');
+
+            appBar.className = 'app-bar';
+            appBar.innerHTML = `
+                <div class="MuiAppBar-root MuiAppBar-positionStatic" style="background: linear-gradient(90deg, #3f51b5 0%, #303f9f 100%);">
+                    <div class="MuiToolbar-root MuiToolbar-regular" style="min-height: 64px; padding: 0 24px; display: flex; justify-content: space-between; align-items: center;">
+                        <a href="index.html" class="logo">
+                            <i class="material-icons logo-icon">menu_book</i>
+                            <span>
+                                <strong>E-Journal</strong><br>
+                                <small style="font-size: 0.8rem; opacity: 0.8;"></small>
+                            </span>
+                        </a>
+
+                        <nav style="display: flex; align-items: center;">
+                            <a href="index.html" class="nav-link">Главная</a>
+                            <a href="#" class="nav-link">О платформе</a>
+                            <a href="#" class="nav-link">Возможности</a>
+                            <a href="#" class="nav-link">Контакты</a>
+                        </nav>
+
+                        <div class="auth-buttons">
+                            <button class="logout-btn" id="logout">
+                                <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">logout</i>
+                                <span style="margin-left: 5px;">Выйти</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Обновляем обработчик выхода
+            document.getElementById('logout').addEventListener('click', function() {
+                if (typeof logout === 'function') {
+                    logout();
+                } else {
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+    </script>
+    <main>
+        <div class="dashboard-container">
+            <h2>Личный кабинет ученика</h2>
+
+            <!-- Компактный сеточный лейаут -->
+            <div class="dashboard-grid">
+                <!-- Левая боковая панель -->
+                <div class="left-sidebar">
+                    <!-- Информация об ученике -->
+                    <div class="MuiPaper-root student-info-card fade-in delay-1">
+                        <h3>Информация об ученике</h3>
+                        <div class="user-info">
+                            <p><strong>Имя:</strong> <span id="student-name-value"></span></p>
+                            <p><strong>Класс:</strong> <span id="student-class-value"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Панель виджетов -->
+                    <div class="widgets-panel fade-in delay-2">
+                        <div class="widget fade-in delay-1">
+                            <div class="widget-icon material-icons">schedule</div>
+                            <h4>Расписание на день</h4>
+                            <div id="daily-schedule">
+                                <!-- Расписание на день будет загружено через JS -->
+                            </div>
+                        </div>
+                        <div class="widget fade-in delay-2">
+                            <div class="widget-icon material-icons">grade</div>
+                            <h4>Новые оценки</h4>
+                            <div id="new-grades">
+                                <!-- Новые оценки будут загружены через JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Статистика успеваемости -->
+                    <div class="MuiPaper-root fade-in delay-1" style="height: 100%;">
+                        <h3>Статистика успеваемости</h3>
+                        <div id="performance-stats">
+                            <!-- Статистика успеваемости будет загружена через JS -->
+                        </div>
+                    </div>
+                </div>
+
+              <!-- Верхний ряд: Статистика и Объявления -->
+                <div class="content-row">
+                    <!-- Объявления -->
+                    <div class="MuiPaper-root fade-in delay-2">
+                        <h3>Объявления</h3>
+                        <div id="announcements">
+                            <!-- Объявления будут загружены через JS -->
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <!-- Настройки профиля -->
+                        <div class="MuiPaper-root profile-settings fade-in delay-4">
+                            <h3>Настройки профиля</h3>
+                            <div class="profile-field">
+                                <label><strong>Имя:</strong></label>
+                                <span id="profile-name"></span>
+                            </div>
+                            <div class="profile-field">
+                                <label><strong>Email:</strong></label>
+                                <span id="profile-email"></span>
+                            </div>
+                            <div class="profile-field">
+                                <label><strong>Класс:</strong></label>
+                                <span id="profile-class"></span>
+                            </div>
+                            <div class="profile-field">
+                                <label><strong>Телефон:</strong></label>
+                                <span id="profile-phone"></span>
+                            </div>
+                            <div class="profile-buttons">
+                                <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary" id="edit-profile-button" onclick="editProfile()">
+                                    <span class="MuiButton-label">Редактировать профиль</span>
+                                </button>
+                                <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary" id="save-profile-button" style="display: none;" onclick="saveProfile()">
+                                    <span class="MuiButton-label">Сохранить изменения</span>
+                                </button>
+                                <button class="MuiButton-root MuiButton-contained MuiButton-containedSecondary" onclick="changePassword()">
+                                    <span class="MuiButton-label">Изменить пароль</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+              <!-- Основной контент -->
+                <div class="main-content">
+                    <!-- Второй ряд: Оценки и Расписание -->
+                    <div class="content-row">
+                        <!-- Оценки -->
+                        <div class="MuiPaper-root fade-in delay-3">
+                            <h3>Оценки</h3>
+                            <div id="grades-table">
+                                <!-- Таблица с оценками будет загружена через JS -->
+                            </div>
+                        </div>
+
+                        <!-- Расписание -->
+                        <div class="MuiPaper-root fade-in delay-4">
+                            <h3>Расписание</h3>
+                            <div id="schedule-table">
+                                <!-- Расписание будет загружено через JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Третий ряд: Уведомления и Учебные материалы -->
+                    <div class="content-row">
+                        <!-- Уведомления -->
+                        <div class="MuiPaper-root fade-in delay-5">
+                            <h3>Уведомления</h3>
+                            <div class="notification-settings-section">
+                                <h4>Настройки уведомлений</h4>
+                                <div class="notification-options">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="grades-notifications" class="notification-setting" checked>
+                                        <label for="grades-notifications">Новые оценки</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="announcements-notifications" class="notification-setting" checked>
+                                        <label for="announcements-notifications">Объявления</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="messages-notifications" class="notification-setting">
+                                        <label for="messages-notifications">Сообщения</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-history-section">
+                                <h4>История уведомлений</h4>
+                                <div id="notifications-list">
+                                    <!-- Уведомления будут загружены через JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Учебные материалы -->
+                        <div class="MuiPaper-root fade-in delay-6">
+                            <h3>Учебные материалы</h3>
+                            <div id="learning-materials">
+                                <!-- Учебные материалы будут загружены через JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </main>
+
+     <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>E-Journal</h4>
+                <p>Инновационная платформа для управления учебным процессом</p>
+            </div>
+            <div class="footer-section">
+                <h4>Ссылки</h4>
+                <a href="index.html">Главная</a>
+                <a href="#">О платформе</a>
+                <a href="#">Поддержка</a>
+                <a href="#">Контакты</a>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">email</i> info@E-Journal.ru</p>
+                <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">phone</i> +7 (123) 456-78-90</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 E-Journal. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Material-UI JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/student-dashboard.js"></script>
+    <script src="test-data.js"></script>
+    <script src="simple-fill.js"></script>
+</body>
+</html>

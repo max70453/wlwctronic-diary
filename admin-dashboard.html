@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wlwctronic Diary - Панель администратора</title>
+    <!-- Material-UI CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/fonts/index.css" />
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .admin-dashboard-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .MuiPaper-root {
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .MuiTabs-root {
+            margin-bottom: 20px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .users-table, .classes-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .users-table th, .users-table td,
+        .classes-table th, .classes-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .users-table th, .classes-table th {
+            background-color: #f5f5f5;
+        }
+        .MuiButton-root {
+            margin-left: 10px;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .form-control {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Material-UI AppBar -->
+    <div id="app-bar"></div>
+
+    <main>
+        <div class="admin-dashboard-container">
+            <h2>Панель администратора</h2>
+
+            <!-- Управление пользователями -->
+            <div class="MuiPaper-root MuiPaper-elevation1">
+                <h3 class="MuiTypography-root MuiTypography-h5">Управление пользователями</h3>
+
+                <!-- Material-UI Tabs -->
+                <div id="users-tabs"></div>
+
+                <!-- Таблицы пользователей -->
+                <div id="students-tab" class="tab-content active">
+                    <!-- Таблица учеников будет загружена через JS -->
+                </div>
+                <div id="teachers-tab" class="tab-content">
+                    <!-- Таблица учителей будет загружена через JS -->
+                </div>
+                <div id="admins-tab" class="tab-content">
+                    <!-- Таблица администраторов будет загружена через JS -->
+                </div>
+            </div>
+
+            <!-- Управление классами -->
+            <div class="MuiPaper-root MuiPaper-elevation1">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="MuiTypography-root MuiTypography-h5">Управление классами</h3>
+                </div>
+                <div id="classes-management">
+                    <!-- Управление классами будет загружено через JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div class="footer" style="background-color: #f5f5f5; padding: 20px; text-align: center; margin-top: 50px;">
+        <p>&copy; 2026 Wlwctronic Diary</p>
+    </div>
+
+    <!-- Material-UI JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+    <script>
+        // Инициализация AppBar с помощью Material-UI
+        document.addEventListener('DOMContentLoaded', function() {
+            const appBar = document.getElementById('app-bar');
+
+            appBar.innerHTML = `
+                <div class="MuiAppBar-root MuiAppBar-positionStatic MuiAppBar-colorPrimary" style="background-color: #1976d2;">
+                    <div class="MuiToolbar-root MuiToolbar-regular" style="min-height: 64px; padding-left: 24px; padding-right: 24px;">
+                        <h6 class="MuiTypography-root MuiTypography-h6" style="color: white; margin: 0; flex-grow: 1;">
+                            Wlwctronic Diary - Панель администратора
+                        </h6>
+                        <button class="MuiButton-root MuiButton-text MuiButton-textPrimary" style="color: white;" onclick="window.location.href='index.html'">
+                            <span class="MuiButton-label">Главная</span>
+                        </button>
+                        <button class="MuiButton-root MuiButton-text MuiButton-textPrimary" style="color: white;" id="logout">
+                            <span class="MuiButton-label">Выйти</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Инициализация вкладок пользователей
+            const tabsContainer = document.getElementById('users-tabs');
+            tabsContainer.innerHTML = `
+                <div class="MuiTabs-root" style="border-bottom: 1px solid #e8e8e8;">
+                    <div class="MuiTabs-scroller MuiTabs-fixed" style="overflow: hidden;">
+                        <div class="MuiTabs-flexContainer">
+                            <button class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected" tabindex="0" type="button" data-tab="students">
+                                <span class="MuiTab-wrapper">Ученики</span>
+                                <span class="MuiTouchRipple-root"></span>
+                            </button>
+                            <button class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary" tabindex="-1" type="button" data-tab="teachers">
+                                <span class="MuiTab-wrapper">Учителя</span>
+                                <span class="MuiTouchRipple-root"></span>
+                            </button>
+                            <button class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary" tabindex="-1" type="button" data-tab="admins">
+                                <span class="MuiTab-wrapper">Администраторы</span>
+                                <span class="MuiTouchRipple-root"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Обработчик переключения вкладок
+            const tabButtons = tabsContainer.querySelectorAll('[data-tab]');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Удаляем класс Mui-selected у всех кнопок
+                    tabButtons.forEach(btn => btn.classList.remove('Mui-selected'));
+
+                    // Добавляем класс Mui-selected к нажатой кнопке
+                    this.classList.add('Mui-selected');
+
+                    // Скрываем все вкладки
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+
+                    // Показываем выбранную вкладку
+                    const tabName = this.getAttribute('data-tab');
+                    document.getElementById(tabName + '-tab').classList.add('active');
+                });
+            });
+
+            // Обновляем обработчик выхода
+            document.getElementById('logout').addEventListener('click', function() {
+                if (typeof logout === 'function') {
+                    logout();
+                } else {
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

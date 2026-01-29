@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Journal - Главная</title>
+    <!-- Material-UI CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/fonts/index.css" />
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #ff4081;
+            --background-color: #f5f7fa;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1523243931521-fb29e39eebda?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .features p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Role Selection */
+        .role-section {
+            padding: 60px 20px 80px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            position: relative;
+        }
+
+        .role-section h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .role-section p {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+
+        .role-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 25px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 380px;
+            max-height: 420px;
+        }
+
+        .role-card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .role-card-icon {
+            flex-shrink: 0;
+        }
+
+        .role-card-text {
+            flex: 1;
+            margin: 15px 0;
+        }
+
+        .role-card-button {
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+        }
+
+        .role-card:nth-child(1)::before {
+            background: linear-gradient(90deg, #4fc3f7, #29b6f6);
+        }
+
+        .role-card:nth-child(2)::before {
+            background: linear-gradient(90deg, #66bb6a, #43a047);
+        }
+
+        .role-card:nth-child(3)::before {
+            background: linear-gradient(90deg, #ffa726, #f57c00);
+        }
+
+        .role-card:nth-child(4)::before {
+            background: linear-gradient(90deg, #ab47bc, #8e24aa);
+        }
+
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .role-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .role-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .role-card p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .mui-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mui-btn:hover {
+            background-color: #303f9f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .mui-btn i {
+            margin-right: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1e283c;
+            color: white;
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            margin-top: 30px;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .role-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Material-UI AppBar -->
+    <div id="app-bar"></div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Электронный дневник E-Journal</h1>
+            <p>Инновационная платформа для эффективного управления учебным процессом, объединяющая учеников, учителей, родителей и администрацию</p>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <!-- <div class="features">
+        <h2>Наши возможности</h2>
+        <p>Электронный дневник E-Journal предоставляет широкий спектр инструментов для комфортного и эффективного обучения и управления учебным процессом</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="material-icons">school</i>
+                </div>
+                <h3>Для учеников</h3>
+                <p>Просмотр расписания, оценок, домашних заданий и учебных материалов в одном месте</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="material-icons">group</i>
+                </div>
+                <h3>Для учителей</h3>
+                <p>Удобное выставление оценок, ведение электронного журнала и коммуникация с учениками</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="material-icons">people</i>
+                </div>
+                <h3>Для родителей</h3>
+                <p>Просмотр успеваемости и посещаемости ребенка, получение уведомлений и связь с учителями</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="material-icons">admin_panel_settings</i>
+                </div>
+                <h3>Для администрации</h3>
+                <p>Управление пользователями, расписанием и настройками учебного процесса</p>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Role Selection -->
+    <div class="role-section">
+        <h2>Выберите свою роль</h2>
+        <p>Пожалуйста, выберите свою роль в системе, чтобы получить доступ к соответствующему функционалу электронного дневника</p>
+
+        <div class="role-cards">
+            <div class="role-card">
+                <div class="role-card-content">
+                    <div class="role-card-icon">
+                        <i class="material-icons">face</i>
+                    </div>
+                    <div class="role-card-text">
+                        <h3>Ученик</h3>
+                        <p>Просматривайте расписание, домашние задания, оценки и учебные материалы</p>
+                    </div>
+                    <div class="role-card-button">
+                        <button class="mui-btn" onclick="window.location.href='login.html?role=student'">
+                            <i class="material-icons">login</i>
+                            Войти
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="role-card">
+                <div class="role-card-content">
+                    <div class="role-card-icon">
+                        <i class="material-icons">record_voice_over</i>
+                    </div>
+                    <div class="role-card-text">
+                        <h3>Учитель</h3>
+                        <p>Управляйте учебным процессом, ставьте оценки и общайтесь с учениками</p>
+                    </div>
+                    <div class="role-card-button">
+                        <button class="mui-btn" onclick="window.location.href='login.html?role=teacher'">
+                            <i class="material-icons">login</i>
+                            Войти
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="role-card">
+                <div class="role-card-content">
+                    <div class="role-card-icon">
+                        <i class="material-icons">people</i>
+                    </div>
+                    <div class="role-card-text">
+                        <h3>Родитель</h3>
+                        <p>Просматривайте успеваемость и посещаемость ребенка, получайте уведомления и общайтесь с учителями</p>
+                    </div>
+                    <div class="role-card-button">
+                        <button class="mui-btn" onclick="window.location.href='login.html?role=parent'">
+                            <i class="material-icons">login</i>
+                            Войти
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="role-card">
+                <div class="role-card-content">
+                    <div class="role-card-icon">
+                        <i class="material-icons">security</i>
+                    </div>
+                    <div class="role-card-text">
+                        <h3>Администратор</h3>
+                        <p>Управляйте пользователями, расписанием и настройками системы</p>
+                    </div>
+                    <div class="role-card-button">
+                        <button class="mui-btn" onclick="window.location.href='login.html?role=admin'">
+                            <i class="material-icons">login</i>
+                            Войти
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>E-Journal</h4>
+                <p>Инновационная платформа для управления учебным процессом</p>
+            </div>
+            <div class="footer-section">
+                <h4>Ссылки</h4>
+                <a href="index.html">Главная</a>
+                <a href="#">О платформе</a>
+                <a href="#">Поддержка</a>
+                <a href="#">Контакты</a>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">email</i> info@E-Journal.ru</p>
+                <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">phone</i> +7 (123) 456-78-90</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 E-Journal. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Material-UI JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script>
+
+    <style>
+        /* Improved AppBar styles */
+        .app-bar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: #ffd700;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .nav-link:hover {
+            color: #ffd700;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .login-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+
+    <script>
+        // Инициализация AppBar с улучшенным дизайном
+        document.addEventListener('DOMContentLoaded', function() {
+            const appBar = document.getElementById('app-bar');
+
+            appBar.className = 'app-bar';
+            appBar.innerHTML = `
+                <div class="MuiAppBar-root MuiAppBar-positionStatic" style="background: linear-gradient(90deg, #3f51b5 0%, #303f9f 100%);">
+                    <div class="MuiToolbar-root MuiToolbar-regular" style="min-height: 64px; padding: 0 24px; display: flex; justify-content: space-between; align-items: center;">
+                        <a href="index.html" class="logo">
+                            <i class="material-icons logo-icon">menu_book</i>
+                            <span>
+                                <strong>E-Journal</strong><br>
+                            </span>
+                        </a>
+
+                        <nav style="display: flex; align-items: center;">
+                            <a href="index.html" class="nav-link">Главная</a>
+                            <a href="#" class="nav-link">О платформе</a>
+                            <a href="#" class="nav-link">Возможности</a>
+                            <a href="#" class="nav-link">Контакты</a>
+                        </nav>
+
+                        <div class="auth-buttons">
+                            <a href="login.html?role=student" class="login-btn">
+                                <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">login</i>
+                                <span style="margin-left: 5px;">Вход</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wlwctronic Diary - Кабинет классного руководителя</title>
+    <!-- Material-UI CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/fonts/index.css" />
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .class-teacher-dashboard-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .MuiPaper-root {
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .classes-list, .grades-form, .announcements-form, .communication-form {
+            width: 100%;
+        }
+        .class-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .class-item:last-child {
+            border-bottom: none;
+        }
+        .MuiButton-root {
+            margin-left: 10px;
+        }
+        .grades-form-container, .announcements-form-container, .communication-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .form-control {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Material-UI AppBar -->
+    <div id="app-bar"></div>
+
+    <main>
+        <div class="class-teacher-dashboard-container">
+            <h2>Личный кабинет классного руководителя</h2>
+
+            <!-- Информация о классном руководителе -->
+            <div class="MuiPaper-root MuiPaper-elevation1">
+                <h3 class="MuiTypography-root MuiTypography-h5">Информация о классном руководителе</h3>
+                <div class="user-info">
+                    <p id="class-teacher-name"><strong>Имя:</strong> <span id="class-teacher-name-value"></span></p>
+                    <p id="class-teacher-class"><strong>Класс:</strong> <span id="class-teacher-class-value"></span></p>
+                </div>
+            </div>
+
+            <!-- Мониторинг успеваемости класса -->
+            <div class="MuiPaper-root MuiPaper-elevation1">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="MuiTypography-root MuiTypography-h5">Мониторинг успеваемости класса</h3>
+                </div>
+                <div id="class-performance">
+                    <!-- Данные об успеваемости будут загружены через JS -->
+                </div>
+            </div>
+
+            <!-- Создание объявлений для класса -->
+            <div class="MuiPaper-root MuiPaper-elevation1">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="MuiTypography-root MuiTypography-h5">Создание объявлений</h3>
+                </div>
+                <div id="announcements-form">
+                    <!-- Форма для создания объявлений будет загружена через JS -->
+                </div>
+            </div>
+
+            <!-- Общение с родителями -->
+            <div class="MuiPaper-root MuiPaper-elevation1">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="MuiTypography-root MuiTypography-h5">Общение с родителями</h3>
+                </div>
+                <div id="communication-form">
+                    <!-- Форма для общения с родителями будет загружена через JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div class="footer" style="background-color: #f5f5f5; padding: 20px; text-align: center; margin-top: 50px;">
+        <p>&copy; 2026 Wlwctronic Diary</p>
+    </div>
+
+    <!-- Material-UI JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/class-teacher-dashboard.js"></script>
+    <script>
+        // Инициализация AppBar с помощью Material-UI
+        document.addEventListener('DOMContentLoaded', function() {
+            const appBar = document.getElementById('app-bar');
+
+            appBar.innerHTML = `
+                <div class="MuiAppBar-root MuiAppBar-positionStatic MuiAppBar-colorPrimary" style="background-color: #1976d2;">
+                    <div class="MuiToolbar-root MuiToolbar-regular" style="min-height: 64px; padding-left: 24px; padding-right: 24px;">
+                        <h6 class="MuiTypography-root MuiTypography-h6" style="color: white; margin: 0; flex-grow: 1;">
+                            Wlwctronic Diary - Кабинет классного руководителя
+                        </h6>
+                        <button class="MuiButton-root MuiButton-text MuiButton-textPrimary" style="color: white;" onclick="window.location.href='index.html'">
+                            <span class="MuiButton-label">Главная</span>
+                        </button>
+                        <button class="MuiButton-root MuiButton-text MuiButton-textPrimary" style="color: white;" id="logout">
+                            <span class="MuiButton-label">Выйти</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Обновляем обработчик выхода
+            document.getElementById('logout').addEventListener('click', function() {
+                if (typeof logout === 'function') {
+                    logout();
+                } else {
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

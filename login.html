@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Journal - Вход</title>
+    <!-- Material-UI CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/fonts/index.css" />
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #ff4081;
+            --background-color: #f5f7fa;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Сброс стилей Material-UI */
+        .MuiInput-underline:before,
+        .MuiInput-underline:after {
+            display: none !important;
+        }
+
+        .MuiInput-root {
+            border: none !important;
+        }
+
+        .MuiTextField-root {
+            margin: 0 !important;
+        }
+
+        /* Login Section */
+        .login-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .login-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1523243931521-fb29e39eebda?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 2;
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #303f9f 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .login-header h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+
+        .role-info {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .login-body {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .MuiFormControl-root {
+            width: 100%;
+        }
+
+        .MuiFormLabel-root {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .MuiInputBase-root {
+            border: none;
+            border-radius: 8px;
+            padding: 0;
+            transition: var(--transition);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .MuiInputBase-root::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            transition: var(--transition);
+        }
+
+        .MuiInputBase-root:focus-within::after {
+            background: var(--primary-color);
+        }
+
+        .MuiInputBase-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1rem;
+            color: #333;
+            padding: 12px 0;
+            margin: 0;
+            border-bottom: 2px solid #e0e0e0;
+            transition: var(--transition);
+        }
+
+        .MuiInputBase-input:focus {
+            border-bottom-color: var(--primary-color);
+        }
+
+        .MuiButton-root {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .MuiButton-containedPrimary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #303f9f 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(63, 81, 181, 0.3);
+        }
+
+        .MuiButton-containedPrimary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(63, 81, 181, 0.4);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .back-link a:hover {
+            color: #303f9f;
+            text-decoration: underline;
+        }
+
+        /* AppBar styles */
+        .app-bar {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .logo-icon {
+            margin-right: 8px;
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1e283c;
+            color: white;
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            margin-top: 30px;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 20px;
+                max-width: none;
+            }
+
+            .login-header {
+                padding: 25px 20px;
+            }
+
+            .login-body {
+                padding: 30px 20px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Material-UI AppBar -->
+    <!-- <div id="app-bar"></div> -->
+
+    <!-- Login Section -->
+    <div class="login-section">
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Вход в систему</h2>
+                <div class="role-info" id="role-info">
+                    Вы входите как: <span id="role-display">ученик</span>
+                </div>
+            </div>
+            <div class="login-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <div class="MuiFormControl-root">
+                            <label class="MuiFormLabel-root" for="username">
+                                Логин
+                            </label>
+                            <div class="MuiInputBase-root">
+                                <input class="MuiInputBase-input" type="text" id="username" name="username" required placeholder="Введите ваш логин">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="MuiFormControl-root">
+                            <label class="MuiFormLabel-root" for="password">
+                                Пароль
+                            </label>
+                            <div class="MuiInputBase-root">
+                                <input class="MuiInputBase-input" type="password" id="password" name="password" required placeholder="Введите ваш пароль">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="MuiButton-root MuiButton-containedPrimary" type="submit">
+                        Войти в систему
+                    </button>
+                </form>
+                <div class="back-link">
+                    <a href="index.html">← Вернуться на главную</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>E-Journal</h4>
+                <p>Инновационная платформа для управления учебным процессом</p>
+            </div>
+            <div class="footer-section">
+                <h4>Ссылки</h4>
+                <a href="index.html">Главная</a>
+                <a href="#">О платформе</a>
+                <a href="#">Поддержка</a>
+                <a href="#">Контакты</a>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">email</i> info@E-Journal.ru</p>
+                <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">phone</i> +7 (123) 456-78-90</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 E-Journal. Все права защищены.</p>
+        </div>
+    </footer> -->
+
+    <!-- Material-UI JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        // Инициализация AppBar с улучшенным дизайном
+        document.addEventListener('DOMContentLoaded', function() {
+            const appBar = document.getElementById('app-bar');
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role') || 'student';
+            const roleNames = {
+                'student': 'ученик',
+                'teacher': 'учитель',
+                'admin': 'администратор',
+                'parent': 'родитель'
+            };
+
+            appBar.className = 'app-bar';
+            appBar.innerHTML = `
+                <div class="MuiAppBar-root MuiAppBar-positionStatic" style="background: linear-gradient(90deg, #3f51b5 0%, #303f9f 100%);">
+                    <div class="MuiToolbar-root MuiToolbar-regular" style="min-height: 64px; padding: 0 24px; display: flex; justify-content: space-between; align-items: center;">
+                        <a href="index.html" class="logo">
+                            <i class="material-icons logo-icon">menu_book</i>
+                            <span>
+                                <strong>E-Journal</strong><br>
+                                <small style="font-size: 0.8rem; opacity: 0.8;"></small>
+                            </span>
+                        </a>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="MuiButton-root MuiButton-text" style="color: white;" onclick="window.location.href='index.html'">
+                                <span class="MuiButton-label">Главная</span>
+                            </button>
+                            <button class="MuiButton-root MuiButton-text" style="color: white;" onclick="window.location.href='#support'">
+                                <span class="MuiButton-label">Поддержка</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Обновляем информацию о роли
+            document.getElementById('role-display').textContent = roleNames[role] || 'ученик';
+
+            // Обработка формы входа
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // Простая валидация
+                if (!username || !password) {
+                    alert('Пожалуйста, заполните все поля');
+                    return;
+                }
+                
+                // Здесь будет логика входа
+                console.log('Попытка входа:', { username, password, role });
+                
+                // Временная логика для демонстрации
+                if (username && password) {
+                    // Перенаправление на соответствующий дашборд
+                    switch(role) {
+                        case 'student':
+                            window.location.href = 'student-dashboard.html';
+                            break;
+                        case 'teacher':
+                            window.location.href = 'teacher-dashboard.html';
+                            break;
+                        case 'admin':
+                            window.location.href = 'admin-dashboard.html';
+                            break;
+                        case 'parent':
+                            window.location.href = 'parent-dashboard.html';
+                            break;
+                        default:
+                            window.location.href = 'student-dashboard.html';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
