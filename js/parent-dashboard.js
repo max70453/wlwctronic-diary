@@ -27,7 +27,8 @@ function initializeParentData() {
             'student1': {
                 id: 'student1',
                 name: 'Иван Иванов',
-                class: '10А',
+                class: '3 ПО-21',
+                adress: 'Площадь Свободы д. 21 кв. 17',
                 email: 'ivan.ivanov@school.ru',
                 phone: '+7 (999) 123-45-67',
                 grades: [

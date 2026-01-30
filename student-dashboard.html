@@ -310,10 +310,13 @@
         .schedule-table th:nth-child(4), .schedule-table td:nth-child(4) { width: 20%; }
         .schedule-table th:nth-child(5), .schedule-table td:nth-child(5) { width: 10%; }
 
-        .grades-table th:nth-child(1), .grades-table td:nth-child(1) { width: 30%; }
-        .grades-table th:nth-child(2), .grades-table td:nth-child(2) { width: 15%; }
-        .grades-table th:nth-child(3), .grades-table td:nth-child(3) { width: 20%; }
-        .grades-table th:nth-child(4), .grades-table td:nth-child(4) { width: 35%; }
+        .grades-table th:nth-child(1), .grades-table td:nth-child(1) { width: 18%; }
+        .grades-table th:nth-child(2), .grades-table td:nth-child(2) { width: 10%; }
+        .grades-table th:nth-child(3), .grades-table td:nth-child(3) { width: 12%; }
+        .grades-table th:nth-child(4), .grades-table td:nth-child(4) { width: 20%; }
+        .grades-table th:nth-child(5), .grades-table td:nth-child(5) { width: 15%; }
+        .grades-table th:nth-child(6), .grades-table td:nth-child(6) { width: 12%; }
+        .grades-table th:nth-child(7), .grades-table td:nth-child(7) { width: 13%; }
 
         .schedule-table tr:hover, .grades-table tr:hover, .subject-stats-table tr:hover, .homework-table tr:hover {
             background-color: rgba(25, 118, 210, 0.05);
@@ -839,7 +842,22 @@
             }
             
             .schedule-table, .grades-table, .subject-stats-table, .homework-table {
-                min-width: 600px;
+                min-width: 800px;
+            }
+            
+            /* Мобильные фильтры */
+            .grades-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-select {
+                min-width: auto;
+                width: 100%;
             }
         }
 
@@ -914,6 +932,261 @@
             font-size: 0.9rem;
             color: #999;
         }
+
+        .profile-actions .MuiButton-root {
+            margin: 5px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* Стили для пагинации */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .pagination-info {
+            color: #666;
+            font-size: 0.9rem;
+            margin-right: 10px;
+        }
+
+        .pagination-button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #333;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .pagination-button:hover:not(:disabled) {
+            background: #f5f5f5;
+            border-color: #999;
+        }
+
+        .pagination-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-button.active {
+            background: #1976d2;
+            color: white;
+            border-color: #1976d2;
+        }
+
+        .grades-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .average-grade {
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .total-grade {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .subject-average {
+            font-weight: 600;
+            color: #1976d2;
+            font-size: 0.9rem;
+        }
+
+        .subject-total {
+            font-weight: 600;
+            color: #4CAF50;
+            font-size: 0.9rem;
+        }
+
+        .grades-table th:nth-child(6),
+        .grades-table th:nth-child(7) {
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .grades-table td:nth-child(6),
+        .grades-table td:nth-child(7) {
+            text-align: center;
+        }
+
+        /* Стили для фильтров оценок */
+        .grades-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            font-size: 0.9rem;
+            min-width: 150px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+        }
+
+        .grades-filters .MuiButton-root {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .grades-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-select {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+
+        /* Стили для уведомлений */
+        .notification-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #1976d2;
+            background: #f8f9fa;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .notification-item.unread {
+            background: #e3f2fd;
+            border-left-color: #1976d2;
+        }
+
+        /* Специальные стили для объявлений */
+        .notification-item.announcement {
+            background: #e3f2fd;
+            border-left-color: #1565c0;
+        }
+
+        .notification-item.announcement.unread {
+            background: #bbdefb;
+            border-left-color: #1565c0;
+        }
+
+        .notification-item.announcement:hover {
+            background: #90caf9;
+            transform: translateX(2px);
+        }
+
+        .notification-item:hover {
+            background: #f0f0f0;
+            transform: translateX(2px);
+        }
+
+        /* Стили для контейнера уведомлений с прокруткой */
+        #announcements {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        #announcements::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #announcements::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        #announcements::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        #announcements::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .notification-item h4 {
+            margin: 0 0 8px 0;
+            color: #333;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin-left: auto;
+        }
+
+        .notification-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-close:active {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-item p {
+            margin: 0 0 8px 0;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .notification-item small {
+            color: #999;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -966,7 +1239,7 @@
     </script>
     <main>
         <div class="dashboard-container">
-            <h2>Личный кабинет ученика</h2>
+            <h2>Личный кабинет</h2>
 
             <!-- Компактный сеточный лейаут -->
             <div class="dashboard-grid">
@@ -977,7 +1250,14 @@
                         <h3>Информация об ученике</h3>
                         <div class="user-info">
                             <p><strong>Имя:</strong> <span id="student-name-value"></span></p>
-                            <p><strong>Класс:</strong> <span id="student-class-value"></span></p>
+                            <p><strong>Группа:</strong> <span id="student-class-value">3 ПО-21</span></p>
+                        </div>
+                    </div>
+                    <!-- Статистика успеваемости -->
+                    <div class="MuiPaper-root fade-in delay-1">
+                        <h3>Статистика успеваемости</h3>
+                        <div id="performance-stats">
+                            <!-- Статистика успеваемости будет загружена через JS -->
                         </div>
                     </div>
 
@@ -990,31 +1270,139 @@
                                 <!-- Расписание на день будет загружено через JS -->
                             </div>
                         </div>
-                        <div class="widget fade-in delay-2">
+                        <!-- <div class="widget fade-in delay-2">
                             <div class="widget-icon material-icons">grade</div>
                             <h4>Новые оценки</h4>
-                            <div id="new-grades">
-                                <!-- Новые оценки будут загружены через JS -->
-                            </div>
-                        </div>
+                            <div id="new-grades"></div>
+                        </div> -->
                     </div>
 
-                    <!-- Статистика успеваемости -->
-                    <div class="MuiPaper-root fade-in delay-1" style="height: 100%;">
-                        <h3>Статистика успеваемости</h3>
-                        <div id="performance-stats">
-                            <!-- Статистика успеваемости будет загружена через JS -->
-                        </div>
-                    </div>
+                    
                 </div>
 
               <!-- Верхний ряд: Статистика и Объявления -->
                 <div class="content-row">
                     <!-- Объявления -->
-                    <div class="MuiPaper-root fade-in delay-2">
-                        <h3>Объявления</h3>
+                    <div class="MuiPaper-root fade-in delay-2 visible">
+                        <h3 data-heading-tag="H3">Уведомления</h3>
                         <div id="announcements">
-                            <!-- Объявления будут загружены через JS -->
+                            <div class="notification-item fade-in delay-1 unread visible">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #1976d2;">
+                                        grade
+                                    </span>
+                                    Новая оценка по математике
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>Вы получили оценку "5" за контрольную работу</p>
+                                <small>2026-01-28 14:30</small>
+                            </div>
+                            <div class="notification-item fade-in delay-2 unread visible announcement">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #ff9800;">
+                                        event
+                                    </span>
+                                    Родительское собрание
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>Состоится родительское собрание 25 января в 18:00 в актовом зале. Приглашаются все желающие.</p>
+                                <small>2026-01-28 12:15</small>
+                            </div>
+                            <div class="notification-item fade-in delay-3 unread visible announcement">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #4caf50;">
+                                        schedule
+                                    </span>
+                                    Расписание изменено
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>Внимание! Расписание на завтра изменено. Пара по физике перенесена на 3-ю пару.</p>
+                                <small>2026-01-28 10:45</small>
+                            </div>
+                            <div class="notification-item fade-in delay-4 unread visible announcement">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #e91e63;">
+                                        assignment
+                                    </span>
+                                    Новое домашнее задание
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>Задано домашнее задание по химии. Страница 145-147, упражнения 1-5.</p>
+                                <small>2026-01-28 09:30</small>
+                            </div>
+                            <div class="notification-item fade-in delay-5 unread visible announcement">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #9c27b0;">
+                                        school
+                                    </span>
+                                    Олимпиада по программированию
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>Приглашаем принять участие в городской олимпиаде по программированию. Регистрация до 5 февраля.</p>
+                                <small>2026-01-28 08:15</small>
+                            </div>
+                            <div class="notification-item fade-in delay-6 unread visible announcement">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #ff5722;">
+                                        warning
+                                    </span>
+                                    Важное объявление
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>Завтра в 10:00 состоится общешкольная линейка. Присутствие обязательно для всех учеников.</p>
+                                <small>2026-01-27 16:20</small>
+                            </div>
+                            <div class="notification-item fade-in delay-7 unread visible announcement">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #795548;">
+                                        book
+                                    </span>
+                                    Новые учебные материалы
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>Добавлены новые материалы по истории в раздел "Учебные ресурсы". Обязательно ознакомьтесь.</p>
+                                <small>2026-01-27 14:45</small>
+                            </div>
+                            <div class="notification-item fade-in delay-8 unread visible announcement">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #607d8b;">
+                                        chat
+                                    </span>
+                                    Ответ на вопрос
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>Преподаватель ответил на ваш вопрос по математике в форуме. Проверьте ответ.</p>
+                                <small>2026-01-27 11:30</small>
+                            </div>
+                            <div class="notification-item fade-in delay-9 unread visible announcement">
+                                <h4>
+                                    <span class="material-icons" style="vertical-align: middle; margin-right: 8px; color: #009688;">
+                                        fitness_center
+                                    </span>
+                                    Спортивные мероприятия
+                                    <button class="notification-close" onclick="closeNotification(this)">
+                                        <span class="material-icons" style="font-size: 18px;">close</span>
+                                    </button>
+                                </h4>
+                                <p>В эту пятницу состоится соревнование по баскетболу между классами. Желающие записаться у спортинструктора.</p>
+                                <small>2026-01-27 09:00</small>
+                            </div>
                         </div>
                     </div>
                     <div style="margin-top: 20px;">
@@ -1030,8 +1418,8 @@
                                 <span id="profile-email"></span>
                             </div>
                             <div class="profile-field">
-                                <label><strong>Класс:</strong></label>
-                                <span id="profile-class"></span>
+                                <label><strong>Адрес:</strong></label>
+                                <span id="profile-class">Площадь Свободы д. 15 кв. 7</span>
                             </div>
                             <div class="profile-field">
                                 <label><strong>Телефон:</strong></label>
@@ -1060,8 +1448,34 @@
                         <!-- Оценки -->
                         <div class="MuiPaper-root fade-in delay-3">
                             <h3>Оценки</h3>
+                            <div class="grades-filters">
+                                <div class="filter-group">
+                                    <label for="subject-filter">Предмет:</label>
+                                    <select id="subject-filter" class="filter-select">
+                                        <option value="all">Все предметы</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="period-filter">Период:</label>
+                                    <select id="period-filter" class="filter-select">
+                                        <option value="all">Все время</option>
+                                        <option value="week">За неделю</option>
+                                        <option value="month">За месяц</option>
+                                        <option value="quarter">За 3 месяца</option>
+                                    </select>
+                                </div>
+                                <button id="apply-filters" class="MuiButton-root MuiButton-contained MuiButton-containedPrimary">
+                                    <span class="MuiButton-label">Применить</span>
+                                </button>
+                                <button id="reset-filters" class="MuiButton-root MuiButton-contained MuiButton-containedSecondary">
+                                    <span class="MuiButton-label">Сбросить</span>
+                                </button>
+                            </div>
                             <div id="grades-table">
                                 <!-- Таблица с оценками будет загружена через JS -->
+                            </div>
+                            <div id="grades-pagination" class="pagination-container">
+                                <!-- Пагинация будет загружена через JS -->
                             </div>
                         </div>
 
@@ -1070,45 +1484,6 @@
                             <h3>Расписание</h3>
                             <div id="schedule-table">
                                 <!-- Расписание будет загружено через JS -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Третий ряд: Уведомления и Учебные материалы -->
-                    <div class="content-row">
-                        <!-- Уведомления -->
-                        <div class="MuiPaper-root fade-in delay-5">
-                            <h3>Уведомления</h3>
-                            <div class="notification-settings-section">
-                                <h4>Настройки уведомлений</h4>
-                                <div class="notification-options">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="grades-notifications" class="notification-setting" checked>
-                                        <label for="grades-notifications">Новые оценки</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="announcements-notifications" class="notification-setting" checked>
-                                        <label for="announcements-notifications">Объявления</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="messages-notifications" class="notification-setting">
-                                        <label for="messages-notifications">Сообщения</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="notification-history-section">
-                                <h4>История уведомлений</h4>
-                                <div id="notifications-list">
-                                    <!-- Уведомления будут загружены через JS -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Учебные материалы -->
-                        <div class="MuiPaper-root fade-in delay-6">
-                            <h3>Учебные материалы</h3>
-                            <div id="learning-materials">
-                                <!-- Учебные материалы будут загружены через JS -->
                             </div>
                         </div>
                     </div>
@@ -1152,5 +1527,21 @@
     <script src="js/student-dashboard.js"></script>
     <script src="test-data.js"></script>
     <script src="simple-fill.js"></script>
+    
+    <script>
+        // Функция закрытия уведомления
+        function closeNotification(button) {
+            const notification = button.closest('.notification-item');
+            if (notification) {
+                notification.style.transition = 'all 0.3s ease';
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }
+        }
+    </script>
 </body>
 </html>

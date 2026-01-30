@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Данные по умолчанию
         const defaultData = {
             name: 'Иван Иванов',
-            class: '10А',
+            class: '3 ПО-21',
+            adress: 'Площадь Свободы кв. 9 д. 15',
             email: 'ivan.ivanov@school.ru',
             phone: '+7 (999) 123-45-67'
         };
@@ -47,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (profileClass) {
-            profileClass.textContent = defaultData.class;
-            console.log('✅ Profile class установлен');
+            profileClass.textContent = defaultData.adress;
+            console.log('✅ Profile class (адрес) установлен:', defaultData.adress);
         }
         
         if (profilePhone) {

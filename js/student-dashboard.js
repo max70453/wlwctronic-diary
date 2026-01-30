@@ -149,26 +149,33 @@ async function loadNewGrades(studentId) {
 }
 
 // Инициализация страницы ученика
-document.addEventListener('DOMContentLoaded', async function() {
-    console.log('Загрузка страницы ученика...');
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== ЗАГРУЗКА СТРАНИЦЫ СТУДЕНТА ===');
     
-    // Получаем ID ученика из localStorage
     const studentId = localStorage.getItem('studentId') || 'student1';
-    console.log('Student ID:', studentId);
+    console.log('ID студента:', studentId);
     
-    // Получаем данные из localStorage или используем mockData по умолчанию
-    let studentData = localStorage.getItem(`student_${studentId}`);
-    if (studentData) {
-        studentData = JSON.parse(studentData);
-        console.log('Данные загружены из localStorage:', studentData);
-    } else {
-        // Если данных нет в localStorage, используем mockData и сохраняем их
-        studentData = mockData.students[studentId];
-        localStorage.setItem(`student_${studentId}`, JSON.stringify(studentData));
-        console.log('Данные взяты из mockData и сохранены в localStorage:', studentData);
-    }
+    // Принудительно очищаем все кэши
+    localStorage.removeItem(`student_${studentId}`);
+    localStorage.removeItem('gradesData');
+    localStorage.removeItem('originalGradesData');
+    localStorage.removeItem('announcementsData');
     
-    const studentClass = studentData.class || '10А';
+    let studentData = mockData.students[studentId];
+    localStorage.setItem(`student_${studentId}`, JSON.stringify(studentData));
+    console.log('Новые данные сохранены в localStorage:', studentData);
+    console.log('Количество оценок:', studentData.grades.length);
+    
+    // Принудительно устанавливаем группу
+    setTimeout(() => {
+        const classElement = document.getElementById('student-class-value');
+        if (classElement) {
+            classElement.textContent = '3 ПО-21';
+            console.log('Принудительно установлена группа: 3 ПО-21');
+        }
+    }, 100);
+    
+    const studentClass = studentData.class || studentData.adress || '3 ПО-21';
 
     // Заполняем все данные
     populateAllStudentData(studentData, studentId);
@@ -207,30 +214,39 @@ function populateAllStudentData(studentData, studentId) {
     console.log('Проверка DOM элементов:', elements);
     
     // Заполняем основную информацию
+    console.log('Заполняем основную информацию...');
     populateBasicStudentInfo(studentData);
     
     // Заполняем расписание
+    console.log('Заполняем расписание...');
     populateSchedule(studentData);
     
     // Заполняем оценки
+    console.log('Заполняем оценки...');
     populateGrades(studentData);
     
     // Заполняем статистику
+    console.log('Заполняем статистику...');
     populatePerformanceStats(studentData);
     
     // Заполняем домашние задания
-    populateHomework(studentData);
+    console.log('Пропускаем домашние задания (функция отключена)');
+    // populateHomework(studentData);
     
     // Заполняем объявления
-    populateAnnouncements(studentData.class);
+    console.log('Пропускаем объявления (заменены на уведомления)');
+    // populateAnnouncements(studentClass);
     
     // Заполняем учебные материалы
+    console.log('Заполняем учебные материалы...');
     populateLearningMaterials();
     
     // Заполняем профиль
+    console.log('Заполняем профиль...');
     populateProfile(studentData);
     
     // Заполняем уведомления
+    console.log('Заполняем уведомления...');
     populateNotifications();
     
     console.log('Все данные заполнены успешно!');
@@ -239,21 +255,39 @@ function populateAllStudentData(studentData, studentId) {
 // Функция немедленного заполнения базовой информации
 function populateBasicStudentInfo(studentInfo) {
     const name = studentInfo?.name || 'Иван Иванов';
-    const studentClass = studentInfo?.class || '10А';
+    const studentClass = studentInfo?.class || studentInfo?.adress || '3 ПО-21';
+    
+    console.log('populateBasicStudentInfo called with:', studentInfo);
+    console.log('Using studentClass:', studentClass);
+    console.log('Available fields:', {
+        class: studentInfo?.class,
+        adress: studentInfo?.adress
+    });
     
     // Заполняем основную информацию
     const nameElement = document.getElementById('student-name-value');
     const classElement = document.getElementById('student-class-value');
     
-    if (nameElement) nameElement.textContent = name;
-    if (classElement) classElement.textContent = studentClass;
+    console.log('Elements found:', {
+        nameElement: !!nameElement,
+        classElement: !!classElement
+    });
+    
+    if (nameElement) {
+        nameElement.textContent = name;
+        console.log('Set name to:', name);
+    }
+    if (classElement) {
+        classElement.textContent = studentClass;
+        console.log('Set class to:', studentClass);
+    }
     
     // Обновляем шапку
     const headerName = document.getElementById('header-user-name');
     const headerClass = document.getElementById('header-user-class');
     
     if (headerName) headerName.textContent = name;
-    if (headerClass) headerClass.textContent = studentClass + ' класс';
+    if (headerClass) headerClass.textContent = studentClass;
 }
 
 // Заполнение профиля
@@ -265,7 +299,7 @@ function populateProfile(studentInfo) {
     
     if (profileName) profileName.textContent = studentInfo.name;
     if (profileEmail) profileEmail.textContent = studentInfo.email || `${studentInfo.name.toLowerCase().replace(' ', '.')}@school.ru`;
-    if (profileClass) profileClass.textContent = studentInfo.class;
+    if (profileClass) profileClass.textContent = studentInfo.adress || 'Площадь Свободы д. 15 кв. 7';
     if (profilePhone) profilePhone.textContent = studentInfo.phone || '+7 (999) 123-45-67';
 }
 
@@ -319,50 +353,302 @@ function populateSchedule(studentInfo) {
 // Заполнение оценок
 function populateGrades(studentInfo) {
     const gradesTable = document.getElementById('grades-table');
-    const newGradesContainer = document.getElementById('new-grades');
+    const paginationContainer = document.getElementById('grades-pagination');
     
-    if (studentInfo.grades && studentInfo.grades.length > 0) {
-        // Новые оценки (за последнюю неделю)
-        const today = new Date();
-        const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        const newGrades = studentInfo.grades.filter(grade => {
-            const gradeDate = new Date(grade.date);
-            return gradeDate >= lastWeek;
-        });
-        
-        if (newGrades.length > 0 && newGradesContainer) {
-            let html = '<ul class="grades-list">';
-            newGrades.forEach(grade => {
-                const gradeClass = grade.grade >= 4 ? 'grade-good' : grade.grade == 3 ? 'grade-mid' : 'grade-bad';
-                html += `
-                    <li class="grade-item">
-                        <span>${grade.subject}</span>
-                        <span class="grade-value ${gradeClass}">${grade.grade}</span>
-                        <span>${grade.date}</span>
-                    </li>
-                `;
-            });
-            html += '</ul>';
-            newGradesContainer.innerHTML = html;
-        }
-        
-        // Полная таблица оценок
-        let html = '<table class="grades-table"><thead><tr><th>Предмет</th><th>Оценка</th><th>Дата</th><th>Учитель</th></tr></thead><tbody>';
-        studentInfo.grades.forEach((grade, index) => {
-            const gradeClass = grade.grade >= 4 ? 'grade-good' : grade.grade == 3 ? 'grade-mid' : 'grade-bad';
-            html += `
-                <tr>
-                    <td>${grade.subject}</td>
-                    <td><span class="grade-value ${gradeClass}">${grade.grade}</span></td>
-                    <td>${grade.date}</td>
-                    <td>${grade.teacher || '-'}</td>
-                </tr>
-            `;
-        });
-        html += '</tbody></table>';
-        if (gradesTable) gradesTable.innerHTML = html;
+    console.log('populateGrades called with:', studentInfo);
+    console.log('Grades data:', studentInfo.grades);
+    
+    if (!studentInfo.grades || studentInfo.grades.length === 0) {
+        if (gradesTable) gradesTable.innerHTML = '<p class="no-data">Оценок пока нет.</p>';
+        if (paginationContainer) paginationContainer.innerHTML = '';
+        return;
+    }
+    
+    // Глобальные переменные для фильтрации и пагинации
+    window.originalGradesData = studentInfo.grades;
+    window.gradesData = [...studentInfo.grades];
+    window.currentPage = 1;
+    window.gradesPerPage = 5;
+    window.currentFilters = {
+        subject: 'all',
+        period: 'all'
+    };
+    
+    console.log('Grades data set:', window.gradesData.length, 'grades');
+    
+    // Заполняем список предметов в фильтре
+    populateSubjectFilter();
+    
+    // Добавляем обработчики событий для фильтров
+    setupFilterHandlers();
+    
+    // Отображаем первую страницу
+    displayGradesPage(1);
+}
+
+// Заполнение списка предметов в фильтре
+function populateSubjectFilter() {
+    const subjectFilter = document.getElementById('subject-filter');
+    if (!subjectFilter) return;
+    
+    const subjects = [...new Set(window.originalGradesData.map(grade => grade.subject))];
+    
+    // Очищаем и заполняем список предметов
+    subjectFilter.innerHTML = '<option value="all">Все предметы</option>';
+    subjects.forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject;
+        option.textContent = subject;
+        subjectFilter.appendChild(option);
+    });
+}
+
+// Настройка обработчиков для фильтров
+function setupFilterHandlers() {
+    const applyBtn = document.getElementById('apply-filters');
+    const resetBtn = document.getElementById('reset-filters');
+    
+    if (applyBtn) {
+        applyBtn.addEventListener('click', applyFilters);
+    }
+    
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetFilters);
     }
 }
+
+// Применение фильтров
+function applyFilters() {
+    const subjectFilter = document.getElementById('subject-filter');
+    const periodFilter = document.getElementById('period-filter');
+    
+    if (!subjectFilter || !periodFilter) return;
+    
+    window.currentFilters.subject = subjectFilter.value;
+    window.currentFilters.period = periodFilter.value;
+    
+    // Фильтруем данные
+    window.gradesData = filterGrades(window.originalGradesData, window.currentFilters);
+    
+    // Сбрасываем на первую страницу
+    window.currentPage = 1;
+    
+    // Отображаем отфильтрованные данные
+    displayGradesPage(1);
+    
+    console.log('Filters applied:', window.currentFilters, 'Filtered grades:', window.gradesData.length);
+}
+
+// Сброс фильтров
+function resetFilters() {
+    const subjectFilter = document.getElementById('subject-filter');
+    const periodFilter = document.getElementById('period-filter');
+    
+    if (subjectFilter) subjectFilter.value = 'all';
+    if (periodFilter) periodFilter.value = 'all';
+    
+    window.currentFilters = {
+        subject: 'all',
+        period: 'all'
+    };
+    
+    // Восстанавливаем исходные данные
+    window.gradesData = [...window.originalGradesData];
+    window.currentPage = 1;
+    
+    // Отображаем все данные
+    displayGradesPage(1);
+    
+    console.log('Filters reset, showing all grades:', window.gradesData.length);
+}
+
+// Фильтрация оценок
+function filterGrades(grades, filters) {
+    let filtered = [...grades];
+    
+    // Фильтр по предмету
+    if (filters.subject !== 'all') {
+        filtered = filtered.filter(grade => grade.subject === filters.subject);
+    }
+    
+    // Фильтр по периоду
+    if (filters.period !== 'all') {
+        const now = new Date();
+        let cutoffDate;
+        
+        switch (filters.period) {
+            case 'week':
+                cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                break;
+            case 'month':
+                cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                break;
+            case 'quarter':
+                cutoffDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+                break;
+        }
+        
+        if (cutoffDate) {
+            filtered = filtered.filter(grade => {
+                const gradeDate = new Date(grade.date);
+                return gradeDate >= cutoffDate;
+            });
+        }
+    }
+    
+    return filtered;
+}
+
+// Функция отображения страницы с оценками
+function displayGradesPage(page) {
+    const gradesTable = document.getElementById('grades-table');
+    const paginationContainer = document.getElementById('grades-pagination');
+    
+    const startIndex = (page - 1) * window.gradesPerPage;
+    const endIndex = startIndex + window.gradesPerPage;
+    const pageGrades = window.gradesData.slice(startIndex, endIndex);
+    
+    console.log('Displaying page', page, 'grades:', pageGrades.length);
+    
+    // Расчет среднего балла для всех оценок
+    const totalGrades = window.gradesData.reduce((sum, grade) => sum + parseInt(grade.grade), 0);
+    const averageGrade = (totalGrades / window.gradesData.length).toFixed(2);
+    
+    console.log('Average grade:', averageGrade, 'Total grades:', totalGrades);
+    
+    // Создаем HTML для таблицы с оценками
+    let html = `
+        <div class="table-wrapper">
+            <table class="grades-table">
+                <thead>
+                    <tr>
+                        <th>Предмет</th>
+                        <th>Оценка</th>
+                        <th>Дата</th>
+                        <th>Учитель</th>
+                        <th>Тип работы</th>
+                        <th>Средний балл</th>
+                        <th>Итоговая</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    pageGrades.forEach((grade, index) => {
+        const gradeClass = grade.grade >= 4 ? 'grade-good' : grade.grade == 3 ? 'grade-mid' : 'grade-bad';
+        
+        // Рассчитываем средний балл для этого предмета (из отфильтрованных данных)
+        const subjectGrades = window.gradesData.filter(g => g.subject === grade.subject);
+        const subjectAverage = (subjectGrades.reduce((sum, g) => sum + parseInt(g.grade), 0) / subjectGrades.length).toFixed(2);
+        
+        // Проверяем, завершен ли предмет (есть ли финальный экзамен/зачет по этому предмету во всех данных)
+        const subjectAllGrades = window.originalGradesData.filter(g => g.subject === grade.subject);
+        const hasFinalExam = subjectAllGrades.some(g => g.topic && (
+            g.topic.toLowerCase().includes('экзамен') || 
+            g.topic.toLowerCase().includes('зачет') ||
+            g.topic.toLowerCase().includes('итоговый экзамен') ||
+            g.topic.toLowerCase().includes('выпускной экзамен')
+        ));
+        
+        // Показываем итоговую только для финальных экзаменов/зачетов
+        const isFinalExamOrTest = grade.topic && (
+            grade.topic.toLowerCase().includes('экзамен') || 
+            grade.topic.toLowerCase().includes('зачет') ||
+            grade.topic.toLowerCase().includes('итоговый экзамен') ||
+            grade.topic.toLowerCase().includes('выпускной экзамен')
+        );
+        
+        console.log(`Grade ${index}:`, grade.subject, 'Topic:', grade.topic, 'Is final exam/test:', isFinalExamOrTest, 'Subject has final exam:', hasFinalExam);
+        
+        let subjectTotalDisplay = '';
+        if (isFinalExamOrTest && hasFinalExam) {
+            // Рассчитываем итоговую для этого предмета (из всех данных по предмету)
+            const subjectTotal = subjectAllGrades.reduce((sum, g) => sum + parseInt(g.grade), 0);
+            const subjectMax = subjectAllGrades.length * 5;
+            subjectTotalDisplay = `<span class="subject-total">${subjectTotal} / ${subjectMax}</span>`;
+            console.log(`  -> Showing total: ${subjectTotal} / ${subjectMax}`);
+        } else {
+            subjectTotalDisplay = '<span class="subject-total">—</span>';
+            console.log(`  -> Showing dash`);
+        }
+        
+        html += `
+            <tr>
+                <td>${grade.subject}</td>
+                <td><span class="grade-value ${gradeClass}">${grade.grade}</span></td>
+                <td>${grade.date}</td>
+                <td>${grade.teacher || 'Не указано'}</td>
+                <td>${grade.topic || 'Не указано'}</td>
+                <td><span class="subject-average">${subjectAverage}</span></td>
+                <td>${subjectTotalDisplay}</td>
+            </tr>
+        `;
+    });
+    
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    if (gradesTable) gradesTable.innerHTML = html;
+    
+    // Обновляем пагинацию
+    updatePagination();
+}
+
+// Функция обновления пагинации
+function updatePagination() {
+    const paginationContainer = document.getElementById('grades-pagination');
+    const totalPages = Math.ceil(window.gradesData.length / window.gradesPerPage);
+    
+    let paginationHTML = `
+        <div class="pagination-info">
+            Показано ${((window.currentPage - 1) * window.gradesPerPage) + 1}-${Math.min(window.currentPage * window.gradesPerPage, window.gradesData.length)} из ${window.gradesData.length} оценок
+        </div>
+    `;
+    
+    // Кнопка "Назад"
+    paginationHTML += `
+        <button class="pagination-button" onclick="changeGradesPage(${window.currentPage - 1})" 
+                ${window.currentPage === 1 ? 'disabled' : ''}>
+            ←
+        </button>
+    `;
+    
+    // Номера страниц
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= window.currentPage - 1 && i <= window.currentPage + 1)) {
+            paginationHTML += `
+                <button class="pagination-button ${i === window.currentPage ? 'active' : ''}" 
+                        onclick="changeGradesPage(${i})">
+                    ${i}
+                </button>
+            `;
+        } else if (i === window.currentPage - 2 || i === window.currentPage + 2) {
+            paginationHTML += `<span style="padding: 0 5px;">...</span>`;
+        }
+    }
+    
+    // Кнопка "Вперед"
+    paginationHTML += `
+        <button class="pagination-button" onclick="changeGradesPage(${window.currentPage + 1})" 
+                ${window.currentPage === totalPages ? 'disabled' : ''}>
+            →
+        </button>
+    `;
+    
+    if (paginationContainer) paginationContainer.innerHTML = paginationHTML;
+}
+
+// Делаем функцию доступной глобально
+window.changeGradesPage = function(page) {
+    const totalPages = Math.ceil(window.gradesData.length / window.gradesPerPage);
+    if (page >= 1 && page <= totalPages) {
+        window.currentPage = page;
+        displayGradesPage(page);
+    }
+};
 
 // Заполнение статистики
 function populatePerformanceStats(studentInfo) {
@@ -429,55 +715,64 @@ function populatePerformanceStats(studentInfo) {
     }
 }
 
-// Заполнение домашних заданий
-function populateHomework(studentInfo) {
-    // Создаем отдельный контейнер для домашних заданий
-    let homeworkContainer = document.getElementById('homework-container');
-    if (!homeworkContainer) {
-        const gradesSection = document.getElementById('grades-table').closest('.MuiPaper-root');
-        if (gradesSection) {
-            const homeworkSection = document.createElement('div');
-            homeworkSection.className = 'MuiPaper-root MuiPaper-elevation1 fade-in delay-4';
-            homeworkSection.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Домашние задания</h3>
-                </div>
-                <div id="homework-container">
-                    <!-- Домашние задания будут загружены через JS -->
-                </div>
-            `;
-            gradesSection.parentNode.insertBefore(homeworkSection, gradesSection.nextSibling);
-            homeworkContainer = document.getElementById('homework-container');
-        }
-    }
+// // Заполнение домашних заданий
+// function populateHomework(studentInfo) {
+//     // Создаем отдельный контейнер для домашних заданий
+//     let homeworkContainer = document.getElementById('homework-container');
+//     if (!homeworkContainer) {
+//         const gradesSection = document.getElementById('grades-table').closest('.MuiPaper-root');
+//         if (gradesSection) {
+//             const homeworkSection = document.createElement('div');
+//             homeworkSection.className = 'MuiPaper-root MuiPaper-elevation1 fade-in delay-4';
+//             homeworkSection.innerHTML = `
+//                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+//                     <h3>Домашние задания</h3>
+//                 </div>
+//                 <div id="homework-container">
+//                     <!-- Домашние задания будут загружены через JS -->
+//                 </div>
+//             `;
+//             gradesSection.parentNode.insertBefore(homeworkSection, gradesSection.nextSibling);
+//             homeworkContainer = document.getElementById('homework-container');
+//         }
+//     }
     
-    if (studentInfo.homework && studentInfo.homework.length > 0 && homeworkContainer) {
-        let html = '<table class="homework-table"><thead><tr><th>Предмет</th><th>Задание</th><th>Срок выполнения</th></tr></thead><tbody>';
+//     if (studentInfo.homework && studentInfo.homework.length > 0 && homeworkContainer) {
+//         let html = '<table class="homework-table"><thead><tr><th>Предмет</th><th>Задание</th><th>Срок выполнения</th></tr></thead><tbody>';
         
-        studentInfo.homework.forEach((task, index) => {
-            const isUrgent = new Date(task.dueDate) <= new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
-            html += `
-                <tr class="${isUrgent ? 'urgent-homework' : ''}">
-                    <td><strong>${task.subject}</strong></td>
-                    <td>${task.task}</td>
-                    <td><span class="due-date ${isUrgent ? 'urgent' : ''}">${task.dueDate}</span></td>
-                </tr>
-            `;
-        });
+//         studentInfo.homework.forEach((task, index) => {
+//             const isUrgent = new Date(task.dueDate) <= new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+//             html += `
+//                 <tr class="${isUrgent ? 'urgent-homework' : ''}">
+//                     <td><strong>${task.subject}</strong></td>
+//                     <td>${task.task}</td>
+//                     <td><span class="due-date ${isUrgent ? 'urgent' : ''}">${task.dueDate}</span></td>
+//                 </tr>
+//             `;
+//         });
         
-        html += '</tbody></table>';
-        homeworkContainer.innerHTML = html;
-    }
-}
+//         html += '</tbody></table>';
+//         homeworkContainer.innerHTML = html;
+//     }
+// }
 
 // Заполнение объявлений
 function populateAnnouncements(studentClass) {
+    console.log('populateAnnouncements called with class:', studentClass);
     const announcementsContainer = document.getElementById('announcements');
+    
+    if (!announcementsContainer) {
+        console.log('announcements container not found');
+        return;
+    }
+    
     const announcements = mockData.announcements.filter(announcement => {
         return announcement.forClass === 'all' || announcement.forClass === studentClass.substring(0, 2);
     });
     
-    if (announcements.length > 0 && announcementsContainer) {
+    console.log('Found announcements:', announcements.length);
+    
+    if (announcements.length > 0) {
         let html = '<div class="announcements-section">';
         
         announcements.forEach((announcement, index) => {
@@ -499,6 +794,10 @@ function populateAnnouncements(studentClass) {
         
         html += '</div>';
         announcementsContainer.innerHTML = html;
+        console.log('Announcements populated successfully');
+    } else {
+        announcementsContainer.innerHTML = '<p class="no-data">Объявлений нет.</p>';
+        console.log('No announcements found');
     }
 }
 
@@ -684,7 +983,7 @@ async function loadStudentInfo(studentId) {
             const classElement = document.getElementById('student-class-value');
             
             if (nameElement) nameElement.textContent = 'Иван Иванов';
-            if (classElement) classElement.textContent = '10А';
+            if (classElement) classElement.textContent = '3 ПО-21';
         }
     } catch (error) {
         console.error('Ошибка при загрузке информации об ученике:', error);
@@ -693,7 +992,7 @@ async function loadStudentInfo(studentId) {
         const classElement = document.getElementById('student-class-value');
         
         if (nameElement) nameElement.textContent = 'Иван Иванов';
-        if (classElement) classElement.textContent = '10А';
+        if (classElement) classElement.textContent = '3 ПО-21';
     }
 }
 
@@ -850,56 +1149,56 @@ async function loadStudentPerformanceStats(studentId) {
 }
 
 // Загрузка и отображение домашних заданий
-async function loadStudentHomework(studentId) {
-    try {
-        const homework = await getStudentHomework(studentId);
+// async function loadStudentHomework(studentId) {
+//     try {
+//         const homework = await getStudentHomework(studentId);
         
         // Создаем отдельный контейнер для домашних заданий
-        let homeworkContainer = document.getElementById('homework-container');
-        if (!homeworkContainer) {
-            // Если контейнер не существует, создаем его после оценок
-            const gradesSection = document.getElementById('grades-table').closest('.MuiPaper-root');
-            const homeworkSection = document.createElement('div');
-            homeworkSection.className = 'MuiPaper-root MuiPaper-elevation1 fade-in delay-4';
-            homeworkSection.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 class="MuiTypography-root MuiTypography-h5">Домашние задания</h3>
-                </div>
-                <div id="homework-container">
-                    <!-- Домашние задания будут загружены через JS -->
-                </div>
-            `;
-            gradesSection.parentNode.insertBefore(homeworkSection, gradesSection.nextSibling);
-            homeworkContainer = document.getElementById('homework-container');
-        }
+        // let homeworkContainer = document.getElementById('homework-container');
+        // if (!homeworkContainer) {
+        //     // Если контейнер не существует, создаем его после оценок
+        //     const gradesSection = document.getElementById('grades-table').closest('.MuiPaper-root');
+        //     const homeworkSection = document.createElement('div');
+        //     homeworkSection.className = 'MuiPaper-root MuiPaper-elevation1 fade-in delay-4';
+        //     homeworkSection.innerHTML = `
+        //         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        //             <h3 class="MuiTypography-root MuiTypography-h5">Домашние задания</h3>
+        //         </div>
+        //         <div id="homework-container">
+        //             <!-- Домашние задания будут загружены через JS -->
+        //         </div>
+        //     `;
+        //     gradesSection.parentNode.insertBefore(homeworkSection, gradesSection.nextSibling);
+        //     homeworkContainer = document.getElementById('homework-container');
+        // }
 
-        if (homework && homework.length > 0) {
-            let html = '<div class="homework-table-wrapper"><table class="homework-table"><thead><tr><th>Предмет</th><th>Задание</th><th>Срок выполнения</th></tr></thead><tbody>';
+        // if (homework && homework.length > 0) {
+        //     let html = '<div class="homework-table-wrapper"><table class="homework-table"><thead><tr><th>Предмет</th><th>Задание</th><th>Срок выполнения</th></tr></thead><tbody>';
 
-            homework.forEach((task, index) => {
-                const isUrgent = new Date(task.dueDate) <= new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
-                html += `
-                    <tr class="fade-in delay-${index + 1} ${isUrgent ? 'urgent-homework' : ''}">
-                        <td><strong>${task.subject}</strong></td>
-                        <td>${task.task}</td>
-                        <td><span class="due-date ${isUrgent ? 'urgent' : ''}">${task.dueDate}</span></td>
-                    </tr>
-                `;
-            });
+        //     homework.forEach((task, index) => {
+        //         const isUrgent = new Date(task.dueDate) <= new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
+        //         html += `
+        //             <tr class="fade-in delay-${index + 1} ${isUrgent ? 'urgent-homework' : ''}">
+        //                 <td><strong>${task.subject}</strong></td>
+        //                 <td>${task.task}</td>
+        //                 <td><span class="due-date ${isUrgent ? 'urgent' : ''}">${task.dueDate}</span></td>
+        //             </tr>
+        //         `;
+        //     });
 
-            html += '</tbody></table></div>';
-            homeworkContainer.innerHTML = html;
-        } else {
-            homeworkContainer.innerHTML = '<p class="no-data">Домашних заданий нет.</p>';
-        }
-    } catch (error) {
-        console.error('Ошибка при загрузке домашних заданий:', error);
-        const homeworkContainer = document.getElementById('homework-container');
-        if (homeworkContainer) {
-            homeworkContainer.innerHTML = '<p class="no-data">Ошибка при загрузке домашних заданий.</p>';
-        }
-    }
-}
+        //     html += '</tbody></table></div>';
+        //     homeworkContainer.innerHTML = html;
+        // } else {
+        //     homeworkContainer.innerHTML = '<p class="no-data">Домашних заданий нет.</p>';
+        // }
+    // } catch (error) {
+    //     console.error('Ошибка при загрузке домашних заданий:', error);
+    //     const homeworkContainer = document.getElementById('homework-container');
+    //     if (homeworkContainer) {
+    //         homeworkContainer.innerHTML = '<p class="no-data">Ошибка при загрузке домашних заданий.</p>';
+    //     }
+    // }
+// }
 
 // Загрузка и отображение объявлений
 async function loadAnnouncements(studentClass) {
