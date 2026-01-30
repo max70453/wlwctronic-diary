@@ -648,31 +648,45 @@
 
         // Заполнение домашних заданий
         function populateHomework(teacher) {
-            const homeworkContainer = document.getElementById('current-homework');
-            
-            if (teacher.homework && teacher.homework.length > 0) {
-                let html = '<ul class="homework-list">';
-                teacher.homework.forEach(hw => {
-                    const priorityClass = hw.priority === 'high' ? 'priority-high' : 
-                                        hw.priority === 'medium' ? 'priority-medium' : 'priority-low';
-                    html += `
-                        <li class="homework-item">
-                            <div>
-                                <div>${hw.class} - ${hw.subject}</div>
-                                <div style="font-size: 0.9rem;">${hw.task}</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <span class="homework-priority ${priorityClass}">${hw.priority}</span>
-                                <div style="font-size: 0.8rem; color: #666;">до ${hw.dueDate}</div>
-                            </div>
-                        </li>
-                    `;
-                });
-                html += '</ul>';
-                homeworkContainer.innerHTML = html;
-            } else {
-                homeworkContainer.innerHTML = '<p>Заданий пока нет</p>';
+            const homeworkContainer = document.getElementById('homework-list');
+            if (!homeworkContainer) return;
+
+            if (!teacher.homework || teacher.homework.length === 0) {
+                homeworkContainer.innerHTML = '<p>Нет добавленных домашних заданий</p>';
+                return;
             }
+
+            let html = `
+                <div class="homework-list">
+                    <div class="homework-header">
+                        <div>Предмет</div>
+                        <div>Задание</div>
+                        <div>Срок сдачи</div>
+                        <div>Вложения</div>
+                    </div>
+            `;
+
+            teacher.homework.forEach(hw => {
+                const dueDate = new Date(hw.dueDate).toLocaleDateString('ru-RU');
+                const attachmentHtml = hw.attachment 
+                    ? `<a href="#" onclick="downloadAttachment(${hw.id}, '${hw.attachment.fileName}')" class="attachment-link" title="${hw.attachment.fileName}">
+                          <i class="material-icons" style="font-size: 20px; vertical-align: middle;">attach_file</i>
+                          <span>${hw.attachment.fileName}</span>
+                       </a>`
+                    : '—';
+
+                html += `
+                    <div class="homework-item">
+                        <div>${hw.subject}</div>
+                        <div>${hw.task}</div>
+                        <div>${dueDate}</div>
+                        <div>${attachmentHtml}</div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            homeworkContainer.innerHTML = html;
         }
 
         // Заполнение объявлений
@@ -747,6 +761,7 @@
         window.showHomeworkForm = showHomeworkForm;
         window.closeModal = closeModal;
         window.submitHomework = submitHomework;
+        window.downloadAttachment = downloadAttachment;
 
         // Модальное окно для добавления домашнего задания
         function showHomeworkModal(classId, className) {
@@ -803,6 +818,17 @@
                             <div class="form-group">
                                 <label for="hw-description">Дополнительное описание (необязательно)</label>
                                 <textarea id="hw-description" class="form-control" rows="3" placeholder="Дополнительная информация, ссылки на материалы и т.д."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hw-attachment">Прикрепить файл (необязательно)</label>
+                                <div class="file-upload">
+                                    <input type="file" id="hw-attachment" class="file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt">
+                                    <label for="hw-attachment" class="file-upload-label">
+                                        <i class="material-icons" style="vertical-align: middle; margin-right: 8px;">attach_file</i>
+                                        <span id="file-name">Выберите файл</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="form-actions">
@@ -999,6 +1025,131 @@
                             width: 100%;
                         }
                     }
+
+                    .file-upload {
+                        position: relative;
+                        margin-top: 8px;
+                    }
+
+                    .file-input {
+                        position: absolute;
+                        width: 0.1px;
+                        height: 0.1px;
+                        opacity: 0;
+                        overflow: hidden;
+                        z-index: -1;
+                    }
+
+                    .file-upload-label {
+                        display: inline-flex;
+                        align-items: center;
+                        padding: 10px 16px;
+                        background-color: #f5f5f5;
+                        border: 2px dashed #bdbdbd;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .file-upload-label:hover {
+                        background-color: #eeeeee;
+                        border-color: #9e9e9e;
+                    }
+
+                    #file-name {
+                        color: #666;
+                        font-size: 0.9rem;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 80%;
+                    }
+
+                    .homework-list {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 15px;
+                    }
+
+                    .homework-header {
+                        display: grid;
+                        grid-template-columns: 1.5fr 2fr 1fr 2fr;
+                        background-color: #f5f5f5;
+                        font-weight: 600;
+                        padding: 12px 15px;
+                        border-radius: 8px;
+                        margin-bottom: 8px;
+                        font-size: 0.9rem;
+                        color: #555;
+                    }
+
+                    .homework-item {
+                        display: grid;
+                        grid-template-columns: 1.5fr 2fr 1fr 2fr;
+                        padding: 12px 15px;
+                        border-bottom: 1px solid #eee;
+                        align-items: center;
+                        transition: background-color 0.2s;
+                    }
+
+                    .homework-item:hover {
+                        background-color: #f9f9f9;
+                    }
+
+                    .attachment-link {
+                        display: inline-flex;
+                        align-items: center;
+                        color: var(--primary-color);
+                        text-decoration: none;
+                        max-width: 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .attachment-link:hover {
+                        text-decoration: underline;
+                    }
+
+                    .attachment-link span {
+                        display: inline-block;
+                        max-width: 200px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    @media (max-width: 768px) {
+                        .homework-header {
+                            display: none;
+                        }
+                        
+                        .homework-item {
+                            grid-template-columns: 1fr;
+                            padding: 15px;
+                            border: 1px solid #eee;
+                            border-radius: 8px;
+                            margin-bottom: 10px;
+                        }
+                        
+                        .homework-item > div {
+                            padding: 5px 0;
+                        }
+                        
+                        .homework-item > div:before {
+                            content: attr(data-label);
+                            font-weight: 600;
+                            margin-right: 8px;
+                            color: #666;
+                        }
+                        
+                        .homework-item > div:nth-child(1):before { content: "Предмет: "; }
+                        .homework-item > div:nth-child(2):before { content: "Задание: "; }
+                        .homework-item > div:nth-child(3):before { content: "Срок: "; }
+                        .homework-item > div:nth-child(4):before { content: "Вложение: "; }
+                    }
                 `;
                 document.head.appendChild(style);
             }
@@ -1017,6 +1168,22 @@
             document.getElementById('homework-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 submitHomework();
+            });
+
+            // Обработчик выбора файла
+            const fileInput = document.getElementById('hw-attachment');
+            const fileNameDisplay = document.getElementById('file-name');
+
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                    fileNameDisplay.style.color = '#333';
+                    fileNameDisplay.style.fontWeight = '500';
+                } else {
+                    fileNameDisplay.textContent = 'Выберите файл';
+                    fileNameDisplay.style.color = '#666';
+                    fileNameDisplay.style.fontWeight = 'normal';
+                }
             });
         }
 
@@ -1037,6 +1204,7 @@
             const dueDate = document.getElementById('hw-due-date').value;
             const priority = document.getElementById('hw-priority').value;
             const description = document.getElementById('hw-description').value;
+            const fileInput = document.getElementById('hw-attachment');
 
             // Валидация
             if (!subject || !task || !dueDate) {
@@ -1058,14 +1226,42 @@
                 priority: priority,
                 description: description,
                 createdDate: new Date().toLocaleDateString('ru-RU'),
-                teacher: teacherData.name
+                teacher: teacherData.name,
+                attachment: null
             };
 
+            // Обработка прикрепленного файла
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Сохраняем имя файла и его содержимое в формате base64
+                    newHomework.attachment = {
+                        fileName: file.name,
+                        fileType: file.type,
+                        fileSize: file.size,
+                        data: e.target.result.split(',')[1] // Удаляем префикс data:...
+                    };
+                    
+                    // Сохраняем задание после загрузки файла
+                    saveHomeworkAndUpdate(teacherId, teacherData, newHomework);
+                };
+                
+                reader.readAsDataURL(file);
+            } else {
+                // Если файл не прикреплен, сохраняем задание сразу
+                saveHomeworkAndUpdate(teacherId, teacherData, newHomework);
+            }
+        }
+
+        // Вспомогательная функция для сохранения задания и обновления интерфейса
+        function saveHomeworkAndUpdate(teacherId, teacherData, homework) {
             // Добавляем в массив домашних заданий
             if (!teacherData.homework) {
                 teacherData.homework = [];
             }
-            teacherData.homework.unshift(newHomework);
+            teacherData.homework.unshift(homework);
 
             // Сохраняем в localStorage
             saveTeacherData(teacherId, teacherData);
@@ -1078,6 +1274,26 @@
 
             // Обновляем отображение домашних заданий
             populateHomework(teacherData);
+        }
+
+        // Функция для скачивания вложений
+        function downloadAttachment(homeworkId, fileName) {
+            const teacherId = localStorage.getItem('teacherId') || 'teacher1';
+            const teacherData = getTeacherData(teacherId);
+            const homework = teacherData.homework.find(hw => hw.id === homeworkId);
+            
+            if (!homework || !homework.attachment) {
+                alert('Файл не найден');
+                return;
+            }
+
+            // Создаем временную ссылку для скачивания
+            const link = document.createElement('a');
+            link.href = `data:${homework.attachment.fileType};base64,${homework.attachment.data}`;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         // Показать успешное сообщение
