@@ -6,86 +6,550 @@
     <title>Родительский кабинет</title>
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/fonts/index.css" />
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="css/global.css">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/fonts/index.css" />
     <style>
+        /* Header стили */
+        .header-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
         .dashboard-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
             padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .parent-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .parent-details h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .parent-details p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        .child-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .child-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.2rem;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
 
         .section {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 15px;
-            background-color: #f9f9f9;
+            border: 1px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         .section h2 {
             margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
         }
 
         .grades-table, .attendance-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 15px;
         }
 
         .grades-table th, .grades-table td, .attendance-table th, .attendance-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            border: 1px solid #e1e5e9;
+            padding: 12px;
             text-align: left;
         }
 
         .grades-table th, .attendance-table th {
-            background-color: #f2f2f2;
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
         }
 
-        .notifications {
-            background-color: #fff3cd;
-            padding: 10px;
-            border-radius: 5px;
+        .grades-table tr:hover, .attendance-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .grade-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-block;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .grade-excellent { background: #d4edda; color: #155724; }
+        .grade-good { background: #cce5ff; color: #004085; }
+        .grade-satisfactory { background: #fff3cd; color: #856404; }
+        .grade-poor { background: #f8d7da; color: #721c24; }
+        .grade-default { background: #e2e3e5; color: #383d41; }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-present { background: #d4edda; color: #155724; }
+        .status-absent { background: #f8d7da; color: #721c24; }
+        .status-late { background: #fff3cd; color: #856404; }
+        .status-default { background: #e2e3e5; color: #383d41; }
+
+        .notification-item {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
             margin-bottom: 10px;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .notification-item.unread {
+            background: #e7f3ff;
+            border-left-color: #0066cc;
+        }
+
+        .notification-item:hover {
+            transform: translateX(5px);
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .notification-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        .notification-type {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .notification-date {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .notification-indicator {
+            width: 8px;
+            height: 8px;
+            background: #0066cc;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .notification-content {
+            color: #495057;
+            line-height: 1.5;
+        }
+
+        .notification-actions {
+            margin-top: 10px;
+        }
+
+        .btn-mark-read {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-mark-read:hover {
+            background: #5a6fd8;
+        }
+
+        .messages-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .messages-form label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .messages-form select, .messages-form textarea {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .messages-form select:focus, .messages-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.25);
         }
 
         .messages-form textarea {
-            width: 100%;
-            height: 100px;
-            margin-bottom: 10px;
+            min-height: 100px;
+            resize: vertical;
         }
 
         .messages-form button {
-            padding: 8px 15px;
-            background-color: #007bff;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .messages-form button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
-        .announcements {
-            background-color: #e9f7fe;
-            padding: 10px;
-            border-radius: 5px;
+        .announcement-item {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        .announcement-item.important {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .announcement-item:hover {
+            transform: translateX(5px);
+        }
+
+        .announcement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 10px;
+        }
+
+        .announcement-title {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .important-badge {
+            background: #dc3545;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .announcement-date {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .announcement-content {
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .toast-notification.success {
+            background: #28a745;
+        }
+
+        .toast-notification.error {
+            background: #dc3545;
+        }
+
+        .toast-notification.info {
+            background: #17a2b8;
+        }
+
+              /* Footer */
+        .footer {
+            background-color: #1e283c;
+            color: white;
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            margin-top: 30px;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+
+            .header-section {
+                grid-column: 1;
+            }
+
+            .parent-info {
+                flex-direction: column;
+            }
+
+            .stats-row {
+                flex-direction: column;
+            }
+
+            .grades-table, .attendance-table {
+                font-size: 0.9rem;
+            }
+
+            .grades-table th, .grades-table td, .attendance-table th, .attendance-table td {
+                padding: 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Родительский кабинет</h1>
-        <nav>
-            <a href="index.html">Главная</a>
-            <a href="parent-dashboard.html">Личный кабинет</a>
-            <a href="#" id="logout">Выйти</a>
-        </nav>
-    </header>
+    <!-- Material-UI AppBar -->
+    <div id="app-bar"></div>
 
     <main>
         <div class="dashboard-container">
+            <!-- Header section with parent information -->
+            <section class="header-section">
+                <div class="parent-info">
+                    <div class="parent-details">
+                        <h2 id="parent-name">Загрузка...</h2>
+                        <p>📧 <span id="parent-email">Загрузка...</span></p>
+                        <p>📱 <span id="parent-phone">Загрузка...</span></p>
+                    </div>
+                    <div class="child-info">
+                        <h3>Информация о ребенке</h3>
+                        <p><strong>Имя:</strong> <span id="child-name">Загрузка...</span></p>
+                        <p><strong>Класс:</strong> <span id="child-class">Загрузка...</span></p>
+                        <div class="stats-row">
+                            <div class="stat-item">
+                                <span class="stat-value" id="average-grade">0</span>
+                                <span class="stat-label">Ср. балл</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="attendance-percentage">0%</span>
+                                <span class="stat-label">Посещаемость</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="homework-count">0</span>
+                                <span class="stat-label">ДЗ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="section">
                 <h2>Успеваемость</h2>
                 <table class="grades-table" id="grades-table">
@@ -94,6 +558,7 @@
                             <th>Предмет</th>
                             <th>Оценка</th>
                             <th>Дата</th>
+                            <th>Тема урока</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,6 +574,8 @@
                         <tr>
                             <th>Дата</th>
                             <th>Статус</th>
+                            <th>Уроков</th>
+                            <th>Причина</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,26 +600,976 @@
                         <!-- Список учителей будет загружен динамически -->
                     </select>
                     <label for="message">Сообщение:</label>
-                    <textarea id="message" required></textarea>
-                    <button type="submit">Отправить</button>
+                    <textarea id="message" required placeholder="Введите ваше сообщение учителю..."></textarea>
+                    <button type="submit">Отправить сообщение</button>
                 </form>
             </section>
-
-            <section class="section">
-                <h2>Школьные объявления</h2>
-                <div id="announcements-container">
-                    <!-- Объявления будут загружены динамически -->
-                </div>
-            </section>
         </div>
+        <section class="section" style="margin: 0 20px;">
+            <h2 data-heading-tag="H2">Школьные объявления</h2>
+            <div id="announcements-container"><div class="announcement-item important">
+        <div class="announcement-header">
+            <h4 class="announcement-title">
+                Родительское собрание
+                <span class="important-badge">Важно</span>
+            </h4>
+            <div class="announcement-date">18 января 2026 г.</div>
+        </div>
+        <div class="announcement-content">Уважаемые родители! Состоится родительское собрание 25 января в 18:00 в актовом зале школы. Приглашаются все желающие.</div>
+    </div><div class="announcement-item important">
+        <div class="announcement-header">
+            <h4 class="announcement-title">
+                Изменение в расписании
+                <span class="important-badge">Важно</span>
+            </h4>
+            <div class="announcement-date">17 января 2026 г.</div>
+        </div>
+        <div class="announcement-content">Завтра, 18 января, уроки начинаются в 9:00 вместо 8:30 из-за педагогического совета.</div>
+    </div><div class="announcement-item ">
+        <div class="announcement-header">
+            <h4 class="announcement-title">
+                Школьная олимпиада
+                
+            </h4>
+            <div class="announcement-date">20 января 2026 г.</div>
+        </div>
+        <div class="announcement-content">Приглашаем учеников принять участие в школьной олимпиаде по математике, которая состоится 15 февраля. Заявки принимаются до 10 февраля у классного руководителя.</div>
+    </div><div class="announcement-item ">
+        <div class="announcement-header">
+            <h4 class="announcement-title">
+                Экскурсия в музей
+                
+            </h4>
+            <div class="announcement-date">19 января 2026 г.</div>
+        </div>
+        <div class="announcement-content">Уважаемые ученики 10-х классов! 30 января организуется экскурсия в музей космонавтики. Стоимость билета 200 рублей. Запись у классного руководителя.</div>
+    </div></div>
+        </section>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Электронный дневник</p>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>E-Journal</h4>
+                <p>Инновационная платформа для управления учебным процессом</p>
+            </div>
+            <div class="footer-section">
+                <h4>Ссылки</h4>
+                <a href="index.html">Главная</a>
+                <a href="#">О платформе</a>
+                <a href="#">Поддержка</a>
+                <a href="#">Контакты</a>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">email</i> info@E-Journal.ru</p>
+                <p><i class="material-icons" style="font-size: 1rem; vertical-align: middle;">phone</i> +7 (123) 456-78-90</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 E-Journal. Все права защищены.</p>
+        </div>
     </footer>
 
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/parent-dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script>
+
+    <script>
+        // Инициализация AppBar с улучшенным дизайном
+        document.addEventListener('DOMContentLoaded', function() {
+            const appBar = document.getElementById('app-bar');
+            const teacherId = localStorage.getItem('teacherId') || 'teacher1';
+
+            appBar.className = 'app-bar';
+            appBar.innerHTML = `
+                <div class="MuiAppBar-root MuiAppBar-positionStatic" style="background: linear-gradient(90deg, #3f51b5 0%, #303f9f 100%);">
+                    <div class="MuiToolbar-root MuiToolbar-regular" style="min-height: 64px; padding: 0 24px; display: flex; justify-content: space-between; align-items: center;">
+                        <a href="index.html" class="logo">
+                            <i class="material-icons logo-icon" style="font-size: 2rem; margin-right: 10px; color: #ffd700;">menu_book</i>
+                            <span>
+                                <strong>E-Journal</strong><br>
+                                <small style="font-size: 0.8rem; opacity: 0.8;"></small>
+                            </span>
+                        </a>
+                        <div style="display: flex; gap: 10px;">
+                            <a href="index.html" class="nav-link">Главная</a>
+                            <button class="logout-btn" onclick="logout()">
+                                <i class="material-icons" style="font-size: 1rem; vertical-align: middle; margin-right: 5px;">logout</i>
+                                Выйти
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Загружаем данные преподавателя
+            loadTeacherDashboard(teacherId);
+        });
+
+        // Основная функция загрузки дашборда
+        function loadTeacherDashboard(teacherId) {
+            console.log('=== ЗАГРУЗКА ДАШБОРДА ПРЕПОДАВАТЕЛЯ ===');
+            
+            const teacherData = getTeacherData(teacherId);
+            
+            if (teacherData) {
+                console.log('✅ Данные преподавателя загружены:', teacherData);
+                
+                // Заполняем основную информацию
+                populateTeacherInfo(teacherData);
+                
+                // Заполняем статистику
+                populateStatistics(teacherData);
+                
+                // Заполняем классы
+                populateClasses(teacherData);
+                
+                // Заполняем расписание
+                populateSchedule(teacherData);
+                
+                // Заполняем последние оценки
+                populateRecentGrades(teacherData);
+                
+                // Заполняем домашние задания
+                populateHomework(teacherData);
+                
+                // Заполняем объявления
+                populateAnnouncements(teacherData);
+                
+                // Добавляем анимации
+                addAnimations();
+            } else {
+                console.error('❌ Данные преподавателя не найдены');
+                showError('Данные преподавателя не найдены');
+            }
+        }
+
+        // Заполнение информации о преподавателе
+        function populateTeacherInfo(teacher) {
+            document.getElementById('teacher-name').textContent = teacher.name;
+            document.getElementById('teacher-subjects').textContent = teacher.subjects.join(', ');
+            document.getElementById('teacher-experience').textContent = teacher.experience;
+        }
+
+        // Заполнение статистики
+        function populateStatistics(teacher) {
+            document.getElementById('total-students').textContent = teacher.statistics.totalStudents;
+            document.getElementById('total-classes').textContent = teacher.statistics.classesCount;
+            
+            // Вычисляем среднюю оценку
+            const avgGrades = Object.values(teacher.statistics.averageGrades);
+            const overallAvg = (avgGrades.reduce((a, b) => a + b, 0) / avgGrades.length).toFixed(1);
+            document.getElementById('avg-grade').textContent = overallAvg;
+            
+            document.getElementById('lessons-week').textContent = teacher.statistics.lessonsPerWeek;
+        }
+
+        // Заполнение классов
+        function populateClasses(teacher) {
+            const classesContainer = document.getElementById('teacher-classes');
+            
+            if (teacher.classes && teacher.classes.length > 0) {
+                let html = '';
+                teacher.classes.forEach(cls => {
+                    html += `
+                        <div class="class-card">
+                            <div class="class-header">
+                                <div>
+                                    <div class="class-name">${cls.name}</div>
+                                    <div style="color: #666; font-size: 0.9rem;">${cls.subject}</div>
+                                </div>
+                                <div class="students-count">${cls.students} уч.</div>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <button class="mui-btn" style="font-size: 0.8rem; padding: 4px 8px;" onclick="console.log('Grade clicked for ${cls.id}'); showGradeForm('${cls.id}', '${cls.name}')">
+                                    <i class="material-icons" style="font-size: 0.9rem;">grade</i> Оценки
+                                </button>
+                                <button class="mui-btn" style="font-size: 0.8rem; padding: 4px 8px;" onclick="console.log('Homework clicked for ${cls.id}'); showHomeworkForm('${cls.id}', '${cls.name}')">
+                                    <i class="material-icons" style="font-size: 0.9rem;">assignment</i> ДЗ
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                classesContainer.innerHTML = html;
+                
+                // Добавляем отладочную информацию
+                console.log('Классы загружены:', teacher.classes);
+                console.log('Функции доступны:', typeof showGradeForm, typeof showHomeworkForm);
+            } else {
+                classesContainer.innerHTML = '<p>Классы не найдены</p>';
+            }
+        }
+
+        // Заполнение расписания
+        function populateSchedule(teacher) {
+            const scheduleContainer = document.getElementById('today-schedule');
+            const today = new Date().toLocaleDateString('ru-RU', { weekday: 'long' });
+            
+            const todaySchedule = teacher.schedule.filter(lesson => 
+                lesson.day.toLowerCase() === today.toLowerCase()
+            );
+            
+            if (todaySchedule.length > 0) {
+                let html = '<ul class="schedule-list">';
+                todaySchedule.forEach(lesson => {
+                    html += `
+                        <li class="schedule-item">
+                            <div>
+                                <div class="schedule-time">${lesson.time}</div>
+                                <div>${lesson.class} - ${lesson.subject}</div>
+                            </div>
+                            <div class="schedule-room">${lesson.room}</div>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+                scheduleContainer.innerHTML = html;
+            } else {
+                scheduleContainer.innerHTML = '<p>На сегодня занятий нет</p>';
+            }
+        }
+
+        // Заполнение последних оценок
+        function populateRecentGrades(teacher) {
+            const gradesContainer = document.getElementById('recent-grades');
+            
+            if (teacher.recentGrades && teacher.recentGrades.length > 0) {
+                let html = '<ul class="grades-list">';
+                teacher.recentGrades.slice(0, 5).forEach(grade => {
+                    const gradeClass = grade.grade >= 4 ? 'grade-good' : grade.grade == 3 ? 'grade-mid' : 'grade-bad';
+                    html += `
+                        <li class="grade-item">
+                            <div>
+                                <div>${grade.student} (${grade.class})</div>
+                                <div style="font-size: 0.8rem; color: #666;">${grade.topic}</div>
+                            </div>
+                            <div>
+                                <span class="grade-value ${gradeClass}">${grade.grade}</span>
+                                <div style="font-size: 0.8rem; color: #666;">${grade.date}</div>
+                            </div>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+                gradesContainer.innerHTML = html;
+            } else {
+                gradesContainer.innerHTML = '<p>Оценок пока нет</p>';
+            }
+        }
+
+        // Заполнение домашних заданий
+        function populateHomework(teacher) {
+            const homeworkContainer = document.getElementById('current-homework');
+            
+            if (teacher.homework && teacher.homework.length > 0) {
+                let html = '<ul class="homework-list">';
+                teacher.homework.forEach(hw => {
+                    const priorityClass = hw.priority === 'high' ? 'priority-high' : 
+                                        hw.priority === 'medium' ? 'priority-medium' : 'priority-low';
+                    html += `
+                        <li class="homework-item">
+                            <div>
+                                <div>${hw.class} - ${hw.subject}</div>
+                                <div style="font-size: 0.9rem;">${hw.task}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <span class="homework-priority ${priorityClass}">${hw.priority}</span>
+                                <div style="font-size: 0.8rem; color: #666;">до ${hw.dueDate}</div>
+                            </div>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+                homeworkContainer.innerHTML = html;
+            } else {
+                homeworkContainer.innerHTML = '<p>Заданий пока нет</p>';
+            }
+        }
+
+        // Заполнение объявлений
+        function populateAnnouncements(teacher) {
+            const announcementsContainer = document.getElementById('teacher-announcements');
+            
+            if (teacher.announcements && teacher.announcements.length > 0) {
+                let html = '';
+                teacher.announcements.slice(0, 3).forEach(announcement => {
+                    const importantClass = announcement.important ? 'important' : '';
+                    html += `
+                        <div class="announcement-item ${importantClass}">
+                            <h5 style="margin: 0 0 5px 0;">${announcement.title}</h5>
+                            <p style="margin: 0; font-size: 0.9rem;">${announcement.content}</p>
+                            <div class="announcement-date">${announcement.date}</div>
+                        </div>
+                    `;
+                });
+                announcementsContainer.innerHTML = html;
+            } else {
+                announcementsContainer.innerHTML = '<p>Объявлений пока нет</p>';
+            }
+        }
+
+        // Добавление анимаций
+        function addAnimations() {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+            fadeInElements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'all 0.5s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+
+        // Показать ошибку
+        function showError(message) {
+            const container = document.querySelector('.dashboard-container');
+            container.innerHTML = `
+                <div class="MuiPaper-root" style="text-align: center; padding: 40px;">
+                    <i class="material-icons" style="font-size: 4rem; color: #f44336; margin-bottom: 20px;">error</i>
+                    <h3>Ошибка</h3>
+                    <p>${message}</p>
+                    <button class="mui-btn" onclick="location.reload()">Обновить страницу</button>
+                </div>
+            `;
+        }
+
+        // Функции для форм
+        function showGradeForm(classId, className) {
+            console.log('showGradeForm called with:', classId, className);
+            console.log('showGradeModal function exists:', typeof showGradeModal);
+            try {
+                showGradeModal(classId, className);
+            } catch (error) {
+                console.error('Error in showGradeModal:', error);
+                alert('Ошибка при открытии формы оценок: ' + error.message);
+            }
+        }
+
+        function showHomeworkForm(classId, className) {
+            console.log('showHomeworkForm called with:', classId, className);
+            showHomeworkModal(classId, className);
+        }
+
+        // Делаем функции глобально доступными
+        window.showGradeForm = showGradeForm;
+        window.showHomeworkForm = showHomeworkForm;
+        window.closeModal = closeModal;
+        window.submitHomework = submitHomework;
+
+        // Модальное окно для добавления домашнего задания
+        function showHomeworkModal(classId, className) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Добавить домашнее задание</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="homework-form">
+                            <input type="hidden" id="hw-class-id" value="${classId}">
+                            <input type="hidden" id="hw-class-name" value="${className}">
+                            
+                            <div class="form-group">
+                                <label for="hw-subject">Предмет</label>
+                                <select id="hw-subject" class="form-control" required>
+                                    <option value="">Выберите предмет</option>
+                                    <option value="Математика">Математика</option>
+                                    <option value="Физика">Физика</option>
+                                    <option value="Русский язык">Русский язык</option>
+                                    <option value="Литература">Литература</option>
+                                    <option value="История">История</option>
+                                    <option value="Биология">Биология</option>
+                                    <option value="Химия">Химия</option>
+                                    <option value="География">География</option>
+                                    <option value="Информатика">Информатика</option>
+                                    <option value="Английский язык">Английский язык</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hw-task">Задание</label>
+                                <textarea id="hw-task" class="form-control" rows="4" placeholder="Введите текст домашнего задания" required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="hw-due-date">Срок выполнения</label>
+                                    <input type="date" id="hw-due-date" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hw-priority">Приоритет</label>
+                                    <select id="hw-priority" class="form-control" required>
+                                        <option value="low">Низкий</option>
+                                        <option value="medium" selected>Средний</option>
+                                        <option value="high">Высокий</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hw-description">Дополнительное описание (необязательно)</label>
+                                <textarea id="hw-description" class="form-control" rows="3" placeholder="Дополнительная информация, ссылки на материалы и т.д."></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                                <button type="submit" class="btn btn-primary">Добавить задание</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            // Добавляем стили для модального окна
+            if (!document.getElementById('modal-styles')) {
+                const style = document.createElement('style');
+                style.id = 'modal-styles';
+                style.textContent = `
+                    .modal-overlay {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 1000;
+                        animation: fadeIn 0.3s ease;
+                    }
+
+                    .modal-content {
+                        background: white;
+                        border-radius: 12px;
+                        width: 90%;
+                        max-width: 600px;
+                        max-height: 90vh;
+                        overflow-y: auto;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                        animation: slideUp 0.3s ease;
+                    }
+
+                    .modal-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 20px 24px;
+                        border-bottom: 1px solid #e0e0e0;
+                        background: linear-gradient(135deg, var(--primary-color) 0%, #303f9f 100%);
+                        color: white;
+                        border-radius: 12px 12px 0 0;
+                    }
+
+                    .modal-header h3 {
+                        margin: 0;
+                        font-size: 1.3rem;
+                        font-weight: 500;
+                    }
+
+                    .modal-close {
+                        background: none;
+                        border: none;
+                        font-size: 1.5rem;
+                        color: white;
+                        cursor: pointer;
+                        padding: 0;
+                        width: 30px;
+                        height: 30px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        transition: background 0.3s ease;
+                    }
+
+                    .modal-close:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                    }
+
+                    .modal-body {
+                        padding: 24px;
+                    }
+
+                    .form-group {
+                        margin-bottom: 20px;
+                    }
+
+                    .form-row {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 16px;
+                    }
+
+                    .form-group label {
+                        display: block;
+                        margin-bottom: 8px;
+                        font-weight: 500;
+                        color: #333;
+                    }
+
+                    .form-control {
+                        width: 100%;
+                        padding: 12px 16px;
+                        border: 2px solid #e0e0e0;
+                        border-radius: 8px;
+                        font-size: 1rem;
+                        transition: all 0.3s ease;
+                        box-sizing: border-box;
+                        font-family: 'Roboto', sans-serif;
+                    }
+
+                    .form-control:focus {
+                        outline: none;
+                        border-color: var(--primary-color);
+                        box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1);
+                    }
+
+                    .form-control::placeholder {
+                        color: #999;
+                    }
+
+                    .form-actions {
+                        display: flex;
+                        gap: 12px;
+                        justify-content: flex-end;
+                        margin-top: 24px;
+                        padding-top: 20px;
+                        border-top: 1px solid #e0e0e0;
+                    }
+
+                    .btn {
+                        padding: 12px 24px;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: 1rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+
+                    .btn-primary {
+                        background: linear-gradient(135deg, var(--primary-color) 0%, #303f9f 100%);
+                        color: white;
+                        box-shadow: 0 4px 15px rgba(63, 81, 181, 0.3);
+                    }
+
+                    .btn-primary:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 20px rgba(63, 81, 181, 0.4);
+                    }
+
+                    .btn-secondary {
+                        background: #f5f5f5;
+                        color: #666;
+                        border: 1px solid #e0e0e0;
+                    }
+
+                    .btn-secondary:hover {
+                        background: #e0e0e0;
+                    }
+
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+
+                    @keyframes slideUp {
+                        from { 
+                            opacity: 0;
+                            transform: translateY(30px);
+                        }
+                        to { 
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    @media (max-width: 768px) {
+                        .form-row {
+                            grid-template-columns: 1fr;
+                        }
+                        
+                        .modal-content {
+                            width: 95%;
+                            margin: 10px;
+                        }
+                        
+                        .form-actions {
+                            flex-direction: column;
+                        }
+                        
+                        .btn {
+                            width: 100%;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            document.body.appendChild(modal);
+
+            // Устанавливаем минимальную дату - сегодня (после добавления в DOM)
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('hw-due-date');
+            if (dateInput) {
+                dateInput.min = today;
+                dateInput.value = today;
+            }
+
+            // Обработчик отправки формы
+            document.getElementById('homework-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitHomework();
+            });
+        }
+
+        // Закрытие модального окна
+        function closeModal() {
+            const modal = document.querySelector('.modal-overlay');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Отправка домашнего задания
+        function submitHomework() {
+            const classId = document.getElementById('hw-class-id').value;
+            const className = document.getElementById('hw-class-name').value;
+            const subject = document.getElementById('hw-subject').value;
+            const task = document.getElementById('hw-task').value;
+            const dueDate = document.getElementById('hw-due-date').value;
+            const priority = document.getElementById('hw-priority').value;
+            const description = document.getElementById('hw-description').value;
+
+            // Валидация
+            if (!subject || !task || !dueDate) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            // Получаем данные преподавателя
+            const teacherId = localStorage.getItem('teacherId') || 'teacher1';
+            const teacherData = getTeacherData(teacherId);
+
+            // Создаем новое домашнее задание
+            const newHomework = {
+                id: Date.now(),
+                class: className,
+                subject: subject,
+                task: task,
+                dueDate: dueDate,
+                priority: priority,
+                description: description,
+                createdDate: new Date().toLocaleDateString('ru-RU'),
+                teacher: teacherData.name
+            };
+
+            // Добавляем в массив домашних заданий
+            if (!teacherData.homework) {
+                teacherData.homework = [];
+            }
+            teacherData.homework.unshift(newHomework);
+
+            // Сохраняем в localStorage
+            saveTeacherData(teacherId, teacherData);
+
+            // Показываем успешное сообщение
+            showSuccessMessage('Домашнее задание успешно добавлено!');
+
+            // Закрываем модальное окно
+            closeModal();
+
+            // Обновляем отображение домашних заданий
+            populateHomework(teacherData);
+        }
+
+        // Показать успешное сообщение
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.innerHTML = `
+                <i class="material-icons">check_circle</i>
+                <span>${message}</span>
+            `;
+
+            // Добавляем стили для успешного сообщения
+            if (!document.getElementById('success-styles')) {
+                const style = document.createElement('style');
+                style.id = 'success-styles';
+                style.textContent = `
+                    .success-message {
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: #4caf50;
+                        color: white;
+                        padding: 16px 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.3);
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        z-index: 2000;
+                        animation: slideInRight 0.3s ease;
+                        max-width: 400px;
+                    }
+
+                    .success-message i {
+                        font-size: 1.5rem;
+                    }
+
+                    @keyframes slideInRight {
+                        from {
+                            opacity: 0;
+                            transform: translateX(100px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
+
+                    @media (max-width: 768px) {
+                        .success-message {
+                            right: 10px;
+                            left: 10px;
+                            max-width: none;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            document.body.appendChild(successDiv);
+
+            // Автоматически удаляем через 3 секунды
+            setTimeout(() => {
+                if (successDiv.parentNode) {
+                    successDiv.remove();
+                }
+            }, 3000);
+        }
+
+        // Модальное окно для выставления оценок
+        function showGradeModal(classId, className) {
+            console.log('showGradeModal started with:', classId, className);
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Выставить оценку</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="grade-form">
+                            <input type="hidden" id="grade-class-id" value="${classId}">
+                            <input type="hidden" id="grade-class-name" value="${className}">
+                            
+                            <div class="form-group">
+                                <label for="grade-student">Ученик</label>
+                                <select id="grade-student" class="form-control" required>
+                                    <option value="">Выберите ученика</option>
+                                    <option value="Петров А.С.">Петров А.С.</option>
+                                    <option value="Иванов П.И.">Иванов П.И.</option>
+                                    <option value="Сидорова М.И.">Сидорова М.И.</option>
+                                    <option value="Козлов Д.В.">Козлов Д.В.</option>
+                                    <option value="Новикова Е.А.">Новикова Е.А.</option>
+                                    <option value="Морозов К.С.">Морозов К.С.</option>
+                                    <option value="Волкова О.Н.">Волкова О.Н.</option>
+                                    <option value="Лебедев А.М.">Лебедев А.М.</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="grade-subject">Предмет</label>
+                                <select id="grade-subject" class="form-control" required>
+                                    <option value="">Выберите предмет</option>
+                                    <option value="Математика">Математика</option>
+                                    <option value="Физика">Физика</option>
+                                    <option value="Русский язык">Русский язык</option>
+                                    <option value="Литература">Литература</option>
+                                    <option value="История">История</option>
+                                    <option value="Биология">Биология</option>
+                                    <option value="Химия">Химия</option>
+                                    <option value="География">География</option>
+                                    <option value="Информатика">Информатика</option>
+                                    <option value="Английский язык">Английский язык</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="grade-value">Оценка</label>
+                                    <select id="grade-value" class="form-control" required>
+                                        <option value="">Выберите оценку</option>
+                                        <option value="5">5 (Отлично)</option>
+                                        <option value="4">4 (Хорошо)</option>
+                                        <option value="3">3 (Удовлетворительно)</option>
+                                        <option value="2">2 (Неудовлетворительно)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="grade-date">Дата</label>
+                                    <input type="date" id="grade-date" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="grade-topic">Тема/Тип работы</label>
+                                <select id="grade-topic" class="form-control" required>
+                                    <option value="">Выберите тип работы</option>
+                                    <option value="Устный ответ">Устный ответ</option>
+                                    <option value="Письменная работа">Письменная работа</option>
+                                    <option value="Контрольная работа">Контрольная работа</option>
+                                    <option value="Самостоятельная работа">Самостоятельная работа</option>
+                                    <option value="Лабораторная работа">Лабораторная работа</option>
+                                    <option value="Практическая работа">Практическая работа</option>
+                                    <option value="Тест">Тест</option>
+                                    <option value="Проект">Проект</option>
+                                    <option value="Домашнее задание">Домашнее задание</option>
+                                    <option value="Активность на уроке">Активность на уроке</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="grade-comment">Комментарий (необязательно)</label>
+                                <textarea id="grade-comment" class="form-control" rows="3" placeholder="Дополнительные комментарии к оценке"></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+                                <button type="submit" class="btn btn-primary">Выставить оценку</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            console.log('Modal added to DOM');
+            
+            // Проверяем, что модальное окно добавлено
+            setTimeout(() => {
+                const addedModal = document.querySelector('.modal-overlay');
+                console.log('Modal found in DOM:', !!addedModal);
+                if (addedModal) {
+                    console.log('Modal HTML length:', addedModal.innerHTML.length);
+                    console.log('Modal contains grade form:', addedModal.innerHTML.includes('Выставить оценку'));
+                    console.log('Modal computed style display:', window.getComputedStyle(addedModal).display);
+                    console.log('Modal computed style visibility:', window.getComputedStyle(addedModal).visibility);
+                    console.log('Modal computed style opacity:', window.getComputedStyle(addedModal).opacity);
+                    
+                    // Применяем стандартные стили как в форме ДЗ
+                    addedModal.style.background = 'rgba(0, 0, 0, 0.5)';
+                    addedModal.style.display = 'flex !important';
+                    addedModal.style.alignItems = 'center !important';
+                    addedModal.style.justifyContent = 'center !important';
+                    addedModal.style.zIndex = '1000 !important';
+                    
+                    console.log('Applied debug styles to modal');
+                }
+            }, 100);
+
+            // Устанавливаем текущую дату
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('grade-date');
+            if (dateInput) {
+                dateInput.max = today; // Нельзя выставить оценку на будущую дату
+                dateInput.value = today;
+                console.log('Date set to:', today);
+            } else {
+                console.error('Date input not found!');
+            }
+
+            // Обработчик отправки формы
+            const form = document.getElementById('grade-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    submitGrade();
+                });
+                console.log('Form event listener added');
+            } else {
+                console.error('Form not found!');
+            }
+        }
+
+        // Отправка оценки
+        function submitGrade() {
+            const classId = document.getElementById('grade-class-id').value;
+            const className = document.getElementById('grade-class-name').value;
+            const student = document.getElementById('grade-student').value;
+            const subject = document.getElementById('grade-subject').value;
+            const grade = document.getElementById('grade-value').value;
+            const date = document.getElementById('grade-date').value;
+            const topic = document.getElementById('grade-topic').value;
+            const comment = document.getElementById('grade-comment').value;
+
+            // Валидация
+            if (!student || !subject || !grade || !date || !topic) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            // Получаем данные преподавателя
+            const teacherId = localStorage.getItem('teacherId') || 'teacher1';
+            const teacherData = getTeacherData(teacherId);
+
+            // Создаем новую оценку
+            const newGrade = {
+                id: Date.now(),
+                student: student,
+                class: className,
+                subject: subject,
+                grade: grade,
+                date: date,
+                topic: topic,
+                comment: comment,
+                createdDate: new Date().toLocaleDateString('ru-RU'),
+                teacher: teacherData.name
+            };
+
+            // Добавляем в массив оценок
+            if (!teacherData.recentGrades) {
+                teacherData.recentGrades = [];
+            }
+            teacherData.recentGrades.unshift(newGrade);
+
+            // Сохраняем в localStorage
+            saveTeacherData(teacherId, teacherData);
+
+            // Показываем успешное сообщение
+            showSuccessMessage(`Оценка "${grade}" успешно выставлена ученику ${student}!`);
+
+            // Закрываем модальное окно
+            closeModal();
+
+            // Обновляем отображение оценок
+            populateRecentGrades(teacherData);
+        }
+
+        // Делаем submitGrade глобально доступной
+        window.submitGrade = submitGrade;
+
+        function logout() {
+            localStorage.removeItem('teacherId');
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>
