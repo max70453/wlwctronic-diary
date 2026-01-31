@@ -603,6 +603,14 @@
             flex-wrap: wrap;
             gap: 12px;
             margin-top: 20px;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .profile-buttons .MuiButton-root {
+            flex: 1;
+            min-width: 180px;
+            margin: 0;
         }
 
         .notification-settings-section,
@@ -1312,10 +1320,39 @@
                             <!-- Статистика успеваемости будет загружена через JS -->
                         </div>
                     </div>
-
-                  
-
-                    
+                    <div style="margin-top: 20px;">
+                        <!-- Настройки профиля -->
+                        <div class="MuiPaper-root profile-settings fade-in delay-4">
+                            <h3>Настройки профиля</h3>
+                            <div class="profile-field">
+                                <label><strong>Имя:</strong></label>
+                                <span id="profile-name"></span>
+                            </div>
+                            <div class="profile-field">
+                                <label><strong>Email:</strong></label>
+                                <span id="profile-email"></span>
+                            </div>
+                            <div class="profile-field">
+                                <label><strong>Адрес:</strong></label>
+                                <span id="profile-class">Площадь Свободы д. 15 кв. 7</span>
+                            </div>
+                            <div class="profile-field">
+                                <label><strong>Телефон:</strong></label>
+                                <span id="profile-phone"></span>
+                            </div>
+                            <div class="profile-buttons">
+                                <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary" id="edit-profile-button" onclick="editProfile()">
+                                    <span class="MuiButton-label">Редактировать профиль</span>
+                                </button>
+                                <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary" id="save-profile-button" style="display: none;" onclick="saveProfile()">
+                                    <span class="MuiButton-label">Сохранить изменения</span>
+                                </button>
+                                <button class="MuiButton-root MuiButton-contained MuiButton-containedSecondary" onclick="changePassword()">
+                                    <span class="MuiButton-label">Изменить пароль</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>                  
                 </div>
 
               <!-- Верхний ряд: Статистика и Объявления -->
@@ -1443,39 +1480,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="margin-top: 20px;">
-                        <!-- Настройки профиля -->
-                        <div class="MuiPaper-root profile-settings fade-in delay-4">
-                            <h3>Настройки профиля</h3>
-                            <div class="profile-field">
-                                <label><strong>Имя:</strong></label>
-                                <span id="profile-name"></span>
-                            </div>
-                            <div class="profile-field">
-                                <label><strong>Email:</strong></label>
-                                <span id="profile-email"></span>
-                            </div>
-                            <div class="profile-field">
-                                <label><strong>Адрес:</strong></label>
-                                <span id="profile-class">Площадь Свободы д. 15 кв. 7</span>
-                            </div>
-                            <div class="profile-field">
-                                <label><strong>Телефон:</strong></label>
-                                <span id="profile-phone"></span>
-                            </div>
-                            <div class="profile-buttons">
-                                <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary" id="edit-profile-button" onclick="editProfile()">
-                                    <span class="MuiButton-label">Редактировать профиль</span>
-                                </button>
-                                <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary" id="save-profile-button" style="display: none;" onclick="saveProfile()">
-                                    <span class="MuiButton-label">Сохранить изменения</span>
-                                </button>
-                                <button class="MuiButton-root MuiButton-contained MuiButton-containedSecondary" onclick="changePassword()">
-                                    <span class="MuiButton-label">Изменить пароль</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="main-content">
                     <!-- Второй ряд: Оценки и Расписание -->
                     <div class="content-row">
