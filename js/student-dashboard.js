@@ -4,16 +4,16 @@ function getStudentSchedule(studentId) {
         {
             day: 'Понедельник',
             lessons: [
-                { time: '08:30 - 09:15', subject: 'Математика', teacher: 'Иванов И.И.', room: '101' },
-                { time: '09:25 - 10:10', subject: 'Физика', teacher: 'Петров П.П.', room: '202' },
-                { time: '10:30 - 11:15', subject: 'Русский язык', teacher: 'Сидорова С.С.', room: '103' },
-                { time: '11:25 - 12:10', subject: 'История', teacher: 'Кузнецова К.К.', room: '104' }
+                { time: '08:30 - 09:15', subject: 'Математика', teacher: 'Соколова М.В.', room: '101' },
+                { time: '09:25 - 10:10', subject: 'Физика', teacher: 'Столярова Ю.Б.', room: '202' },
+                { time: '10:30 - 11:15', subject: 'Русский язык', teacher: 'Груба О.Б.', room: '103' },
+                { time: '11:25 - 12:10', subject: 'История', teacher: 'Солодкая Н.П.', room: '104' }
             ]
         },
         {
             day: 'Вторник',
             lessons: [
-                { time: '08:30 - 09:15', subject: 'Английский язык', teacher: 'Смирнова С.С.', room: '205' },
+                { time: '08:30 - 09:15', subject: 'Английский язык', teacher: 'Соколова М.В.', room: '205' },
                 { time: '09:25 - 10:10', subject: 'Биология', teacher: 'Попов П.П.', room: '206' },
                 { time: '10:30 - 11:15', subject: 'Химия', teacher: 'Лебедева Л.Л.', room: '207' }
             ]
@@ -21,7 +21,7 @@ function getStudentSchedule(studentId) {
         {
             day: 'Среда',
             lessons: [
-                { time: '08:30 - 09:15', subject: 'Математика', teacher: 'Иванов И.И.', room: '101' },
+                { time: '08:30 - 09:15', subject: 'Математика', teacher: 'Соколова М.В.', room: '101' },
                 { time: '09:25 - 10:10', subject: 'Физкультура', teacher: 'Николаев Н.Н.', room: '301' },
                 { time: '10:30 - 11:15', subject: 'Литература', teacher: 'Васильева В.В.', room: '108' }
             ]
@@ -29,7 +29,7 @@ function getStudentSchedule(studentId) {
         {
             day: 'Четверг',
             lessons: [
-                { time: '08:30 - 09:15', subject: 'Физика', teacher: 'Петров П.П.', room: '202' },
+                { time: '08:30 - 09:15', subject: 'Физика', teacher: 'Столярова Ю.Б.', room: '202' },
                 { time: '09:25 - 10:10', subject: 'Информатика', teacher: 'Тихонов Т.Т.', room: '302' },
                 { time: '10:30 - 11:15', subject: 'География', teacher: 'Морозов М.М.', room: '109' }
             ]
@@ -37,9 +37,9 @@ function getStudentSchedule(studentId) {
         {
             day: 'Пятница',
             lessons: [
-                { time: '08:30 - 09:15', subject: 'Русский язык', teacher: 'Сидорова С.С.', room: '103' },
-                { time: '09:25 - 10:10', subject: 'Математика', teacher: 'Иванов И.И.', room: '101' },
-                { time: '10:30 - 11:15', subject: 'История', teacher: 'Кузнецова К.К.', room: '104' }
+                { time: '08:30 - 09:15', subject: 'Русский язык', teacher: 'Груба О.Б.', room: '103' },
+                { time: '09:25 - 10:10', subject: 'Математика', teacher: 'Соколова М.В.', room: '101' },
+                { time: '10:30 - 11:15', subject: 'История', teacher: 'Солодкая Н.П.', room: '104' }
             ]
         }
     ]);
@@ -47,10 +47,10 @@ function getStudentSchedule(studentId) {
 
 function getStudentGrades(studentId) {
     return Promise.resolve([
-        { subject: 'Математика', grade: '5', date: '2026-01-28', teacher: 'Иванов И.И.' },
-        { subject: 'Физика', grade: '4', date: '2026-01-27', teacher: 'Петров П.П.' },
-        { subject: 'Русский язык', grade: '5', date: '2026-01-26', teacher: 'Сидорова С.С.' },
-        { subject: 'История', grade: '4', date: '2026-01-25', teacher: 'Кузнецова К.К.' },
+        { subject: 'Математика', grade: '5', date: '2026-01-28', teacher: 'Соколова М.В.' },
+        { subject: 'Физика', grade: '4', date: '2026-01-27', teacher: 'Столярова Ю.Б.' },
+        { subject: 'Русский язык', grade: '5', date: '2026-01-26', teacher: 'Груба О.Б.' },
+        { subject: 'История', grade: '4', date: '2026-01-25', teacher: 'Солодкая Н.П.' },
         { subject: 'Английский язык', grade: '5', date: '2026-01-24', teacher: 'Смирнова С.С.' },
         { subject: 'Биология', grade: '3', date: '2026-01-23', teacher: 'Попов П.П.' },
         { subject: 'Литература', grade: '5', date: '2026-01-22', teacher: 'Васильева В.В.' },
@@ -422,7 +422,8 @@ function populateGrades(studentInfo) {
     window.gradesPerPage = 5;
     window.currentFilters = {
         subject: 'all',
-        period: 'all'
+        period: 'all',
+        type: 'all'
     };
     
     console.log('Grades data set:', window.gradesData.length, 'grades');
@@ -472,20 +473,16 @@ function setupFilterHandlers() {
 function applyFilters() {
     const subjectFilter = document.getElementById('subject-filter');
     const periodFilter = document.getElementById('period-filter');
+    const typeFilter = document.getElementById('type-filter');
     
-    if (!subjectFilter || !periodFilter) return;
+    if (!subjectFilter || !periodFilter || !typeFilter) return;
     
     window.currentFilters.subject = subjectFilter.value;
     window.currentFilters.period = periodFilter.value;
+    window.currentFilters.type = typeFilter.value;
     
     // Фильтруем данные
-    window.gradesData = filterGrades(window.originalGradesData, window.currentFilters);
-    
-    // Сбрасываем на первую страницу
-    window.currentPage = 1;
-    
-    // Отображаем отфильтрованные данные
-    displayGradesPage(1);
+    filterGrades();
     
     console.log('Filters applied:', window.currentFilters, 'Filtered grades:', window.gradesData.length);
 }
@@ -494,13 +491,16 @@ function applyFilters() {
 function resetFilters() {
     const subjectFilter = document.getElementById('subject-filter');
     const periodFilter = document.getElementById('period-filter');
+    const typeFilter = document.getElementById('type-filter');
     
     if (subjectFilter) subjectFilter.value = 'all';
     if (periodFilter) periodFilter.value = 'all';
+    if (typeFilter) typeFilter.value = 'all';
     
     window.currentFilters = {
         subject: 'all',
-        period: 'all'
+        period: 'all',
+        type: 'all'
     };
     
     // Восстанавливаем исходные данные
@@ -509,25 +509,28 @@ function resetFilters() {
     
     // Отображаем все данные
     displayGradesPage(1);
-    
-    console.log('Filters reset, showing all grades:', window.gradesData.length);
+    updatePagination();
 }
 
-// Фильтрация оценок
-function filterGrades(grades, filters) {
-    let filtered = [...grades];
+// Функция фильтрации оценок
+function filterGrades() {
+    const subjectFilter = window.currentFilters.subject;
+    const periodFilter = window.currentFilters.period;
+    const typeFilter = window.currentFilters.type;
     
-    // Фильтр по предмету
-    if (filters.subject !== 'all') {
-        filtered = filtered.filter(grade => grade.subject === filters.subject);
+    let filteredData = [...window.originalGradesData];
+    
+    // Фильтрация по предмету
+    if (subjectFilter !== 'all') {
+        filteredData = filteredData.filter(grade => grade.subject === subjectFilter);
     }
     
-    // Фильтр по периоду
-    if (filters.period !== 'all') {
+    // Фильтрация по периоду
+    if (periodFilter !== 'all') {
         const now = new Date();
         let cutoffDate;
         
-        switch (filters.period) {
+        switch (periodFilter) {
             case 'week':
                 cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
                 break;
@@ -540,14 +543,23 @@ function filterGrades(grades, filters) {
         }
         
         if (cutoffDate) {
-            filtered = filtered.filter(grade => {
+            filteredData = filteredData.filter(grade => {
                 const gradeDate = new Date(grade.date);
                 return gradeDate >= cutoffDate;
             });
         }
     }
     
-    return filtered;
+    // Фильтрация по типу работы
+    if (typeFilter !== 'all') {
+        filteredData = filteredData.filter(grade => grade.topic === typeFilter);
+    }
+    
+    window.gradesData = filteredData;
+    window.currentPage = 1;
+    
+    displayGradesPage(1);
+    updatePagination();
 }
 
 // Функция отображения страницы с оценками
@@ -613,11 +625,10 @@ function displayGradesPage(page) {
         
         let subjectTotalDisplay = '';
         if (isFinalExamOrTest && hasFinalExam) {
-            // Рассчитываем итоговую для этого предмета (из всех данных по предмету)
-            const subjectTotal = subjectAllGrades.reduce((sum, g) => sum + parseInt(g.grade), 0);
-            const subjectMax = subjectAllGrades.length * 5;
-            subjectTotalDisplay = `<span class="subject-total">${subjectTotal} / ${subjectMax}</span>`;
-            console.log(`  -> Showing total: ${subjectTotal} / ${subjectMax}`);
+            // Рассчитываем итоговую оценку как средний балл (максимум 5)
+            const subjectAverage = (subjectAllGrades.reduce((sum, g) => sum + parseInt(g.grade), 0) / subjectAllGrades.length).toFixed(1);
+            subjectTotalDisplay = `<span class="subject-total">${subjectAverage}</span>`;
+            console.log(`  -> Showing average: ${subjectAverage}`);
         } else {
             subjectTotalDisplay = '<span class="subject-total">—</span>';
             console.log(`  -> Showing dash`);
