@@ -77,48 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('✅ Расписание установлено');
         }
         
-        // Заполняем полное расписание
+        // Заполняем полное расписание - ОТКЛЮЧЕНО, используется populateSchedule из student-dashboard.js
+        console.log('⏭️ Пропускаем заполнение расписания (используется populateSchedule)');
         const scheduleTable = document.getElementById('schedule-table');
         if (scheduleTable) {
-            scheduleTable.innerHTML = `
-                <div class="table-wrapper">
-                    <table class="schedule-table">
-                        <thead>
-                            <tr>
-                                <th>День недели</th>
-                                <th>Время</th>
-                                <th>Предмет</th>
-                                <th>Учитель</th>
-                                <th>Кабинет</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Понедельник</td>
-                                <td>08:30-09:15</td>
-                                <td>Математика</td>
-                                <td>Иванов И.И.</td>
-                                <td>101</td>
-                            </tr>
-                            <tr>
-                                <td>Понедельник</td>
-                                <td>09:25-10:10</td>
-                                <td>Физика</td>
-                                <td>Петров П.П.</td>
-                                <td>202</td>
-                            </tr>
-                            <tr>
-                                <td>Вторник</td>
-                                <td>08:30-09:15</td>
-                                <td>Русский язык</td>
-                                <td>Сидорова С.С.</td>
-                                <td>103</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            console.log('✅ Полное расписание установлено');
+            // Не перезаписываем расписание, оно уже установлено функцией populateSchedule
+            console.log('✅ Расписание оставлено без изменений');
         }
         
         // Заполняем новые оценки

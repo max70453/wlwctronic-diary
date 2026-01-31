@@ -305,10 +305,11 @@
 
         /* Распределение ширины колонок для таблиц */
         .schedule-table th:nth-child(1), .schedule-table td:nth-child(1) { width: 15%; }
-        .schedule-table th:nth-child(2), .schedule-table td:nth-child(2) { width: 20%; }
-        .schedule-table th:nth-child(3), .schedule-table td:nth-child(3) { width: 35%; }
-        .schedule-table th:nth-child(4), .schedule-table td:nth-child(4) { width: 20%; }
-        .schedule-table th:nth-child(5), .schedule-table td:nth-child(5) { width: 10%; }
+        .schedule-table th:nth-child(2), .schedule-table td:nth-child(2) { width: 17%; }
+        .schedule-table th:nth-child(3), .schedule-table td:nth-child(3) { width: 17%; }
+        .schedule-table th:nth-child(4), .schedule-table td:nth-child(4) { width: 17%; }
+        .schedule-table th:nth-child(5), .schedule-table td:nth-child(5) { width: 17%; }
+        .schedule-table th:nth-child(6), .schedule-table td:nth-child(6) { width: 17%; }
 
         .grades-table th:nth-child(1), .grades-table td:nth-child(1) { width: 18%; }
         .grades-table th:nth-child(2), .grades-table td:nth-child(2) { width: 10%; }
@@ -1187,6 +1188,57 @@
             color: #999;
             font-size: 0.8rem;
         }
+
+        /* Стили для ячеек расписания */
+        .schedule-time-cell {
+            font-weight: 600;
+            color: #1976d2;
+            text-align: center;
+            background: #f8f9fa;
+            font-size: 0.8rem;
+            width: 15%;
+        }
+
+        .schedule-lesson-cell {
+            padding: 8px !important;
+            vertical-align: middle;
+            text-align: center;
+            font-weight: 500;
+            color: #333;
+            font-size: 0.85rem;
+        }
+
+        .schedule-empty-cell {
+            text-align: center;
+            color: #ccc;
+            font-style: italic;
+            font-size: 0.8rem;
+        }
+
+        /* Дополнительные стили для таблицы расписания */
+        .schedule-table {
+            font-size: 0.85rem;
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        .schedule-table th {
+            font-weight: 600;
+            color: #1976d2;
+            background: #f8f9fa;
+            font-size: 0.9rem;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e3f2fd;
+        }
+
+        .schedule-table td {
+            border: 1px solid #e3f2fd;
+            padding: 8px;
+            vertical-align: middle;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -1261,21 +1313,7 @@
                         </div>
                     </div>
 
-                    <!-- Панель виджетов -->
-                    <div class="widgets-panel fade-in delay-2">
-                        <div class="widget fade-in delay-1">
-                            <div class="widget-icon material-icons">schedule</div>
-                            <h4>Расписание на день</h4>
-                            <div id="daily-schedule">
-                                <!-- Расписание на день будет загружено через JS -->
-                            </div>
-                        </div>
-                        <!-- <div class="widget fade-in delay-2">
-                            <div class="widget-icon material-icons">grade</div>
-                            <h4>Новые оценки</h4>
-                            <div id="new-grades"></div>
-                        </div> -->
-                    </div>
+                  
 
                     
                 </div>
@@ -1322,7 +1360,7 @@
                                         <span class="material-icons" style="font-size: 18px;">close</span>
                                     </button>
                                 </h4>
-                                <p>Внимание! Расписание на завтра изменено. Пара по физике перенесена на 3-ю пару.</p>
+                                <p>Внимание! Расписание на завтра изменено. Физика перенесена на 3-ю пару.</p>
                                 <small>2026-01-28 10:45</small>
                             </div>
                             <div class="notification-item fade-in delay-4 unread visible announcement">
@@ -1438,15 +1476,11 @@
                             </div>
                         </div>
                     </div>
-                    
-                </div>
-            </div>
-              <!-- Основной контент -->
-                <div class="main-content">
+                    <div class="main-content">
                     <!-- Второй ряд: Оценки и Расписание -->
                     <div class="content-row">
                         <!-- Оценки -->
-                        <div class="MuiPaper-root fade-in delay-3">
+                        <div class="MuiPaper-root fade-in delay-3" style="margin-top: 16px;">
                             <h3>Оценки</h3>
                             <div class="grades-filters">
                                 <div class="filter-group">
@@ -1478,16 +1512,9 @@
                                 <!-- Пагинация будет загружена через JS -->
                             </div>
                         </div>
-
-                        <!-- Расписание -->
-                        <div class="MuiPaper-root fade-in delay-4">
-                            <h3>Расписание</h3>
-                            <div id="schedule-table">
-                                <!-- Расписание будет загружено через JS -->
-                            </div>
-                        </div>
                     </div>
                 </div>
+            </div>
         </div>
     </main>
 
@@ -1517,7 +1544,6 @@
     </footer>
 
     <!-- Material-UI JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>

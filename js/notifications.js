@@ -2,11 +2,19 @@
 
 // Загрузка уведомлений
 function loadNotifications() {
+    console.log('Загрузка уведомлений...');
+    
     // В реальном приложении данные будут загружаться с сервера
     // Например: fetch('/api/notifications')
 
     // Для разработки используем заглушки
     const notificationsContainer = document.getElementById('notifications-list');
+    
+    if (!notificationsContainer) {
+        console.log('Элемент notifications-list не найден, пропускаем загрузку уведомлений');
+        return;
+    }
+    
     notificationsContainer.innerHTML = '';
 
     const mockNotifications = [
@@ -45,8 +53,7 @@ function toggleNotificationSettings() {
 
 // Инициализация настроек уведомлений
 function initNotificationSettings() {
-    // В реальном приложении настройки будут загружаться с сервера
-    // Например: fetch('/api/notifications/settings')
+    console.log('Инициализация настроек уведомлений...');
 
     // Для разработки используем заглушки
     const settings = {
@@ -55,9 +62,14 @@ function initNotificationSettings() {
         messages: false
     };
 
-    document.getElementById('grades-notifications').checked = settings.grades;
-    document.getElementById('announcements-notifications').checked = settings.announcements;
-    document.getElementById('messages-notifications').checked = settings.messages;
+    // Проверяем существование элементов перед установкой значений
+    const gradesCheckbox = document.getElementById('grades-notifications');
+    const announcementsCheckbox = document.getElementById('announcements-notifications');
+    const messagesCheckbox = document.getElementById('messages-notifications');
+
+    if (gradesCheckbox) gradesCheckbox.checked = settings.grades;
+    if (announcementsCheckbox) announcementsCheckbox.checked = settings.announcements;
+    if (messagesCheckbox) messagesCheckbox.checked = settings.messages;
 }
 
 // Инициализация модуля уведомлений

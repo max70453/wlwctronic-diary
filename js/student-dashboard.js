@@ -160,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.removeItem('gradesData');
     localStorage.removeItem('originalGradesData');
     localStorage.removeItem('announcementsData');
+    localStorage.removeItem('scheduleData');
     
     let studentData = mockData.students[studentId];
     localStorage.setItem(`student_${studentId}`, JSON.stringify(studentData));
@@ -330,21 +331,71 @@ function populateSchedule(studentInfo) {
             if (dailyScheduleContainer) dailyScheduleContainer.innerHTML = html;
         }
         
-        // Полное расписание
-        let html = '<table class="schedule-table"><thead><tr><th>День недели</th><th>Время</th><th>Предмет</th><th>Учитель</th><th>Кабинет</th></tr></thead><tbody>';
-        studentInfo.schedule.forEach(daySchedule => {
-            daySchedule.lessons.forEach(lesson => {
-                html += `
-                    <tr>
-                        <td><strong>${daySchedule.day}</strong></td>
-                        <td>${lesson.time}</td>
-                        <td>${lesson.subject}</td>
-                        <td>${lesson.teacher}</td>
-                        <td><span class="schedule-room">${lesson.room}</span></td>
-                    </tr>
-                `;
-            });
+        // Полное расписание в виде классической таблицы (как на скриншоте)
+        const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт'];
+        
+        // Создаем заголовок с днями недели
+        let html = '<table class="schedule-table"><thead><tr><th></th>';
+        weekDays.forEach(day => {
+            html += `<th>${day}</th>`;
         });
+        html += '</tr></thead><tbody>';
+        
+        // Данные расписания как на скриншоте
+        const scheduleData = [
+            {
+                time: '8:30-10:05',
+                day: 'Пн',
+                lessons: ['Математика', 'Русский язык', 'Математика', 'Физика', 'Русский язык']
+            },
+            {
+                time: '10:25-12:00',
+                day: 'Пн',
+                lessons: ['Литература', 'Математика', 'История', 'Математика', 'Физкультура']
+            },
+            {
+                time: '12:20-13:55',
+                day: 'Пн',
+                lessons: ['История', 'Физика', 'Русский язык', 'Химия', 'Литература']
+            },
+            {
+                time: '14:15-15:50',
+                day: 'Пн',
+                lessons: ['Физкультура', 'Химия', 'Физкультура', 'Русский язык', 'Информатика']
+            },
+            {
+                time: '16:10-17:45',
+                day: 'Пн',
+                lessons: ['География', 'Информатика', 'Биология', 'Английский язык', 'Обществознание']
+            }
+        ];
+        
+        // Группируем по времени
+        const timeSlots = ['8:30-10:05', '10:25-12:00', '12:20-13:55', '14:15-15:50', '16:10-17:45'];
+        
+        timeSlots.forEach(timeSlot => {
+            html += `<tr><td class="schedule-time-cell">${timeSlot}</td>`;
+            
+            weekDays.forEach(day => {
+                // Находим нужный предмет для этого времени и дня
+                const timeData = scheduleData.find(d => d.time === timeSlot);
+                if (timeData) {
+                    const dayIndex = weekDays.indexOf(day);
+                    const subject = timeData.lessons[dayIndex];
+                    
+                    if (subject && subject !== '—') {
+                        html += `<td class="schedule-lesson-cell">${subject}</td>`;
+                    } else {
+                        html += '<td class="schedule-empty-cell">—</td>';
+                    }
+                } else {
+                    html += '<td class="schedule-empty-cell">—</td>';
+                }
+            });
+            
+            html += '</tr>';
+        });
+        
         html += '</tbody></table>';
         if (scheduleTable) scheduleTable.innerHTML = html;
     }
@@ -1523,6 +1574,11 @@ document.head.appendChild(style);
 function loadNotifications() {
     const notificationsList = document.getElementById('notifications-list');
     
+    if (!notificationsList) {
+        console.log('Элемент notifications-list не найден, пропускаем загрузку уведомлений');
+        return;
+    }
+    
     // Mock данные для уведомлений
     const notifications = [
         {
@@ -1536,26 +1592,18 @@ function loadNotifications() {
         {
             id: 2,
             title: 'Домашнее задание',
-            message: 'Добавлено новое ДЗ по физике на завтра',
-            date: '2026-01-28 16:45',
+            message: 'Задано домашнее задание по химии. Страница 145-147, упражнения 1-5.',
+            date: '2026-01-28 12:15',
             type: 'homework',
             read: false
         },
         {
             id: 3,
-            title: 'Объявление',
-            message: 'Завтра будет собрание для 10-х классов',
-            date: '2026-01-27 18:00',
-            type: 'announcement',
-            read: true
-        },
-        {
-            id: 4,
             title: 'Расписание изменено',
-            message: 'Урок литературы перенесен на 4-й урок',
-            date: '2026-01-27 12:15',
+            message: 'Внимание! Расписание на завтра изменено. Пара по физике перенесена на 3-ю пару.',
+            date: '2026-01-28 10:45',
             type: 'schedule',
-            read: true
+            read: false
         }
     ];
     
@@ -1563,8 +1611,7 @@ function loadNotifications() {
         let html = '';
         notifications.forEach((notification, index) => {
             const icon = notification.type === 'grade' ? 'grade' : 
-                        notification.type === 'homework' ? 'assignment' : 
-                        notification.type === 'announcement' ? 'campaign' : 'schedule';
+                        notification.type === 'homework' ? 'assignment' : 'schedule';
             
             html += `
                 <div class="notification-item fade-in delay-${index + 1} ${!notification.read ? 'unread' : ''}">
