@@ -479,22 +479,11 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="content-row">
-                    <!-- Расписание -->
-                    <div class="MuiPaper-root fade-in">
-                        <h3 style="margin-top: 0;">Расписание на сегодня</h3>
-                        <div id="today-schedule">
-                            <p>Загрузка расписания...</p>
-                        </div>
-                    </div>
-
-                    <!-- Объявления -->
-                    <div class="MuiPaper-root fade-in">
-                        <h3 style="margin-top: 0;">Объявления</h3>
-                        <div id="teacher-announcements">
-                            <p>Загрузка объявлений...</p>
-                        </div>
+                <!-- Объявления -->
+                <div class="MuiPaper-root fade-in">
+                    <h3 style="margin-top: 0;">Объявления</h3>
+                    <div id="teacher-announcements">
+                        <p>Загрузка объявлений...</p>
                     </div>
                 </div>
             </div>
@@ -582,8 +571,6 @@
                     
                     populateClasses(teacherData);
                     
-                    populateSchedule(teacherData);
-                    
                     populateAnnouncements(teacherData);
                     
                     populateGradesTable(teacherData);
@@ -660,70 +647,6 @@
                 console.log('Функции доступны:', typeof showGradeForm, typeof showStudentsList);
             } else {
                 classesContainer.innerHTML = '<p>Классы не найдены</p>';
-            }
-        }
-
-        // Заполнение расписания
-        function populateSchedule(teacher) {
-            const scheduleContainer = document.getElementById('today-schedule');
-            const today = new Date().toLocaleDateString('ru-RU', { weekday: 'long' });
-            
-            console.log('Сегодня:', today);
-            console.log('Все расписание:', teacher.schedule);
-            
-            const todaySchedule = teacher.schedule.filter(lesson => 
-                lesson.day.toLowerCase() === today.toLowerCase()
-            );
-            
-            console.log('Расписание на сегодня:', todaySchedule);
-            
-            if (todaySchedule.length > 0) {
-                let html = '<ul class="schedule-list">';
-                todaySchedule.forEach(lesson => {
-                    html += `
-                        <li class="schedule-item">
-                            <div>
-                                <div class="schedule-time">${lesson.time}</div>
-                                <div>${lesson.class} - ${lesson.subject}</div>
-                            </div>
-                            <div class="schedule-room">${lesson.room}</div>
-                        </li>
-                    `;
-                });
-                html += '</ul>';
-                scheduleContainer.innerHTML = html;
-            } else {
-                // Если на сегодня нет занятий, покажем расписание на завтра
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const tomorrowDay = tomorrow.toLocaleDateString('ru-RU', { weekday: 'long' });
-                
-                console.log('Завтра:', tomorrowDay);
-                
-                const tomorrowSchedule = teacher.schedule.filter(lesson => 
-                    lesson.day.toLowerCase() === tomorrowDay.toLowerCase()
-                );
-                
-                if (tomorrowSchedule.length > 0) {
-                    let html = '<p style="margin-bottom: 10px; color: #666;"><strong>На сегодня занятий с группами нет</strong></p>';
-                    html += '<p style="margin-bottom: 15px; color: #666;">Расписание на завтра (' + tomorrowDay + '):</p>';
-                    html += '<ul class="schedule-list">';
-                    tomorrowSchedule.forEach(lesson => {
-                        html += `
-                            <li class="schedule-item">
-                                <div>
-                                    <div class="schedule-time">${lesson.time}</div>
-                                    <div>${lesson.class} - ${lesson.subject}</div>
-                                </div>
-                                <div class="schedule-room">${lesson.room}</div>
-                            </li>
-                        `;
-                    });
-                    html += '</ul>';
-                    scheduleContainer.innerHTML = html;
-                } else {
-                    scheduleContainer.innerHTML = '<p>На ближайшие дни занятий с группами нет</p>';
-                }
             }
         }
 
