@@ -368,15 +368,11 @@
                         </div>
                         <div class="stat-item">
                             <div class="stat-value" id="total-classes">0</div>
-                            <div class="stat-label">Классов</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="avg-grade">0</div>
-                            <div class="stat-label">Ср. оценка</div>
+                            <div class="stat-label">Группы</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-value" id="lessons-week">0</div>
-                            <div class="stat-label">Уроков/нед</div>
+                            <div class="stat-label">Пар/нед</div>
                         </div>
                     </div>
                 </div>
@@ -386,7 +382,7 @@
             <div class="main-content">
                 <!-- Мои классы -->
                 <div class="MuiPaper-root fade-in">
-                    <h3 style="margin-top: 0;">Мои классы</h3>
+                    <h3 style="margin-top: 0;">Мои группы</h3>
                     <div id="teacher-classes">
                         <p>Загрузка классов...</p>
                     </div>
@@ -398,24 +394,6 @@
                         <h3 style="margin-top: 0;">Расписание на сегодня</h3>
                         <div id="today-schedule">
                             <p>Загрузка расписания...</p>
-                        </div>
-                    </div>
-
-                    <!-- Последние оценки -->
-                    <div class="MuiPaper-root fade-in">
-                        <h3 style="margin-top: 0;">Последние оценки</h3>
-                        <div id="recent-grades">
-                            <p>Загрузка оценок...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-row">
-                    <!-- Домашние задания -->
-                    <div class="MuiPaper-root fade-in">
-                        <h3 style="margin-top: 0;">Текущие задания</h3>
-                        <div id="current-homework">
-                            <p>Загрузка заданий...</p>
                         </div>
                     </div>
 
@@ -457,86 +435,91 @@
     </footer>
 
     <!-- Material-UI JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.11.0/umd/material-ui.production.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@mui/icons-material@5.11.0/umd/material-ui-icons.production.min.js"></script> -->
     <script src="js/teacher-data.js"></script>
     <script src="js/auth.js"></script>
 
     <script>
+        // Временная аутентификация для теста
+        if (!localStorage.getItem('isAuthenticated')) {
+            console.log('Устанавливаем временную аутентификацию для теста');
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userRole', 'teacher');
+            localStorage.setItem('username', 'test');
+            localStorage.setItem('teacherId', 'teacher1');
+        }
+        
         // Инициализация AppBar с улучшенным дизайном
         document.addEventListener('DOMContentLoaded', function() {
-            const appBar = document.getElementById('app-bar');
-            const teacherId = localStorage.getItem('teacherId') || 'teacher1';
-
-            appBar.className = 'app-bar';
-            appBar.innerHTML = `
-                <div class="MuiAppBar-root MuiAppBar-positionStatic" style="background: linear-gradient(90deg, #3f51b5 0%, #303f9f 100%);">
-                    <div class="MuiToolbar-root MuiToolbar-regular" style="min-height: 64px; padding: 0 24px; display: flex; justify-content: space-between; align-items: center;">
-                        <a href="index.html" class="logo">
-                            <i class="material-icons logo-icon">school</i>
-                            <span>
-                                <strong>E-Journal</strong><br>
-                                <small style="font-size: 0.8rem; opacity: 0.8;"></small>
-                            </span>
-                        </a>
-                        <div style="display: flex; gap: 10px;">
-                            <a href="index.html" class="nav-link">Главная</a>
-                            <button class="logout-btn" onclick="logout()">
-                                <i class="material-icons" style="font-size: 1rem; vertical-align: middle; margin-right: 5px;">logout</i>
-                                Выйти
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
+            console.log('Базовый тест - DOM загружен');
+            
+            const teacherId = 'teacher1';
+            console.log('Teacher ID:', teacherId);
+            
+            // Простой тест - изменим заголовок
+            const title = document.querySelector('h1');
+            if (title) {
+                title.textContent = 'Дашборд преподавателя - ТЕСТ';
+                console.log('Заголовок изменен');
+            } else {
+                console.log('Заголовок не найден');
+            }
+            
             // Загружаем данные преподавателя
             loadTeacherDashboard(teacherId);
         });
 
         // Основная функция загрузки дашборда
         function loadTeacherDashboard(teacherId) {
+            console.log('loadTeacherDashboard вызывается с ID:', teacherId);
             console.log('=== ЗАГРУЗКА ДАШБОРДА ПРЕПОДАВАТЕЛЯ ===');
             
-            const teacherData = getTeacherData(teacherId);
-            
-            if (teacherData) {
-                console.log('✅ Данные преподавателя загружены:', teacherData);
+            try {
+                const teacherData = getTeacherData(teacherId);
+                console.log('Данные преподавателя получены:', teacherData);
                 
-                // Заполняем основную информацию
-                populateTeacherInfo(teacherData);
-                
-                // Заполняем статистику
-                populateStatistics(teacherData);
-                
-                // Заполняем классы
-                populateClasses(teacherData);
-                
-                // Заполняем расписание
-                populateSchedule(teacherData);
-                
-                // Заполняем последние оценки
-                populateRecentGrades(teacherData);
-                
-                // Заполняем домашние задания
-                populateHomework(teacherData);
-                
-                // Заполняем объявления
-                populateAnnouncements(teacherData);
-                
-                // Добавляем анимации
-                addAnimations();
-            } else {
-                console.error('❌ Данные преподавателя не найдены');
-                showError('Данные преподавателя не найдены');
+                if (teacherData) {
+                    console.log('✅ Данные преподавателя загружены:', teacherData);
+                    
+                    // Заполняем основную информацию
+                    populateTeacherInfo(teacherData);
+                    
+                    // Заполняем статистику
+                    populateStatistics(teacherData);
+                    
+                    // Заполняем классы
+                    populateClasses(teacherData);
+                    
+                    // Заполняем расписание
+                    populateSchedule(teacherData);
+                    
+                    // Заполняем объявления
+                    populateAnnouncements(teacherData);
+                    
+                    // Добавляем анимации
+                    addAnimations();
+                } else {
+                    console.error('❌ Данные преподавателя не найдены');
+                    showError('Данные преподавателя не найдены');
+                }
+            } catch (error) {
+                console.error('Ошибка при загрузке дашборда:', error);
+                showError('Ошибка при загрузке дашборда: ' + error.message);
             }
         }
 
         // Заполнение информации о преподавателе
         function populateTeacherInfo(teacher) {
-            document.getElementById('teacher-name').textContent = teacher.name;
-            document.getElementById('teacher-subjects').textContent = teacher.subjects.join(', ');
-            document.getElementById('teacher-experience').textContent = teacher.experience;
+            console.log('Заполнение информации о преподавателе');
+            
+            const nameElement = document.getElementById('teacher-name');
+            const subjectsElement = document.getElementById('teacher-subjects');
+            const experienceElement = document.getElementById('teacher-experience');
+            
+            if (nameElement) nameElement.textContent = teacher.name;
+            if (subjectsElement) subjectsElement.textContent = teacher.subjects.join(', ');
+            if (experienceElement) experienceElement.textContent = teacher.experience;
         }
 
         // Заполнение статистики
@@ -544,10 +527,10 @@
             document.getElementById('total-students').textContent = teacher.statistics.totalStudents;
             document.getElementById('total-classes').textContent = teacher.statistics.classesCount;
             
-            // Вычисляем среднюю оценку
-            const avgGrades = Object.values(teacher.statistics.averageGrades);
-            const overallAvg = (avgGrades.reduce((a, b) => a + b, 0) / avgGrades.length).toFixed(1);
-            document.getElementById('avg-grade').textContent = overallAvg;
+            // Средняя оценка удалена из интерфейса
+            // const avgGrades = Object.values(teacher.statistics.averageGrades);
+            // const overallAvg = (avgGrades.reduce((a, b) => a + b, 0) / avgGrades.length).toFixed(1);
+            // document.getElementById('avg-grade').textContent = overallAvg;
             
             document.getElementById('lessons-week').textContent = teacher.statistics.lessonsPerWeek;
         }
@@ -572,8 +555,8 @@
                                 <button class="mui-btn" style="font-size: 0.8rem; padding: 4px 8px;" onclick="console.log('Grade clicked for ${cls.id}'); showGradeForm('${cls.id}', '${cls.name}')">
                                     <i class="material-icons" style="font-size: 0.9rem;">grade</i> Оценки
                                 </button>
-                                <button class="mui-btn" style="font-size: 0.8rem; padding: 4px 8px;" onclick="console.log('Homework clicked for ${cls.id}'); showHomeworkForm('${cls.id}', '${cls.name}')">
-                                    <i class="material-icons" style="font-size: 0.9rem;">assignment</i> ДЗ
+                                <button class="mui-btn" style="font-size: 0.8rem; padding: 4px 8px;" onclick="console.log('Students list clicked for ${cls.id}'); showStudentsList('${cls.id}', '${cls.name}')">
+                                    <i class="material-icons" style="font-size: 0.9rem;">people</i> Список группы
                                 </button>
                             </div>
                         </div>
@@ -583,7 +566,7 @@
                 
                 // Добавляем отладочную информацию
                 console.log('Классы загружены:', teacher.classes);
-                console.log('Функции доступны:', typeof showGradeForm, typeof showHomeworkForm);
+                console.log('Функции доступны:', typeof showGradeForm, typeof showStudentsList);
             } else {
                 classesContainer.innerHTML = '<p>Классы не найдены</p>';
             }
@@ -594,9 +577,14 @@
             const scheduleContainer = document.getElementById('today-schedule');
             const today = new Date().toLocaleDateString('ru-RU', { weekday: 'long' });
             
+            console.log('Сегодня:', today);
+            console.log('Все расписание:', teacher.schedule);
+            
             const todaySchedule = teacher.schedule.filter(lesson => 
                 lesson.day.toLowerCase() === today.toLowerCase()
             );
+            
+            console.log('Расписание на сегодня:', todaySchedule);
             
             if (todaySchedule.length > 0) {
                 let html = '<ul class="schedule-list">';
@@ -614,79 +602,38 @@
                 html += '</ul>';
                 scheduleContainer.innerHTML = html;
             } else {
-                scheduleContainer.innerHTML = '<p>На сегодня занятий нет</p>';
+                // Если на сегодня нет занятий, покажем расписание на завтра
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const tomorrowDay = tomorrow.toLocaleDateString('ru-RU', { weekday: 'long' });
+                
+                console.log('Завтра:', tomorrowDay);
+                
+                const tomorrowSchedule = teacher.schedule.filter(lesson => 
+                    lesson.day.toLowerCase() === tomorrowDay.toLowerCase()
+                );
+                
+                if (tomorrowSchedule.length > 0) {
+                    let html = '<p style="margin-bottom: 10px; color: #666;"><strong>На сегодня занятий с группами нет</strong></p>';
+                    html += '<p style="margin-bottom: 15px; color: #666;">Расписание на завтра (' + tomorrowDay + '):</p>';
+                    html += '<ul class="schedule-list">';
+                    tomorrowSchedule.forEach(lesson => {
+                        html += `
+                            <li class="schedule-item">
+                                <div>
+                                    <div class="schedule-time">${lesson.time}</div>
+                                    <div>${lesson.class} - ${lesson.subject}</div>
+                                </div>
+                                <div class="schedule-room">${lesson.room}</div>
+                            </li>
+                        `;
+                    });
+                    html += '</ul>';
+                    scheduleContainer.innerHTML = html;
+                } else {
+                    scheduleContainer.innerHTML = '<p>На ближайшие дни занятий с группами нет</p>';
+                }
             }
-        }
-
-        // Заполнение последних оценок
-        function populateRecentGrades(teacher) {
-            const gradesContainer = document.getElementById('recent-grades');
-            
-            if (teacher.recentGrades && teacher.recentGrades.length > 0) {
-                let html = '<ul class="grades-list">';
-                teacher.recentGrades.slice(0, 5).forEach(grade => {
-                    const gradeClass = grade.grade >= 4 ? 'grade-good' : grade.grade == 3 ? 'grade-mid' : 'grade-bad';
-                    html += `
-                        <li class="grade-item">
-                            <div>
-                                <div>${grade.student} (${grade.class})</div>
-                                <div style="font-size: 0.8rem; color: #666;">${grade.topic}</div>
-                            </div>
-                            <div>
-                                <span class="grade-value ${gradeClass}">${grade.grade}</span>
-                                <div style="font-size: 0.8rem; color: #666;">${grade.date}</div>
-                            </div>
-                        </li>
-                    `;
-                });
-                html += '</ul>';
-                gradesContainer.innerHTML = html;
-            } else {
-                gradesContainer.innerHTML = '<p>Оценок пока нет</p>';
-            }
-        }
-
-        // Заполнение домашних заданий
-        function populateHomework(teacher) {
-            const homeworkContainer = document.getElementById('homework-list');
-            if (!homeworkContainer) return;
-
-            if (!teacher.homework || teacher.homework.length === 0) {
-                homeworkContainer.innerHTML = '<p>Нет добавленных домашних заданий</p>';
-                return;
-            }
-
-            let html = `
-                <div class="homework-list">
-                    <div class="homework-header">
-                        <div>Предмет</div>
-                        <div>Задание</div>
-                        <div>Срок сдачи</div>
-                        <div>Вложения</div>
-                    </div>
-            `;
-
-            teacher.homework.forEach(hw => {
-                const dueDate = new Date(hw.dueDate).toLocaleDateString('ru-RU');
-                const attachmentHtml = hw.attachment 
-                    ? `<a href="#" onclick="downloadAttachment(${hw.id}, '${hw.attachment.fileName}')" class="attachment-link" title="${hw.attachment.fileName}">
-                          <i class="material-icons" style="font-size: 20px; vertical-align: middle;">attach_file</i>
-                          <span>${hw.attachment.fileName}</span>
-                       </a>`
-                    : '—';
-
-                html += `
-                    <div class="homework-item">
-                        <div>${hw.subject}</div>
-                        <div>${hw.task}</div>
-                        <div>${dueDate}</div>
-                        <div>${attachmentHtml}</div>
-                    </div>
-                `;
-            });
-
-            html += `</div>`;
-            homeworkContainer.innerHTML = html;
         }
 
         // Заполнение объявлений
@@ -751,440 +698,42 @@
             }
         }
 
-        function showHomeworkForm(classId, className) {
-            console.log('showHomeworkForm called with:', classId, className);
-            showHomeworkModal(classId, className);
-        }
-
-        // Делаем функции глобально доступными
-        window.showGradeForm = showGradeForm;
-        window.showHomeworkForm = showHomeworkForm;
-        window.closeModal = closeModal;
-        window.submitHomework = submitHomework;
-        window.downloadAttachment = downloadAttachment;
-
-        // Модальное окно для добавления домашнего задания
-        function showHomeworkModal(classId, className) {
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>Добавить домашнее задание</h3>
-                        <button class="modal-close" onclick="closeModal()">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="homework-form">
-                            <input type="hidden" id="hw-class-id" value="${classId}">
-                            <input type="hidden" id="hw-class-name" value="${className}">
-                            
-                            <div class="form-group">
-                                <label for="hw-subject">Предмет</label>
-                                <select id="hw-subject" class="form-control" required>
-                                    <option value="">Выберите предмет</option>
-                                    <option value="Математика">Математика</option>
-                                    <option value="Физика">Физика</option>
-                                    <option value="Русский язык">Русский язык</option>
-                                    <option value="Литература">Литература</option>
-                                    <option value="История">История</option>
-                                    <option value="Биология">Биология</option>
-                                    <option value="Химия">Химия</option>
-                                    <option value="География">География</option>
-                                    <option value="Информатика">Информатика</option>
-                                    <option value="Английский язык">Английский язык</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="hw-task">Задание</label>
-                                <textarea id="hw-task" class="form-control" rows="4" placeholder="Введите текст домашнего задания" required></textarea>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="hw-due-date">Срок выполнения</label>
-                                    <input type="date" id="hw-due-date" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="hw-priority">Приоритет</label>
-                                    <select id="hw-priority" class="form-control" required>
-                                        <option value="low">Низкий</option>
-                                        <option value="medium" selected>Средний</option>
-                                        <option value="high">Высокий</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="hw-description">Дополнительное описание (необязательно)</label>
-                                <textarea id="hw-description" class="form-control" rows="3" placeholder="Дополнительная информация, ссылки на материалы и т.д."></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="hw-attachment">Прикрепить файл (необязательно)</label>
-                                <div class="file-upload">
-                                    <input type="file" id="hw-attachment" class="file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.txt">
-                                    <label for="hw-attachment" class="file-upload-label">
-                                        <i class="material-icons" style="vertical-align: middle; margin-right: 8px;">attach_file</i>
-                                        <span id="file-name">Выберите файл</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-secondary" onclick="closeModal()">Отмена</button>
-                                <button type="submit" class="btn btn-primary">Добавить задание</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-
-            // Добавляем стили для модального окна
-            if (!document.getElementById('modal-styles')) {
-                const style = document.createElement('style');
-                style.id = 'modal-styles';
-                style.textContent = `
-                    .modal-overlay {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background: rgba(0, 0, 0, 0.5);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        z-index: 1000;
-                        animation: fadeIn 0.3s ease;
-                    }
-
-                    .modal-content {
-                        background: white;
-                        border-radius: 12px;
-                        width: 90%;
-                        max-width: 600px;
-                        max-height: 90vh;
-                        overflow-y: auto;
-                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                        animation: slideUp 0.3s ease;
-                    }
-
-                    .modal-header {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding: 20px 24px;
-                        border-bottom: 1px solid #e0e0e0;
-                        background: linear-gradient(135deg, var(--primary-color) 0%, #303f9f 100%);
-                        color: white;
-                        border-radius: 12px 12px 0 0;
-                    }
-
-                    .modal-header h3 {
-                        margin: 0;
-                        font-size: 1.3rem;
-                        font-weight: 500;
-                    }
-
-                    .modal-close {
-                        background: none;
-                        border: none;
-                        font-size: 1.5rem;
-                        color: white;
-                        cursor: pointer;
-                        padding: 0;
-                        width: 30px;
-                        height: 30px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border-radius: 50%;
-                        transition: background 0.3s ease;
-                    }
-
-                    .modal-close:hover {
-                        background: rgba(255, 255, 255, 0.2);
-                    }
-
-                    .modal-body {
-                        padding: 24px;
-                    }
-
-                    .form-group {
-                        margin-bottom: 20px;
-                    }
-
-                    .form-row {
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 16px;
-                    }
-
-                    .form-group label {
-                        display: block;
-                        margin-bottom: 8px;
-                        font-weight: 500;
-                        color: #333;
-                    }
-
-                    .form-control {
-                        width: 100%;
-                        padding: 12px 16px;
-                        border: 2px solid #e0e0e0;
-                        border-radius: 8px;
-                        font-size: 1rem;
-                        transition: all 0.3s ease;
-                        box-sizing: border-box;
-                        font-family: 'Roboto', sans-serif;
-                    }
-
-                    .form-control:focus {
-                        outline: none;
-                        border-color: var(--primary-color);
-                        box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1);
-                    }
-
-                    .form-control::placeholder {
-                        color: #999;
-                    }
-
-                    .form-actions {
-                        display: flex;
-                        gap: 12px;
-                        justify-content: flex-end;
-                        margin-top: 24px;
-                        padding-top: 20px;
-                        border-top: 1px solid #e0e0e0;
-                    }
-
-                    .btn {
-                        padding: 12px 24px;
-                        border: none;
-                        border-radius: 8px;
-                        font-size: 1rem;
-                        font-weight: 500;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                        text-transform: uppercase;
-                        letter-spacing: 0.5px;
-                    }
-
-                    .btn-primary {
-                        background: linear-gradient(135deg, var(--primary-color) 0%, #303f9f 100%);
-                        color: white;
-                        box-shadow: 0 4px 15px rgba(63, 81, 181, 0.3);
-                    }
-
-                    .btn-primary:hover {
-                        transform: translateY(-2px);
-                        box-shadow: 0 6px 20px rgba(63, 81, 181, 0.4);
-                    }
-
-                    .btn-secondary {
-                        background: #f5f5f5;
-                        color: #666;
-                        border: 1px solid #e0e0e0;
-                    }
-
-                    .btn-secondary:hover {
-                        background: #e0e0e0;
-                    }
-
-                    @keyframes fadeIn {
-                        from { opacity: 0; }
-                        to { opacity: 1; }
-                    }
-
-                    @keyframes slideUp {
-                        from { 
-                            opacity: 0;
-                            transform: translateY(30px);
-                        }
-                        to { 
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-
-                    @media (max-width: 768px) {
-                        .form-row {
-                            grid-template-columns: 1fr;
-                        }
-                        
-                        .modal-content {
-                            width: 95%;
-                            margin: 10px;
-                        }
-                        
-                        .form-actions {
-                            flex-direction: column;
-                        }
-                        
-                        .btn {
-                            width: 100%;
-                        }
-                    }
-
-                    .file-upload {
-                        position: relative;
-                        margin-top: 8px;
-                    }
-
-                    .file-input {
-                        position: absolute;
-                        width: 0.1px;
-                        height: 0.1px;
-                        opacity: 0;
-                        overflow: hidden;
-                        z-index: -1;
-                    }
-
-                    .file-upload-label {
-                        display: inline-flex;
-                        align-items: center;
-                        padding: 10px 16px;
-                        background-color: #f5f5f5;
-                        border: 2px dashed #bdbdbd;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                        width: 100%;
-                        box-sizing: border-box;
-                    }
-
-                    .file-upload-label:hover {
-                        background-color: #eeeeee;
-                        border-color: #9e9e9e;
-                    }
-
-                    #file-name {
-                        color: #666;
-                        font-size: 0.9rem;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        max-width: 80%;
-                    }
-
-                    .homework-list {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin-top: 15px;
-                    }
-
-                    .homework-header {
-                        display: grid;
-                        grid-template-columns: 1.5fr 2fr 1fr 2fr;
-                        background-color: #f5f5f5;
-                        font-weight: 600;
-                        padding: 12px 15px;
-                        border-radius: 8px;
-                        margin-bottom: 8px;
-                        font-size: 0.9rem;
-                        color: #555;
-                    }
-
-                    .homework-item {
-                        display: grid;
-                        grid-template-columns: 1.5fr 2fr 1fr 2fr;
-                        padding: 12px 15px;
-                        border-bottom: 1px solid #eee;
-                        align-items: center;
-                        transition: background-color 0.2s;
-                    }
-
-                    .homework-item:hover {
-                        background-color: #f9f9f9;
-                    }
-
-                    .attachment-link {
-                        display: inline-flex;
-                        align-items: center;
-                        color: var(--primary-color);
-                        text-decoration: none;
-                        max-width: 100%;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
-
-                    .attachment-link:hover {
-                        text-decoration: underline;
-                    }
-
-                    .attachment-link span {
-                        display: inline-block;
-                        max-width: 200px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
-
-                    @media (max-width: 768px) {
-                        .homework-header {
-                            display: none;
-                        }
-                        
-                        .homework-item {
-                            grid-template-columns: 1fr;
-                            padding: 15px;
-                            border: 1px solid #eee;
-                            border-radius: 8px;
-                            margin-bottom: 10px;
-                        }
-                        
-                        .homework-item > div {
-                            padding: 5px 0;
-                        }
-                        
-                        .homework-item > div:before {
-                            content: attr(data-label);
-                            font-weight: 600;
-                            margin-right: 8px;
-                            color: #666;
-                        }
-                        
-                        .homework-item > div:nth-child(1):before { content: "Предмет: "; }
-                        .homework-item > div:nth-child(2):before { content: "Задание: "; }
-                        .homework-item > div:nth-child(3):before { content: "Срок: "; }
-                        .homework-item > div:nth-child(4):before { content: "Вложение: "; }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-
-            document.body.appendChild(modal);
-
-            // Устанавливаем минимальную дату - сегодня (после добавления в DOM)
-            const today = new Date().toISOString().split('T')[0];
-            const dateInput = document.getElementById('hw-due-date');
-            if (dateInput) {
-                dateInput.min = today;
-                dateInput.value = today;
-            }
-
-            // Обработчик отправки формы
-            document.getElementById('homework-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                submitHomework();
-            });
-
-            // Обработчик выбора файла
-            const fileInput = document.getElementById('hw-attachment');
-            const fileNameDisplay = document.getElementById('file-name');
-
-            fileInput.addEventListener('change', function() {
-                if (this.files.length > 0) {
-                    fileNameDisplay.textContent = this.files[0].name;
-                    fileNameDisplay.style.color = '#333';
-                    fileNameDisplay.style.fontWeight = '500';
-                } else {
-                    fileNameDisplay.textContent = 'Выберите файл';
-                    fileNameDisplay.style.color = '#666';
-                    fileNameDisplay.style.fontWeight = 'normal';
-                }
-            });
+        function showStudentsList(classId, className) {
+            console.log('showStudentsList called with:', classId, className);
+            
+            // Создаем текстовый файл со списком студентов
+            const studentsData = [
+                '1. Петров А.С.',
+                '2. Иванов П.И.',
+                '3. Сидорова М.И.',
+                '4. Козлов Д.В.',
+                '5. Новикова Е.А.',
+                '6. Морозов К.С.',
+                '7. Волкова О.Н.',
+                '8. Лебедев А.М.',
+                '9. Соколов В.И.',
+                '10. Коваленко Н.П.',
+                '11. Мельникова Т.А.',
+                '12. Тарасов Р.С.'
+            ];
+            
+            const fileContent = `Список группы ${className}\n` +
+                              `Дата формирования: ${new Date().toLocaleDateString('ru-RU')}\n` +
+                              `${'='.repeat(50)}\n\n` +
+                              studentsData.join('\n');
+            
+            // Создаем Blob и скачиваем файл
+            const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `список_группы_${className.replace(/[^a-zA-Z0-9]/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            console.log('Файл со списком студентов создан и скачан');
         }
 
         // Закрытие модального окна
@@ -1195,115 +744,11 @@
             }
         }
 
-        // Отправка домашнего задания
-        function submitHomework() {
-            const classId = document.getElementById('hw-class-id').value;
-            const className = document.getElementById('hw-class-name').value;
-            const subject = document.getElementById('hw-subject').value;
-            const task = document.getElementById('hw-task').value;
-            const dueDate = document.getElementById('hw-due-date').value;
-            const priority = document.getElementById('hw-priority').value;
-            const description = document.getElementById('hw-description').value;
-            const fileInput = document.getElementById('hw-attachment');
-
-            // Валидация
-            if (!subject || !task || !dueDate) {
-                alert('Пожалуйста, заполните все обязательные поля');
-                return;
-            }
-
-            // Получаем данные преподавателя
-            const teacherId = localStorage.getItem('teacherId') || 'teacher1';
-            const teacherData = getTeacherData(teacherId);
-
-            // Создаем новое домашнее задание
-            const newHomework = {
-                id: Date.now(),
-                class: className,
-                subject: subject,
-                task: task,
-                dueDate: dueDate,
-                priority: priority,
-                description: description,
-                createdDate: new Date().toLocaleDateString('ru-RU'),
-                teacher: teacherData.name,
-                attachment: null
-            };
-
-            // Обработка прикрепленного файла
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    // Сохраняем имя файла и его содержимое в формате base64
-                    newHomework.attachment = {
-                        fileName: file.name,
-                        fileType: file.type,
-                        fileSize: file.size,
-                        data: e.target.result.split(',')[1] // Удаляем префикс data:...
-                    };
-                    
-                    // Сохраняем задание после загрузки файла
-                    saveHomeworkAndUpdate(teacherId, teacherData, newHomework);
-                };
-                
-                reader.readAsDataURL(file);
-            } else {
-                // Если файл не прикреплен, сохраняем задание сразу
-                saveHomeworkAndUpdate(teacherId, teacherData, newHomework);
-            }
-        }
-
-        // Вспомогательная функция для сохранения задания и обновления интерфейса
-        function saveHomeworkAndUpdate(teacherId, teacherData, homework) {
-            // Добавляем в массив домашних заданий
-            if (!teacherData.homework) {
-                teacherData.homework = [];
-            }
-            teacherData.homework.unshift(homework);
-
-            // Сохраняем в localStorage
-            saveTeacherData(teacherId, teacherData);
-
-            // Показываем успешное сообщение
-            showSuccessMessage('Домашнее задание успешно добавлено!');
-
-            // Закрываем модальное окно
-            closeModal();
-
-            // Обновляем отображение домашних заданий
-            populateHomework(teacherData);
-        }
-
-        // Функция для скачивания вложений
-        function downloadAttachment(homeworkId, fileName) {
-            const teacherId = localStorage.getItem('teacherId') || 'teacher1';
-            const teacherData = getTeacherData(teacherId);
-            const homework = teacherData.homework.find(hw => hw.id === homeworkId);
-            
-            if (!homework || !homework.attachment) {
-                alert('Файл не найден');
-                return;
-            }
-
-            // Создаем временную ссылку для скачивания
-            const link = document.createElement('a');
-            link.href = `data:${homework.attachment.fileType};base64,${homework.attachment.data}`;
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
         // Показать успешное сообщение
         function showSuccessMessage(message) {
             const successDiv = document.createElement('div');
             successDiv.className = 'success-message';
-            successDiv.innerHTML = `
-                <i class="material-icons">check_circle</i>
-                <span>${message}</span>
-            `;
+            successDiv.innerHTML = '<i class="material-icons">check_circle</i><span>' + message + '</span>';
 
             // Добавляем стили для успешного сообщения
             if (!document.getElementById('success-styles')) {
@@ -1363,6 +808,55 @@
             }, 3000);
         }
 
+        // Функция обновления списка студентов при выборе группы
+        function updateStudentsList(groupId) {
+            const studentSelect = document.getElementById('grade-student');
+            if (!studentSelect) return;
+            
+            // Списки студентов по группам
+            const studentsByGroup = {
+                '2ПО-25': [
+                    'Петров А.С.',
+                    'Иванов П.И.',
+                    'Сидорова М.И.',
+                    'Козлов Д.В.',
+                    'Новикова Е.А.',
+                    'Морозов К.С.',
+                    'Волкова О.Н.',
+                    'Лебедев А.М.',
+                    'Соколов В.И.',
+                    'Коваленко Н.П.',
+                    'Мельникова Т.А.',
+                    'Тарасов Р.С.'
+                ],
+                '1КСК-25': [
+                    'Алексеев А.А.',
+                    'Белов Б.Б.',
+                    'Васильева В.В.',
+                    'Григорьев Г.Г.',
+                    'Дмитриева Д.Д.',
+                    'Егоров Е.Е.',
+                    'Жукова Ж.Ж.',
+                    'Зайцев З.З.',
+                    'Ильина И.И.',
+                    'Ковалев К.К.'
+                ]
+            };
+            
+            // Очищаем список студентов
+            studentSelect.innerHTML = '<option value="">Выберите ученика</option>';
+            
+            // Добавляем студентов выбранной группы
+            if (studentsByGroup[groupId]) {
+                studentsByGroup[groupId].forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student;
+                    option.textContent = student;
+                    studentSelect.appendChild(option);
+                });
+            }
+        }
+
         // Модальное окно для выставления оценок
         function showGradeModal(classId, className) {
             console.log('showGradeModal started with:', classId, className);
@@ -1379,6 +873,15 @@
                         <form id="grade-form">
                             <input type="hidden" id="grade-class-id" value="${classId}">
                             <input type="hidden" id="grade-class-name" value="${className}">
+                            
+                            <div class="form-group">
+                                <label for="grade-group">Группа</label>
+                                <select id="grade-group" class="form-control" required>
+                                    <option value="">Выберите группу</option>
+                                    <option value="2ПО-25">2ПО-25</option>
+                                    <option value="1КСК-25">1КСК-25</option>
+                                </select>
+                            </div>
                             
                             <div class="form-group">
                                 <label for="grade-student">Ученик</label>
@@ -1440,9 +943,8 @@
                                     <option value="Лабораторная работа">Лабораторная работа</option>
                                     <option value="Практическая работа">Практическая работа</option>
                                     <option value="Тест">Тест</option>
-                                    <option value="Проект">Проект</option>
-                                    <option value="Домашнее задание">Домашнее задание</option>
-                                    <option value="Активность на уроке">Активность на уроке</option>
+                                    <option value="Зачет">Зачет</option>
+                                    <option value="Экзамен">Экзамен</option>
                                 </select>
                             </div>
 
@@ -1461,6 +963,138 @@
             `;
 
             document.body.appendChild(modal);
+            
+            // Добавляем стили для модального окна оценок если их еще нет
+            if (!document.getElementById('grade-modal-styles')) {
+                const style = document.createElement('style');
+                style.id = 'grade-modal-styles';
+                style.textContent = `
+                    .modal-overlay {
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        bottom: 0 !important;
+                        background: rgba(0, 0, 0, 0.5) !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        z-index: 9999 !important;
+                    }
+                    .modal-content {
+                        background: white !important;
+                        border-radius: 12px !important;
+                        width: 90% !important;
+                        max-width: 600px !important;
+                        max-height: 90vh !important;
+                        overflow-y: auto !important;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                    .modal-header {
+                        display: flex !important;
+                        justify-content: space-between !important;
+                        align-items: center !important;
+                        padding: 20px 24px !important;
+                        border-bottom: 1px solid #e0e0e0 !important;
+                        background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%) !important;
+                        color: white !important;
+                        border-radius: 12px 12px 0 0 !important;
+                        margin: 0 !important;
+                    }
+                    .modal-header h3 {
+                        margin: 0 !important;
+                        font-size: 1.5rem !important;
+                        font-weight: 500 !important;
+                        color: white !important;
+                    }
+                    .modal-close {
+                        background: none !important;
+                        border: none !important;
+                        color: white !important;
+                        font-size: 1.5rem !important;
+                        cursor: pointer !important;
+                        padding: 4px !important;
+                        border-radius: 4px !important;
+                        transition: background-color 0.2s !important;
+                    }
+                    .modal-close:hover {
+                        background-color: rgba(255, 255, 255, 0.1) !important;
+                    }
+                    .modal-body {
+                        padding: 24px !important;
+                    }
+                    .form-group {
+                        margin-bottom: 20px !important;
+                    }
+                    .form-group label {
+                        display: block !important;
+                        margin-bottom: 8px !important;
+                        font-weight: 500 !important;
+                        color: #333 !important;
+                    }
+                    .form-group input,
+                    .form-group select,
+                    .form-group textarea {
+                        width: 100% !important;
+                        padding: 12px !important;
+                        border: 2px solid #e0e0e0 !important;
+                        border-radius: 8px !important;
+                        font-size: 14px !important;
+                        transition: border-color 0.2s !important;
+                        box-sizing: border-box !important;
+                    }
+                    .form-group input:focus,
+                    .form-group select:focus,
+                    .form-group textarea:focus {
+                        outline: none !important;
+                        border-color: #3f51b5 !important;
+                        box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.1) !important;
+                    }
+                    .form-actions {
+                        display: flex !important;
+                        justify-content: flex-end !important;
+                        gap: 12px !important;
+                        margin-top: 24px !important;
+                        padding-top: 20px !important;
+                        border-top: 1px solid #e0e0e0 !important;
+                    }
+                    .btn {
+                        padding: 12px 24px !important;
+                        border: none !important;
+                        border-radius: 8px !important;
+                        font-size: 14px !important;
+                        font-weight: 500 !important;
+                        cursor: pointer !important;
+                        transition: all 0.2s !important;
+                        display: inline-flex !important;
+                        align-items: center !important;
+                        gap: 8px !important;
+                    }
+                    .btn-primary {
+                        background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%) !important;
+                        color: white !important;
+                    }
+                    .btn-primary:hover {
+                        background: linear-gradient(135deg, #303f9f 0%, #283593 100%) !important;
+                        transform: translateY(-1px) !important;
+                        box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3) !important;
+                    }
+                    .btn-secondary {
+                        background: #f5f5f5 !important;
+                        color: #666 !important;
+                    }
+                    .btn-secondary:hover {
+                        background: #e0e0e0 !important;
+                    }
+                    .material-icons {
+                        font-size: 18px !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
             console.log('Modal added to DOM');
             
             // Проверяем, что модальное окно добавлено
@@ -1496,6 +1130,17 @@
                 console.error('Date input not found!');
             }
 
+            // Обработчик изменения группы
+            const groupSelect = document.getElementById('grade-group');
+            if (groupSelect) {
+                groupSelect.addEventListener('change', function() {
+                    updateStudentsList(this.value);
+                });
+                console.log('Group select event listener added');
+            } else {
+                console.error('Group select not found!');
+            }
+
             // Обработчик отправки формы
             const form = document.getElementById('grade-form');
             if (form) {
@@ -1513,6 +1158,7 @@
         function submitGrade() {
             const classId = document.getElementById('grade-class-id').value;
             const className = document.getElementById('grade-class-name').value;
+            const group = document.getElementById('grade-group').value;
             const student = document.getElementById('grade-student').value;
             const subject = document.getElementById('grade-subject').value;
             const grade = document.getElementById('grade-value').value;
@@ -1521,7 +1167,7 @@
             const comment = document.getElementById('grade-comment').value;
 
             // Валидация
-            if (!student || !subject || !grade || !date || !topic) {
+            if (!group || !student || !subject || !grade || !date || !topic) {
                 alert('Пожалуйста, заполните все обязательные поля');
                 return;
             }
@@ -1533,6 +1179,7 @@
             // Создаем новую оценку
             const newGrade = {
                 id: Date.now(),
+                group: group,
                 student: student,
                 class: className,
                 subject: subject,
@@ -1554,17 +1201,19 @@
             saveTeacherData(teacherId, teacherData);
 
             // Показываем успешное сообщение
-            showSuccessMessage(`Оценка "${grade}" успешно выставлена ученику ${student}!`);
+            showSuccessMessage(`Оценка "${grade}" успешно выставлена ученику ${student} из группы ${group}!`);
 
             // Закрываем модальное окно
             closeModal();
-
-            // Обновляем отображение оценок
-            populateRecentGrades(teacherData);
         }
 
         // Делаем submitGrade глобально доступной
         window.submitGrade = submitGrade;
+
+        // Делаем все функции глобально доступными
+        window.showGradeForm = showGradeForm;
+        window.showStudentsList = showStudentsList;
+        window.closeModal = closeModal;
 
         function logout() {
             localStorage.removeItem('teacherId');

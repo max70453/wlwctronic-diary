@@ -4,23 +4,26 @@ const teacherMockData = {
         'teacher1': {
             id: 'teacher1',
             name: 'Иванов Иван Иванович',
-            subjects: ['Математика', 'Физика'],
+            subjects: ['Информатика', 'Базы данных'],
             email: 'ivanov@school.ru',
             phone: '+7 (123) 456-78-90',
-            experience: '15 лет',
+            experience: 'стаж 15 лет',
             qualification: 'Высшая категория',
             classes: [
-                { id: 'class1', name: '10А класс', subject: 'Математика', students: 25 },
-                { id: 'class2', name: '10Б класс', subject: 'Математика', students: 23 },
-                { id: 'class3', name: '11А класс', subject: 'Физика', students: 22 }
+                { id: 'class1', name: '2ПО-25', subject: 'Информатика', students: 12 },
+                { id: 'class2', name: '1КСК-25', subject: 'Базы данных', students: 10 }
             ],
             schedule: [
-                { day: 'Понедельник', time: '08:30-09:15', class: '10А', subject: 'Математика', room: '201' },
-                { day: 'Понедельник', time: '09:25-10:10', class: '10Б', subject: 'Математика', room: '202' },
-                { day: 'Вторник', time: '10:20-11:05', class: '11А', subject: 'Физика', room: '301' },
-                { day: 'Среда', time: '08:30-09:15', class: '10А', subject: 'Математика', room: '201' },
-                { day: 'Четверг', time: '11:15-12:00', class: '11А', subject: 'Физика', room: '301' },
-                { day: 'Пятница', time: '09:25-10:10', class: '10Б', subject: 'Математика', room: '202' }
+                { day: 'Понедельник', time: '08:30-10:00', class: '2ПО-25', subject: 'Информатика', room: '201' },
+                { day: 'Понедельник', time: '10:10-11:40', class: '1КСК-25', subject: 'Базы данных', room: '202' },
+                { day: 'Вторник', time: '08:30-10:00', class: '2ПО-25', subject: 'Информатика', room: '201' },
+                { day: 'Вторник', time: '10:10-11:40', class: '1КСК-25', subject: 'Базы данных', room: '202' },
+                { day: 'Среда', time: '08:30-10:00', class: '2ПО-25', subject: 'Информатика', room: '201' },
+                { day: 'Среда', time: '10:10-11:40', class: '2ПО-25', subject: 'Информатика', room: '201' },
+                { day: 'Четверг', time: '08:30-10:00', class: '1КСК-25', subject: 'Базы данных', room: '202' },
+                { day: 'Четверг', time: '10:10-11:40', class: '1КСК-25', subject: 'Базы данных', room: '202' },
+                { day: 'Пятница', time: '08:30-10:00', class: '2ПО-25', subject: 'Информатика', room: '201' },
+                { day: 'Пятница', time: '10:10-11:40', class: '1КСК-25', subject: 'Базы данных', room: '202' }
             ],
             recentGrades: [
                 { id: 1, student: 'Петров А.С.', class: '10А', subject: 'Математика', grade: '5', date: '28.01.2026', topic: 'Контрольная работа' },
@@ -34,18 +37,18 @@ const teacherMockData = {
                 { id: 3, class: '11А', subject: 'Физика', task: 'Лабораторная работа №4, стр.78', dueDate: '01.02.2026', priority: 'high' }
             ],
             announcements: [
-                { id: 1, title: 'Контрольная работа по математике', content: '30 января в 10А классе будет контрольная работа по теме "Производные"', date: '28.01.2026', important: true },
-                { id: 2, title: 'Родительское собрание', content: '5 февраля в 18:00 состоится родительское собрание для 10 классов', date: '27.01.2026', important: false },
-                { id: 3, title: 'Олимпиада по физике', content: 'Приглашаются желающие участвовать в городской олимпиаде по физике', date: '26.01.2026', important: false }
+                { id: 1, title: 'Контрольная работа по информатике', content: '30 января в группе 2ПО-25 будет контрольная работа по теме "Алгоритмы"', date: '28.01.2026', important: true },
+                { id: 2, title: 'Родительское собрание', content: '5 февраля в 18:00 состоится родительское собрание для 2ПО-25 и 1КСК-25', date: '27.01.2026', important: false },
+                { id: 3, title: 'Олимпиада по физике', content: 'Приглашаются желающие участвовать в городской олимпиаде по физике из групп 2ПО-25 и 1КСК-25', date: '26.01.2026', important: false }
             ],
             statistics: {
-                totalStudents: 70,
+                totalStudents: 22,
                 averageGrades: {
-                    'Математика': 4.2,
-                    'Физика': 4.5
+                    'Информатика': 4.2,
+                    'Базы данных': 4.5
                 },
-                classesCount: 3,
-                lessonsPerWeek: 18
+                classesCount: 2,
+                lessonsPerWeek: 10
             }
         }
     }
@@ -53,12 +56,20 @@ const teacherMockData = {
 
 // Функции для работы с данными преподавателя
 function getTeacherData(teacherId) {
+    console.log('Запрос данных для teacherId:', teacherId);
+    
     const stored = localStorage.getItem('teacherData');
+    console.log('Данные в localStorage:', stored ? 'найдены' : 'не найдены');
+    
     if (stored) {
         const data = JSON.parse(stored);
-        return data.teachers[teacherId] || teacherMockData.teachers[teacherId];
+        const teacher = data.teachers[teacherId] || teacherMockData.teachers[teacherId];
+        console.log('Данные преподавателя:', teacher ? 'найдены' : 'не найдены');
+        return teacher;
     }
-    return teacherMockData.teachers[teacherId];
+    const teacher = teacherMockData.teachers[teacherId];
+    console.log('Данные из mock:', teacher ? 'найдены' : 'не найдены');
+    return teacher;
 }
 
 function saveTeacherData(teacherId, data) {
@@ -70,5 +81,9 @@ function saveTeacherData(teacherId, data) {
 
 // Инициализация данных в localStorage
 if (!localStorage.getItem('teacherData')) {
+    console.log('Инициализация данных в localStorage');
     localStorage.setItem('teacherData', JSON.stringify(teacherMockData));
+    console.log('Данные инициализированы');
+} else {
+    console.log('Данные в localStorage уже существуют');
 }

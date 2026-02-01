@@ -125,6 +125,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Проверка аутентификации на защищенных страницах
     if (window.location.pathname.includes('dashboard.html') && !isAuthenticated()) {
+        console.log('Пользователь не аутентифицирован, перенаправляем на страницу входа');
         window.location.href = 'index.html';
+    } else {
+        console.log('Пользователь аутентифицирован или это не dashboard страница');
     }
 });
