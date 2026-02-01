@@ -388,6 +388,98 @@
                     </div>
                 </div>
 
+                <!-- Таблица оценок -->
+                <div class="MuiPaper-root fade-in">
+                    <h3 style="margin-top: 0;">Журнал оценок</h3>
+                    
+                    <!-- Фильтры -->
+                    <div class="filters-container" style="margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+                        <div class="filter-group">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Группа:</label>
+                            <select id="filter-group" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">Все группы</option>
+                                <option value="2ПО-25">2ПО-25</option>
+                                <option value="1КСК-25">1КСК-25</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Предмет:</label>
+                            <select id="filter-subject" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">Все предметы</option>
+                                <option value="Информатика">Информатика</option>
+                                <option value="Базы данных">Базы данных</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Тип работы:</label>
+                            <select id="filter-type" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">Все типы</option>
+                                <option value="Контрольная работа">Контрольная работа</option>
+                                <option value="Самостоятельная работа">Самостоятельная работа</option>
+                                <option value="Лабораторная работа">Лабораторная работа</option>
+                                <option value="Устный ответ">Устный ответ</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Оценка:</label>
+                            <select id="filter-grade" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">Все оценки</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="filter-group" style="display: flex; align-items: flex-end;">
+                            <button onclick="applyFilters()" style="padding: 8px 16px; background: #3f51b5; color: white; border: none; border-radius: 4px; cursor: pointer;">Применить</button>
+                        </div>
+                    </div>
+
+                    <!-- Таблица -->
+                    <div class="grades-table-container" style="overflow-x: auto;">
+                        <table class="grades-table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                            <thead>
+                                <tr style="background: #f5f5f5;">
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">ФИО</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Предмет</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Дата</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Тип работы</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Оценка</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Итоговая оценка</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grades-table-body">
+                                <!-- Данные будут загружены через JavaScript -->
+                            </tbody>
+                        </table>
+                        
+                        <!-- Пагинация -->
+                        <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                            <div class="pagination-info" style="color: #666; font-size: 0.9rem;">
+                                Показано <span id="start-record">1</span>-<span id="end-record">5</span> из <span id="total-records">0</span> записей
+                            </div>
+                            <div class="pagination-controls" style="display: flex; gap: 10px; align-items: center;">
+                                <button id="first-page" onclick="goToFirstPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&laquo;</button>
+                                <button id="prev-page" onclick="goToPrevPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&lsaquo;</button>
+                                <div id="page-numbers" style="display: flex; gap: 5px;">
+                                    <!-- Номера страниц будут сгенерированы -->
+                                </div>
+                                <button id="next-page" onclick="goToNextPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&rsaquo;</button>
+                                <button id="last-page" onclick="goToLastPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&raquo;</button>
+                            </div>
+                            <div class="page-size-selector" style="display: flex; align-items: center; gap: 10px;">
+                                <label style="font-size: 0.9rem; color: #666;">Записей на странице:</label>
+                                <select id="page-size" onchange="changePageSize()" style="padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem;">
+                                    <option value="5">5</option>
+                                    <option value="10" selected>10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="content-row">
                     <!-- Расписание -->
                     <div class="MuiPaper-root fade-in">
@@ -488,14 +580,13 @@
                     // Заполняем статистику
                     populateStatistics(teacherData);
                     
-                    // Заполняем классы
                     populateClasses(teacherData);
                     
-                    // Заполняем расписание
                     populateSchedule(teacherData);
                     
-                    // Заполняем объявления
                     populateAnnouncements(teacherData);
+                    
+                    populateGradesTable(teacherData);
                     
                     // Добавляем анимации
                     addAnimations();
@@ -634,6 +725,258 @@
                     scheduleContainer.innerHTML = '<p>На ближайшие дни занятий с группами нет</p>';
                 }
             }
+        }
+
+        // Загрузка данных для таблицы оценок
+        function populateGradesTable(teacher) {
+            const tableBody = document.getElementById('grades-table-body');
+            
+            // Mock данные для оценок (расширенные для демонстрации пагинации)
+            const gradesData = [
+                { id: 1, student: 'Петров А.С.', group: '2ПО-25', subject: 'Информатика', date: '28.01.2026', type: 'Контрольная работа', grade: '5', finalGrade: '4.5' },
+                { id: 2, student: 'Иванов П.И.', group: '2ПО-25', subject: 'Информатика', date: '27.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '4.2' },
+                { id: 3, student: 'Сидорова М.И.', group: '2ПО-25', subject: 'Информатика', date: '26.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '4.8' },
+                { id: 4, student: 'Козлов Д.В.', group: '1КСК-25', subject: 'Базы данных', date: '25.01.2026', type: 'Устный ответ', grade: '3', finalGrade: '3.5' },
+                { id: 5, student: 'Новикова Е.А.', group: '1КСК-25', subject: 'Базы данных', date: '24.01.2026', type: 'Контрольная работа', grade: '4', finalGrade: '4.1' },
+                { id: 6, student: 'Морозов К.С.', group: '1КСК-25', subject: 'Базы данных', date: '23.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '4.7' },
+                { id: 7, student: 'Волкова О.Н.', group: '2ПО-25', subject: 'Информатика', date: '22.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '4.0' },
+                { id: 8, student: 'Лебедев А.М.', group: '2ПО-25', subject: 'Информатика', date: '21.01.2026', type: 'Контрольная работа', grade: '5', finalGrade: '4.6' },
+                { id: 9, student: 'Соколов В.И.', group: '1КСК-25', subject: 'Базы данных', date: '20.01.2026', type: 'Устный ответ', grade: '4', finalGrade: '4.3' },
+                { id: 10, student: 'Коваленко Н.П.', group: '2ПО-25', subject: 'Информатика', date: '19.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '4.9' },
+                { id: 11, student: 'Мельникова Т.А.', group: '1КСК-25', subject: 'Базы данных', date: '18.01.2026', type: 'Контрольная работа', grade: '3', finalGrade: '3.8' },
+                { id: 12, student: 'Тарасов Р.С.', group: '2ПО-25', subject: 'Информатика', date: '17.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '4.1' },
+                { id: 13, student: 'Белова А.В.', group: '1КСК-25', subject: 'Базы данных', date: '16.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '4.7' },
+                { id: 14, student: 'Григорьев М.И.', group: '2ПО-25', subject: 'Информатика', date: '15.01.2026', type: 'Контрольная работа', grade: '4', finalGrade: '4.2' },
+                { id: 15, student: 'Дмитриева Е.С.', group: '1КСК-25', subject: 'Базы данных', date: '14.01.2026', type: 'Устный ответ', grade: '5', finalGrade: '4.8' }
+            ];
+            
+            // Сохраняем данные для фильтрации и пагинации
+            window.allGradesData = gradesData;
+            window.filteredGradesData = gradesData;
+            window.currentPage = 1;
+            window.pageSize = 10;
+            
+            // Отображаем первую страницу
+            displayGradesWithPagination();
+        }
+
+        // Отображение оценок с пагинацией
+        function displayGradesWithPagination() {
+            const data = window.filteredGradesData || [];
+            const currentPage = window.currentPage || 1;
+            const pageSize = parseInt(document.getElementById('page-size').value) || 10;
+            
+            // Вычисляем пагинацию
+            const totalPages = Math.ceil(data.length / pageSize);
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, data.length);
+            const pageData = data.slice(startIndex, endIndex);
+            
+            // Отображаем данные текущей страницы
+            displayGrades(pageData);
+            
+            // Обновляем пагинацию
+            updatePagination(data.length, currentPage, totalPages, startIndex + 1, endIndex);
+        }
+
+        // Обновление элементов пагинации
+        function updatePagination(totalRecords, currentPage, totalPages, startRecord, endRecord) {
+            // Обновляем информацию о записях
+            document.getElementById('start-record').textContent = totalRecords > 0 ? startRecord : 0;
+            document.getElementById('end-record').textContent = endRecord;
+            document.getElementById('total-records').textContent = totalRecords;
+            
+            // Обновляем состояние кнопок
+            document.getElementById('first-page').disabled = currentPage === 1;
+            document.getElementById('prev-page').disabled = currentPage === 1;
+            document.getElementById('next-page').disabled = currentPage === totalPages;
+            document.getElementById('last-page').disabled = currentPage === totalPages;
+            
+            // Генерируем номера страниц
+            const pageNumbers = document.getElementById('page-numbers');
+            pageNumbers.innerHTML = '';
+            
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.onclick = () => goToPage(i);
+                pageButton.style.cssText = `
+                    padding: 6px 10px;
+                    border: 1px solid ${i === currentPage ? '#3f51b5' : '#ddd'};
+                    background: ${i === currentPage ? '#3f51b5' : 'white'};
+                    color: ${i === currentPage ? 'white' : '#333'};
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 0.8rem;
+                `;
+                pageNumbers.appendChild(pageButton);
+            }
+        }
+
+        // Функции навигации по страницам
+        function goToFirstPage() {
+            window.currentPage = 1;
+            displayGradesWithPagination();
+        }
+
+        function goToPrevPage() {
+            if (window.currentPage > 1) {
+                window.currentPage--;
+                displayGradesWithPagination();
+            }
+        }
+
+        function goToNextPage() {
+            const totalPages = Math.ceil((window.filteredGradesData || []).length / window.pageSize);
+            if (window.currentPage < totalPages) {
+                window.currentPage++;
+                displayGradesWithPagination();
+            }
+        }
+
+        function goToLastPage() {
+            const totalPages = Math.ceil((window.filteredGradesData || []).length / window.pageSize);
+            window.currentPage = totalPages;
+            displayGradesWithPagination();
+        }
+
+        function goToPage(pageNumber) {
+            window.currentPage = pageNumber;
+            displayGradesWithPagination();
+        }
+
+        function changePageSize() {
+            window.pageSize = parseInt(document.getElementById('page-size').value);
+            window.currentPage = 1; // Сбрасываем на первую страницу
+            displayGradesWithPagination();
+        }
+
+        // Отображение оценок в таблице
+        function displayGrades(data) {
+            const tableBody = document.getElementById('grades-table-body');
+            
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Данные не найдены</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            data.forEach(item => {
+                html += `
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 12px;">${item.student}</td>
+                        <td style="padding: 12px;">${item.subject}</td>
+                        <td style="padding: 12px;">${item.date}</td>
+                        <td style="padding: 12px;">${item.type}</td>
+                        <td style="padding: 12px;">
+                            <span style="background: ${getGradeColor(item.grade)}; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">
+                                ${item.grade}
+                            </span>
+                        </td>
+                        <td style="padding: 12px;">
+                            <input type="number" 
+                                   value="${item.finalGrade}" 
+                                   min="2" 
+                                   max="5" 
+                                   step="0.1"
+                                   onchange="updateFinalGrade(${item.id}, this.value)"
+                                   style="width: 60px; padding: 4px; border: 1px solid #ddd; border-radius: 4px; text-align: center;">
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+        }
+
+        // Получение цвета для оценки
+        function getGradeColor(grade) {
+            switch(grade) {
+                case '5': return '#4caf50';
+                case '4': return '#2196f3';
+                case '3': return '#ff9800';
+                case '2': return '#f44336';
+                default: return '#9e9e9e';
+            }
+        }
+
+        // Применение фильтров
+        function applyFilters() {
+            const groupFilter = document.getElementById('filter-group').value;
+            const subjectFilter = document.getElementById('filter-subject').value;
+            const typeFilter = document.getElementById('filter-type').value;
+            const gradeFilter = document.getElementById('filter-grade').value;
+            
+            let filteredData = window.allGradesData;
+            
+            if (groupFilter) {
+                filteredData = filteredData.filter(item => item.group === groupFilter);
+            }
+            
+            if (subjectFilter) {
+                filteredData = filteredData.filter(item => item.subject === subjectFilter);
+            }
+            
+            if (typeFilter) {
+                filteredData = filteredData.filter(item => item.type === typeFilter);
+            }
+            
+            if (gradeFilter) {
+                filteredData = filteredData.filter(item => item.grade === gradeFilter);
+            }
+            
+            // Сохраняем отфильтрованные данные и сбрасываем на первую страницу
+            window.filteredGradesData = filteredData;
+            window.currentPage = 1;
+            
+            // Отображаем с пагинацией
+            displayGradesWithPagination();
+        }
+
+        // Обновление итоговой оценки
+        function updateFinalGrade(studentId, newGrade) {
+            console.log(`Обновление итоговой оценки для студента ${studentId}: ${newGrade}`);
+            
+            // Находим студента в данных
+            const studentIndex = window.allGradesData.findIndex(item => item.id === studentId);
+            if (studentIndex !== -1) {
+                window.allGradesData[studentIndex].finalGrade = newGrade;
+                
+                // Показываем уведомление об успешном обновлении
+                showNotification(`Итоговая оценка обновлена: ${newGrade}`);
+            }
+        }
+
+        // Показ уведомления
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4caf50;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 4px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
         }
 
         // Заполнение объявлений
@@ -1214,6 +1557,14 @@
         window.showGradeForm = showGradeForm;
         window.showStudentsList = showStudentsList;
         window.closeModal = closeModal;
+        window.applyFilters = applyFilters;
+        window.updateFinalGrade = updateFinalGrade;
+        window.goToFirstPage = goToFirstPage;
+        window.goToPrevPage = goToPrevPage;
+        window.goToNextPage = goToNextPage;
+        window.goToLastPage = goToLastPage;
+        window.goToPage = goToPage;
+        window.changePageSize = changePageSize;
 
         function logout() {
             localStorage.removeItem('teacherId');
