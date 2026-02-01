@@ -27,7 +27,7 @@
             line-height: 1.6;
         }
 
-        /* AppBar styles */
+        /* AppBar styles как на главной странице */
         .app-bar {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: sticky;
@@ -42,6 +42,50 @@
             font-size: 1.3rem;
             color: white;
             text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: #ffd700;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        .nav-link:hover {
+            color: #ffd700;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .login-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.7);
         }
 
         .logo-icon {
@@ -534,6 +578,41 @@
         // Инициализация AppBar с улучшенным дизайном
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Базовый тест - DOM загружен');
+            
+            // Создаем AppBar как на главной странице
+            const appBar = document.getElementById('app-bar');
+            if (appBar) {
+                appBar.className = 'app-bar';
+                appBar.innerHTML = `
+                    <div class="MuiAppBar-root MuiAppBar-positionStatic" style="background: linear-gradient(90deg, #3f51b5 0%, #303f9f 100%);">
+                        <div class="MuiToolbar-root MuiToolbar-regular" style="min-height: 64px; padding: 0 24px; display: flex; justify-content: space-between; align-items: center;">
+                            <a href="index.html" class="logo">
+                                <i class="material-icons logo-icon">menu_book</i>
+                                <span>
+                                    <strong>E-Journal</strong><br>
+                                </span>
+                            </a>
+
+                            <nav style="display: flex; align-items: center;">
+                                <a href="index.html" class="nav-link">Главная</a>
+                                <a href="#" class="nav-link">О платформе</a>
+                                <a href="#" class="nav-link">Возможности</a>
+                                <a href="#" class="nav-link">Контакты</a>
+                            </nav>
+
+                            <div class="auth-buttons">
+                                <a href="#" onclick="logout()" class="login-btn">
+                                    <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">logout</i>
+                                    <span style="margin-left: 5px;">Выйти</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                console.log('AppBar создан');
+            } else {
+                console.error('AppBar элемент не найден');
+            }
             
             const teacherId = 'teacher1';
             console.log('Teacher ID:', teacherId);
