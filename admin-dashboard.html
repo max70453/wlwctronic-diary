@@ -414,6 +414,112 @@
             }
         }
     </style>
+    
+    <!-- Дополнительные стили для модального окна -->
+    <style>
+        /* Стили для модального окна */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .close-btn:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            background: #f5f5f5;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3f51b5;
+            box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.1);
+        }
+
+        textarea.form-input {
+            font-family: inherit;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
     <!-- Material-UI AppBar -->
@@ -437,7 +543,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="total-classes">0</div>
-                    <div class="stat-label">Классов</div>
+                    <div class="stat-label">Группы</div>
                 </div>
             </div>
 
@@ -447,19 +553,11 @@
 
                 <!-- Material-UI Tabs -->
                 <div class="MuiTabs-root">
-                    <div class="MuiTabs-flexContainer">
-                        <button class="MuiTab-root Mui-selected" data-tab="students">
-                            <span class="MuiTab-wrapper">Ученики</span>
-                        </button>
-                        <button class="MuiTab-root" data-tab="teachers">
-                            <span class="MuiTab-wrapper">Учителя</span>
-                        </button>
-                        <button class="MuiTab-root" data-tab="parents">
-                            <span class="MuiTab-wrapper">Родители</span>
-                        </button>
-                        <button class="MuiTab-root" data-tab="admins">
-                            <span class="MuiTab-wrapper">Администраторы</span>
-                        </button>
+                    <div class="tabs-container">
+                        <button class="MuiTab-root Mui-selected" data-tab="students">Ученики</button>
+                        <button class="MuiTab-root" data-tab="teachers">Учителя</button>
+                        <button class="MuiTab-root" data-tab="admins">Администраторы</button>
+                        <button class="MuiTab-root" data-tab="announcements">Объявления</button>
                     </div>
                 </div>
 
@@ -482,31 +580,14 @@
                         <input type="tel" id="user-phone" class="form-control" placeholder="Введите телефон">
                     </div>
                     <div class="form-group">
-                        <label for="user-class">Класс (для учеников):</label>
+                        <label for="user-class">Группа (для учеников):</label>
                         <select id="user-class" class="form-control">
-                            <option value="">Выберите класс</option>
-                            <option value="1А">1А</option>
-                            <option value="1Б">1Б</option>
-                            <option value="2А">2А</option>
-                            <option value="2Б">2Б</option>
-                            <option value="3А">3А</option>
-                            <option value="3Б">3Б</option>
-                            <option value="4А">4А</option>
-                            <option value="4Б">4Б</option>
-                            <option value="5А">5А</option>
-                            <option value="5Б">5Б</option>
-                            <option value="6А">6А</option>
-                            <option value="6Б">6Б</option>
-                            <option value="7А">7А</option>
-                            <option value="7Б">7Б</option>
-                            <option value="8А">8А</option>
-                            <option value="8Б">8Б</option>
-                            <option value="9А">9А</option>
-                            <option value="9Б">9Б</option>
-                            <option value="10А">10А</option>
-                            <option value="10Б">10Б</option>
-                            <option value="11А">11А</option>
-                            <option value="11Б">11Б</option>
+                            <option value="">Выберите группу</option>
+                            <option value="1СА-25">1СА-25</option>
+                            <option value="1КСК-25">1КСК-25</option>
+                            <option value="1КСК-25/у">1КСК-25/у</option>
+                            <option value="1БД-25">1БД-25</option>
+                            <option value="1РЕ-25">1РЕ-25</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -528,7 +609,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>ФИО</th>
-                                <th>Класс</th>
+                                <th>Группа</th>
                                 <th>Email</th>
                                 <th>Телефон</th>
                                 <th>Действия</th>
@@ -538,6 +619,31 @@
                             <!-- Данные будут загружены через JS -->
                         </tbody>
                     </table>
+                    
+                    <!-- Пагинация для учеников -->
+                    <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                        <div class="pagination-info" style="color: #666; font-size: 0.9rem;">
+                            Показано <span id="students-start-record">1</span>-<span id="students-end-record">5</span> из <span id="students-total-records">0</span> учеников
+                        </div>
+                        <div class="pagination-controls" style="display: flex; gap: 10px; align-items: center;">
+                            <button id="students-first-page" onclick="goToStudentsFirstPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&laquo;</button>
+                            <button id="students-prev-page" onclick="goToStudentsPrevPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&lsaquo;</button>
+                            <div id="students-page-numbers" style="display: flex; gap: 5px;">
+                                <!-- Номера страниц будут сгенерированы -->
+                            </div>
+                            <button id="students-next-page" onclick="goToStudentsNextPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&rsaquo;</button>
+                            <button id="students-last-page" onclick="goToStudentsLastPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&raquo;</button>
+                        </div>
+                        <div class="page-size-selector" style="display: flex; align-items: center; gap: 10px;">
+                            <label style="font-size: 0.9rem; color: #666;">Записей на странице:</label>
+                            <select id="students-page-size" onchange="changeStudentsPageSize()" style="padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem;">
+                                <option value="3">3</option>
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div id="teachers-tab" class="tab-content">
                     <table class="users-table">
@@ -555,23 +661,31 @@
                             <!-- Данные будут загружены через JS -->
                         </tbody>
                     </table>
-                </div>
-                <div id="parents-tab" class="tab-content">
-                    <table class="users-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>ФИО</th>
-                                <th>Дети</th>
-                                <th>Email</th>
-                                <th>Телефон</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="parents-table-body">
-                            <!-- Данные будут загружены через JS -->
-                        </tbody>
-                    </table>
+                    
+                    <!-- Пагинация для учителей -->
+                    <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                        <div class="pagination-info" style="color: #666; font-size: 0.9rem;">
+                            Показано <span id="teachers-start-record">1</span>-<span id="teachers-end-record">5</span> из <span id="teachers-total-records">0</span> учителей
+                        </div>
+                        <div class="pagination-controls" style="display: flex; gap: 10px; align-items: center;">
+                            <button id="teachers-first-page" onclick="goToTeachersFirstPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&laquo;</button>
+                            <button id="teachers-prev-page" onclick="goToTeachersPrevPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&lsaquo;</button>
+                            <div id="teachers-page-numbers" style="display: flex; gap: 5px;">
+                                <!-- Номера страниц будут сгенерированы -->
+                            </div>
+                            <button id="teachers-next-page" onclick="goToTeachersNextPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&rsaquo;</button>
+                            <button id="teachers-last-page" onclick="goToTeachersLastPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&raquo;</button>
+                        </div>
+                        <div class="page-size-selector" style="display: flex; align-items: center; gap: 10px;">
+                            <label style="font-size: 0.9rem; color: #666;">Записей на странице:</label>
+                            <select id="teachers-page-size" onchange="changeTeachersPageSize()" style="padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem;">
+                                <option value="3">3</option>
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div id="admins-tab" class="tab-content">
                     <table class="users-table">
@@ -589,202 +703,91 @@
                             <!-- Данные будут загружены через JS -->
                         </tbody>
                     </table>
-                </div>
-            </div>
-
-            <!-- Управление классами -->
-            <div class="MuiPaper-root">
-                <h3 class="MuiTypography-h5">Управление классами</h3>
-                
-                <div class="form-container">
-                    <div class="form-group">
-                        <label for="class-name">Название класса:</label>
-                        <input type="text" id="class-name" class="form-control" placeholder="Например: 5А">
-                    </div>
-                    <div class="form-group">
-                        <label for="class-teacher">Классный руководитель:</label>
-                        <select id="class-teacher" class="form-control">
-                            <option value="">Выберите учителя</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="class-room">Кабинет:</label>
-                        <input type="text" id="class-room" class="form-control" placeholder="Например: 205">
-                    </div>
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <button class="MuiButton-root MuiButton-contained" onclick="addClass()" style="width: 100%; padding: 14px 20px; font-size: 1rem;">
-                            <i class="material-icons" style="font-size: 1.2rem; vertical-align: middle; margin-right: 8px;">add</i>
-                            Добавить класс
-                        </button>
+                    
+                    <!-- Пагинация для администраторов -->
+                    <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                        <div class="pagination-info" style="color: #666; font-size: 0.9rem;">
+                            Показано <span id="admins-start-record">1</span>-<span id="admins-end-record">5</span> из <span id="admins-total-records">0</span> администраторов
+                        </div>
+                        <div class="pagination-controls" style="display: flex; gap: 10px; align-items: center;">
+                            <button id="admins-first-page" onclick="goToAdminsFirstPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&laquo;</button>
+                            <button id="admins-prev-page" onclick="goToAdminsPrevPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&lsaquo;</button>
+                            <div id="admins-page-numbers" style="display: flex; gap: 5px;">
+                                <!-- Номера страниц будут сгенерированы -->
+                            </div>
+                            <button id="admins-next-page" onclick="goToAdminsNextPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&rsaquo;</button>
+                            <button id="admins-last-page" onclick="goToAdminsLastPage()" style="padding: 6px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">&raquo;</button>
+                        </div>
+                        <div class="page-size-selector" style="display: flex; align-items: center; gap: 10px;">
+                            <label style="font-size: 0.9rem; color: #666;">Записей на странице:</label>
+                            <select id="admins-page-size" onchange="changeAdminsPageSize()" style="padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem;">
+                                <option value="3">3</option>
+                                <option value="5" selected>5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+                <div id="announcements-tab" class="tab-content">
+                    <!-- Форма добавления объявления -->
+                    <div class="form-container" style="margin-bottom: 30px;">
+                        <h3 style="margin-bottom: 20px; color: #333;">Создать объявление</h3>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="announcement-title">Заголовок:</label>
+                            <input type="text" id="announcement-title" class="form-control" placeholder="Введите заголовок объявления">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="announcement-content">Текст объявления:</label>
+                            <textarea id="announcement-content" class="form-control" rows="4" placeholder="Введите текст объявления" style="resize: vertical; min-height: 100px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="announcement-type">Тип:</label>
+                            <select id="announcement-type" class="form-control">
+                                <option value="info">Информация</option>
+                                <option value="important">Важное</option>
+                                <option value="urgent">Срочное</option>
+                                <option value="event">Событие</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="announcement-audience">Аудитория:</label>
+                            <select id="announcement-audience" class="form-control">
+                                <option value="all">Все</option>
+                                <option value="students">Ученики</option>
+                                <option value="teachers">Учителя</option>
+                                <option value="admins">Администраторы</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="announcement-date">Дата публикации:</label>
+                            <input type="date" id="announcement-date" class="form-control">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <button class="MuiButton-root MuiButton-contained" onclick="addAnnouncement()" style="width: 100%; padding: 14px 20px; font-size: 1rem;">
+                                <i class="material-icons" style="font-size: 1.2rem; vertical-align: middle; margin-right: 8px;">campaign</i>
+                                Опубликовать объявление
+                            </button>
+                        </div>
+                    </div>
 
-                <div id="classes-management">
-                    <table class="classes-table">
+                    <!-- Таблица объявлений -->
+                    <h3 style="margin-bottom: 20px; color: #333;">Список объявлений</h3>
+                    <table class="users-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Название</th>
-                                <th>Классный руководитель</th>
-                                <th>Кабинет</th>
-                                <th>Количество учеников</th>
+                                <th>Заголовок</th>
+                                <th>Тип</th>
+                                <th>Аудитория</th>
+                                <th>Дата</th>
                                 <th>Действия</th>
                             </tr>
                         </thead>
-                        <tbody id="classes-table-body">
+                        <tbody id="announcements-table-body">
                             <!-- Данные будут загружены через JS -->
                         </tbody>
                     </table>
-                </div>
-            </div>
-
-            <!-- Управление расписанием -->
-            <div class="MuiPaper-root">
-                <h3 class="MuiTypography-h5">Управление расписанием</h3>
-                
-                <div class="form-container">
-                    <div class="form-group">
-                        <label for="schedule-class">Класс:</label>
-                        <select id="schedule-class" class="form-control">
-                            <option value="">Выберите класс</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-day">День недели:</label>
-                        <select id="schedule-day" class="form-control">
-                            <option value="">Выберите день</option>
-                            <option value="Понедельник">Понедельник</option>
-                            <option value="Вторник">Вторник</option>
-                            <option value="Среда">Среда</option>
-                            <option value="Четверг">Четверг</option>
-                            <option value="Пятница">Пятница</option>
-                            <option value="Суббота">Суббота</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-time">Время:</label>
-                        <input type="text" id="schedule-time" class="form-control" placeholder="Например: 9:00-10:30">
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-subject">Предмет:</label>
-                        <input type="text" id="schedule-subject" class="form-control" placeholder="Например: Математика">
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-teacher">Учитель:</label>
-                        <select id="schedule-teacher" class="form-control">
-                            <option value="">Выберите учителя</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-room">Кабинет:</label>
-                        <input type="text" id="schedule-room" class="form-control" placeholder="Например: 205">
-                    </div>
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <button class="MuiButton-root MuiButton-contained" onclick="addScheduleItem()" style="width: 100%; padding: 14px 20px; font-size: 1rem;">
-                            <i class="material-icons" style="font-size: 1.2rem; vertical-align: middle; margin-right: 8px;">add</i>
-                            Добавить в расписание
-                        </button>
-                    </div>
-                </div>
-
-                <div id="schedule-management">
-                    <table class="schedule-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Класс</th>
-                                <th>День недели</th>
-                                <th>Время</th>
-                                <th>Предмет</th>
-                                <th>Учитель</th>
-                                <th>Кабинет</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="schedule-table-body">
-                            <!-- Данные будут загружены через JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Настройки системы -->
-            <div class="MuiPaper-root">
-                <h3 class="MuiTypography-h5">Настройки системы</h3>
-                
-                <div class="settings-section">
-                    <h4>Общие настройки</h4>
-                    <div class="setting-item">
-                        <div>
-                            <strong>Регистрация новых пользователей</strong>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">Разрешить регистрацию новых пользователей в системе</p>
-                        </div>
-                        <div class="toggle-switch" id="registration-toggle" onclick="toggleSetting('registration')"></div>
-                    </div>
-                    <div class="setting-item">
-                        <div>
-                            <strong>Email-уведомления</strong>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">Отправлять email-уведомления о важных событиях</p>
-                        </div>
-                        <div class="toggle-switch active" id="email-notifications-toggle" onclick="toggleSetting('emailNotifications')"></div>
-                    </div>
-                    <div class="setting-item">
-                        <div>
-                            <strong>Автоматическое резервное копирование</strong>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">Создавать резервные копии данных автоматически</p>
-                        </div>
-                        <div class="toggle-switch active" id="backup-toggle" onclick="toggleSetting('backup')"></div>
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <h4>Настройки оценок</h4>
-                    <div class="setting-item">
-                        <div>
-                            <strong>Минимальная оценка</strong>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">Минимально возможная оценка в системе</p>
-                        </div>
-                        <input type="number" id="min-grade" class="form-control" style="width: 100px;" value="2" min="1" max="5">
-                    </div>
-                    <div class="setting-item">
-                        <div>
-                            <strong>Максимальная оценка</strong>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">Максимально возможная оценка в системе</p>
-                        </div>
-                        <input type="number" id="max-grade" class="form-control" style="width: 100px;" value="5" min="1" max="10">
-                    </div>
-                </div>
-
-                <div class="settings-section">
-                    <h4>Настройки расписания</h4>
-                    <div class="setting-item">
-                        <div>
-                            <strong>Начало учебного дня</strong>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">Время начала учебных занятий</p>
-                        </div>
-                        <input type="time" id="school-start-time" class="form-control" style="width: 150px;" value="08:30">
-                    </div>
-                    <div class="setting-item">
-                        <div>
-                            <strong>Конец учебного дня</strong>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">Время окончания учебных занятий</p>
-                        </div>
-                        <input type="time" id="school-end-time" class="form-control" style="width: 150px;" value="15:00">
-                    </div>
-                    <div class="setting-item">
-                        <div>
-                            <strong>Длительность урока (минут)</strong>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">Стандартная длительность одного урока</p>
-                        </div>
-                        <input type="number" id="lesson-duration" class="form-control" style="width: 100px;" value="45" min="30" max="90">
-                    </div>
-                </div>
-
-                <div class="form-group" style="grid-column: 1 / -1;">
-                    <button class="MuiButton-root MuiButton-contained" onclick="saveSettings()" style="width: 100%; padding: 14px 20px; font-size: 1rem;">
-                        <i class="material-icons" style="font-size: 1.2rem; vertical-align: middle; margin-right: 8px;">save</i>
-                        Сохранить настройки
-                    </button>
                 </div>
             </div>
         </div>
@@ -816,8 +819,55 @@
     </footer>
 
     <script src="js/api.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/admin-dashboard.js"></script>
+    <!-- Модальное окно редактирования пользователя -->
+    <div id="edit-user-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Редактирование пользователя</h3>
+                <button class="close-btn" onclick="closeEditUserModal()">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-user-firstname">Имя:</label>
+                    <input type="text" id="edit-user-firstname" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-lastname">Фамилия:</label>
+                    <input type="text" id="edit-user-lastname" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-email">Email:</label>
+                    <input type="email" id="edit-user-email" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-phone">Телефон:</label>
+                    <input type="tel" id="edit-user-phone" class="form-input">
+                </div>
+                <div class="form-group" id="edit-student-class-group" style="display: none;">
+                    <label for="edit-user-class">Группа:</label>
+                    <select id="edit-user-class" class="form-input">
+                        <!-- Будет заполнено через JS -->
+                    </select>
+                </div>
+                <div class="form-group" id="edit-teacher-subjects-group" style="display: none;">
+                    <label for="edit-user-subjects">Предметы:</label>
+                    <input type="text" id="edit-user-subjects" class="form-input" placeholder="Математика, Алгебра">
+                </div>
+                <div class="form-group" id="edit-admin-role-group" style="display: none;">
+                    <label for="edit-user-role">Роль:</label>
+                    <input type="text" id="edit-user-role" class="form-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="MuiButton-root MuiButton-outlined" onclick="closeEditUserModal()">Отмена</button>
+                <button class="MuiButton-root MuiButton-contained" onclick="saveUserChanges()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/5.0.0/material-components-web.min.js"></script>
     <script>
         // Инициализация AppBar с улучшенным дизайном
         document.addEventListener('DOMContentLoaded', function() {
@@ -836,7 +886,6 @@
                             </span>
                         </a>
                         <div style="display: flex; gap: 10px;">
-                            <a href="index.html" class="nav-link">Главная</a>
                             <button class="logout-btn" onclick="logout()">
                                 <i class="material-icons" style="font-size: 1rem; vertical-align: middle; margin-right: 5px;">logout</i>
                                 Выйти
@@ -855,12 +904,20 @@
 
         // Инициализация вкладок
         function initializeTabs() {
+            console.log('=== ИНИЦИАЛИЗАЦИЯ ВКЛАДОК ===');
+            
             const tabButtons = document.querySelectorAll('.MuiTab-root');
             const tabContents = document.querySelectorAll('.tab-content');
-
-            tabButtons.forEach(button => {
+            
+            console.log('Найдено кнопок вкладок:', tabButtons.length);
+            console.log('Найдено содержимого вкладок:', tabContents.length);
+            
+            tabButtons.forEach((button, index) => {
+                console.log(`Кнопка ${index}:`, button.getAttribute('data-tab'));
+                
                 button.addEventListener('click', function() {
                     const targetTab = this.getAttribute('data-tab');
+                    console.log('Клик по вкладке:', targetTab);
 
                     // Удаляем активный класс у всех кнопок
                     tabButtons.forEach(btn => btn.classList.remove('Mui-selected'));
@@ -873,9 +930,34 @@
                     const targetContent = document.getElementById(targetTab + '-tab');
                     if (targetContent) {
                         targetContent.classList.add('active');
+                        console.log('Показана вкладка:', targetTab + '-tab');
+                    } else {
+                        console.error('Вкладка не найдена:', targetTab + '-tab');
+                    }
+
+                    // Показываем/скрываем форму добавления пользователя
+                    const userFormContainer = document.getElementById('user-form-container');
+                    if (userFormContainer) {
+                        if (targetTab === 'announcements') {
+                            userFormContainer.style.display = 'none';
+                        } else {
+                            userFormContainer.style.display = 'grid';
+                        }
                     }
                 });
             });
+            
+            // Проверяем начальную активную вкладку
+            const activeTab = document.querySelector('.MuiTab-root.Mui-selected');
+            if (activeTab) {
+                const targetTab = activeTab.getAttribute('data-tab');
+                const userFormContainer = document.getElementById('user-form-container');
+                if (userFormContainer && targetTab === 'announcements') {
+                    userFormContainer.style.display = 'none';
+                }
+            }
+            
+            console.log('Инициализация вкладок завершена');
         }
 
         // Основная функция загрузки дашборда
@@ -896,6 +978,9 @@
             
             // Загружаем расписание
             loadSchedule();
+            
+            // Загружаем объявления
+            loadAnnouncements();
             
             // Загружаем настройки
             loadSettings();
@@ -918,20 +1003,33 @@
             if (!localStorage.getItem('usersData')) {
                 const usersData = {
                     students: [
-                        { id: 'student1', firstName: 'Иван', lastName: 'Петров', class: '5А', email: 'ivan.petrov@school.ru', phone: '+7 (900) 123-45-67' },
-                        { id: 'student2', firstName: 'Мария', lastName: 'Иванова', class: '5А', email: 'maria.ivanova@school.ru', phone: '+7 (900) 234-56-78' },
-                        { id: 'student3', firstName: 'Алексей', lastName: 'Сидоров', class: '5Б', email: 'alexey.sidorov@school.ru', phone: '+7 (900) 345-67-89' }
+                        { id: 'student1', firstName: 'Александр', lastName: 'Иванов', class: '1СА-25', email: 'alex.ivanov@email.com', phone: '+7 (900) 111-22-33' },
+                        { id: 'student2', firstName: 'Мария', lastName: 'Петрова', class: '1КСК-25', email: 'maria.petrova@email.com', phone: '+7 (900) 111-22-34' },
+                        { id: 'student3', firstName: 'Дмитрий', lastName: 'Сидоров', class: '1КСК-25/у', email: 'dmitry.sidorov@email.com', phone: '+7 (900) 111-22-35' },
+                        { id: 'student4', firstName: 'Елена', lastName: 'Козлова', class: '1БД-25', email: 'elena.ozlova@email.com', phone: '+7 (900) 111-22-36' },
+                        { id: 'student5', firstName: 'Николай', lastName: 'Морозов', class: '1РЕ-25', email: 'nikolai.morozov@email.com', phone: '+7 (900) 111-22-37' },
+                        { id: 'student6', firstName: 'Анна', lastName: 'Новикова', class: '1СА-25', email: 'anna.novikova@email.com', phone: '+7 (900) 111-22-38' },
+                        { id: 'student7', firstName: 'Игорь', lastName: 'Волков', class: '1КСК-25', email: 'igor.volkov@email.com', phone: '+7 (900) 111-22-39' },
+                        { id: 'student8', firstName: 'Ольга', lastName: 'Зайцева', class: '1КСК-25/у', email: 'olga.zaytseva@email.com', phone: '+7 (900) 111-22-40' },
+                        { id: 'student9', firstName: 'Павел', lastName: 'Лебедев', class: '1БД-25', email: 'pavel.lebedev@email.com', phone: '+7 (900) 111-22-41' },
+                        { id: 'student10', firstName: 'Светлана', lastName: 'Соколова', class: '1РЕ-25', email: 'svetlana.sokolova@email.com', phone: '+7 (900) 111-22-42' },
+                        { id: 'student11', firstName: 'Андрей', lastName: 'Кузнецов', class: '1СА-25', email: 'andrey.kuznetsov@email.com', phone: '+7 (900) 111-22-43' },
+                        { id: 'student12', firstName: 'Татьяна', lastName: 'Попова', class: '1КСК-25', email: 'tatyana.popova@email.com', phone: '+7 (900) 111-22-44' },
+                        { id: 'student13', firstName: 'Сергей', lastName: 'Васильев', class: '1КСК-25/у', email: 'sergey.vasilyev@email.com', phone: '+7 (900) 111-22-45' },
+                        { id: 'student14', firstName: 'Наталья', lastName: 'Михайлова', class: '1БД-25', email: 'natalya.mikhailova@email.com', phone: '+7 (900) 111-22-46' },
+                        { id: 'student15', firstName: 'Алексей', lastName: 'Орлов', class: '1РЕ-25', email: 'alexey.orlov@email.com', phone: '+7 (900) 111-22-47' },
+                        { id: 'student16', firstName: 'Ирина', lastName: 'Федорова', class: '1СА-25', email: 'irina.fedorova@email.com', phone: '+7 (900) 111-22-48' },
+                        { id: 'student17', firstName: 'Владимир', lastName: 'Белов', class: '1КСК-25', email: 'vladimir.belov@email.com', phone: '+7 (900) 111-22-49' },
+                        { id: 'student18', firstName: 'Екатерина', lastName: 'Комарова', class: '1КСК-25/у', email: 'ekaterina.komarova@email.com', phone: '+7 (900) 111-22-50' },
+                        { id: 'student19', firstName: 'Михаил', lastName: 'Григорьев', class: '1БД-25', email: 'mikhail.grigoryev@email.com', phone: '+7 (900) 111-22-51' },
+                        { id: 'student20', firstName: 'Юлия', lastName: 'Алексеева', class: '1РЕ-25', email: 'yulia.alekseeva@email.com', phone: '+7 (900) 111-22-52' }
                     ],
                     teachers: [
-                        { id: 'teacher1', firstName: 'Анна', lastName: 'Смирнова', subjects: 'Математика, Алгебра', email: 'anna.smirnova@school.ru', phone: '+7 (900) 456-78-90' },
-                        { id: 'teacher2', firstName: 'Петр', lastName: 'Волков', subjects: 'Русский язык, Литература', email: 'petr.volkov@school.ru', phone: '+7 (900) 567-89-01' }
-                    ],
-                    parents: [
-                        { id: 'parent1', firstName: 'Ольга', lastName: 'Петрова', children: 'Иван Петров (5А)', email: 'olga.petrova@mail.ru', phone: '+7 (900) 678-90-12' },
-                        { id: 'parent2', firstName: 'Сергей', lastName: 'Иванов', children: 'Мария Иванова (5А)', email: 'sergey.ivanov@mail.ru', phone: '+7 (900) 789-01-23' }
+                        { id: 'teacher1', firstName: 'Анна', lastName: 'Смирнова', subjects: 'Математика, Алгебра', email: 'anna.smirnova@school.ru', phone: '+7 (900) 123-45-67' },
+                        { id: 'teacher2', firstName: 'Петр', lastName: 'Волков', subjects: 'Русский язык, Литература', email: 'petr.volkov@school.ru', phone: '+7 (900) 123-45-68' }
                     ],
                     admins: [
-                        { id: 'admin1', firstName: 'Администратор', lastName: 'Системы', email: 'admin@e-journal.ru', phone: '+7 (123) 456-78-90', role: 'Супер-администратор' }
+                        { id: 'admin1', firstName: 'Елена', lastName: 'Администратор', email: 'admin@school.ru', phone: '+7 (900) 999-99-99', role: 'Главный администратор' }
                     ]
                 };
                 localStorage.setItem('usersData', JSON.stringify(usersData));
@@ -940,9 +1038,11 @@
             // Инициализация классов если их нет
             if (!localStorage.getItem('classesData')) {
                 const classesData = [
-                    { id: 'class1', name: '5А', teacher: 'Анна Смирнова', room: '205', students: 25 },
-                    { id: 'class2', name: '5Б', teacher: 'Петр Волков', room: '206', students: 23 },
-                    { id: 'class3', name: '6А', teacher: 'Анна Смирнова', room: '305', students: 24 }
+                    { id: 'class1', name: '1СА-25', teacher: 'Анна Смирнова', room: '205', students: 25 },
+                    { id: 'class2', name: '1КСК-25', teacher: 'Петр Волков', room: '206', students: 23 },
+                    { id: 'class3', name: '1КСК-25/у', teacher: 'Анна Смирнова', room: '305', students: 24 },
+                    { id: 'class4', name: '1БД-25', teacher: 'Петр Волков', room: '306', students: 22 },
+                    { id: 'class5', name: '1РЕ-25', teacher: 'Анна Смирнова', room: '307', students: 26 }
                 ];
                 localStorage.setItem('classesData', JSON.stringify(classesData));
             }
@@ -950,11 +1050,36 @@
             // Инициализация расписания если его нет
             if (!localStorage.getItem('scheduleData')) {
                 const scheduleData = [
-                    { id: 'schedule1', class: '5А', day: 'Понедельник', time: '9:00-10:30', subject: 'Математика', teacher: 'Анна Смирнова', room: '205' },
-                    { id: 'schedule2', class: '5А', day: 'Понедельник', time: '10:45-12:15', subject: 'Русский язык', teacher: 'Петр Волков', room: '206' },
-                    { id: 'schedule3', class: '5Б', day: 'Понедельник', time: '9:00-10:30', subject: 'Русский язык', teacher: 'Петр Волков', room: '206' }
+                    { id: 'schedule1', class: '1СА-25', day: 'Понедельник', time: '9:00-10:30', subject: 'Математика', teacher: 'Анна Смирнова', room: '205' },
+                    { id: 'schedule2', class: '1СА-25', day: 'Понедельник', time: '10:45-12:15', subject: 'Русский язык', teacher: 'Петр Волков', room: '206' },
+                    { id: 'schedule3', class: '1КСК-25', day: 'Понедельник', time: '9:00-10:30', subject: 'Русский язык', teacher: 'Петр Волков', room: '206' }
                 ];
                 localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
+            }
+
+            // Инициализация объявлений если их нет
+            if (!localStorage.getItem('announcementsData')) {
+                const announcementsData = [
+                    {
+                        id: 'announcement1',
+                        title: 'Начало учебного года',
+                        content: 'Дорогие студенты и преподаватели! 1 сентября начинаем новый учебный год. Приветствуем всех первокурсников!',
+                        type: 'info',
+                        audience: 'all',
+                        date: new Date().toISOString().split('T')[0],
+                        author: 'admin1'
+                    },
+                    {
+                        id: 'announcement2',
+                        title: 'Практика в IT компаниях',
+                        content: 'Студентам 3-4 курсов: объявляется набор на производственную практику в ведущие IT компании города.',
+                        type: 'important',
+                        audience: 'students',
+                        date: new Date().toISOString().split('T')[0],
+                        author: 'admin1'
+                    }
+                ];
+                localStorage.setItem('announcementsData', JSON.stringify(announcementsData));
             }
 
             // Инициализация настроек если их нет
@@ -991,12 +1116,32 @@
 
         // Загрузка пользователей
         function loadUsers() {
-            const usersData = JSON.parse(localStorage.getItem('usersData') || '{}');
+            console.log('=== ЗАГРУЗКА ПОЛЬЗОВАТЕЛЕЙ ===');
             
-            // Загрузка учеников
+            const usersData = JSON.parse(localStorage.getItem('usersData') || '{}');
+            console.log('Данные из localStorage:', usersData);
+            
+            // Загрузка учеников с пагинацией
             const studentsTable = document.getElementById('students-table-body');
             if (studentsTable && usersData.students) {
-                studentsTable.innerHTML = usersData.students.map(student => `
+                console.log('Загрузка учеников, всего:', usersData.students.length);
+                
+                // Сохраняем данные для пагинации
+                window.allStudentsData = usersData.students;
+                window.studentsCurrentPage = window.studentsCurrentPage || 1;
+                
+                // Получаем настройки пагинации
+                const pageSize = parseInt(document.getElementById('students-page-size').value) || 5;
+                const totalPages = Math.ceil(usersData.students.length / pageSize);
+                const startIndex = (window.studentsCurrentPage - 1) * pageSize;
+                const endIndex = Math.min(startIndex + pageSize, usersData.students.length);
+                const pageData = usersData.students.slice(startIndex, endIndex);
+                
+                console.log('Пагинация: страница', window.studentsCurrentPage, 'из', totalPages, 'показываем', startIndex, '-', endIndex);
+                console.log('Данные страницы:', pageData);
+                
+                // Отображаем данные текущей страницы
+                studentsTable.innerHTML = pageData.map(student => `
                     <tr>
                         <td>${student.id}</td>
                         <td>${student.lastName} ${student.firstName}</td>
@@ -1013,12 +1158,33 @@
                         </td>
                     </tr>
                 `).join('');
+                
+                // Обновляем пагинацию
+                updateStudentsPagination(usersData.students.length, window.studentsCurrentPage, totalPages, startIndex + 1, endIndex);
+            } else {
+                console.log('Таблица учеников не найдена или данных нет');
             }
             
-            // Загрузка учителей
+            // Загрузка учителей с пагинацией
             const teachersTable = document.getElementById('teachers-table-body');
             if (teachersTable && usersData.teachers) {
-                teachersTable.innerHTML = usersData.teachers.map(teacher => `
+                console.log('Загрузка учителей, всего:', usersData.teachers.length);
+                
+                // Сохраняем данные для пагинации
+                window.allTeachersData = usersData.teachers;
+                window.teachersCurrentPage = window.teachersCurrentPage || 1;
+                
+                // Получаем настройки пагинации
+                const pageSize = parseInt(document.getElementById('teachers-page-size').value) || 5;
+                const totalPages = Math.ceil(usersData.teachers.length / pageSize);
+                const startIndex = (window.teachersCurrentPage - 1) * pageSize;
+                const endIndex = Math.min(startIndex + pageSize, usersData.teachers.length);
+                const pageData = usersData.teachers.slice(startIndex, endIndex);
+                
+                console.log('Пагинация учителей: страница', window.teachersCurrentPage, 'из', totalPages, 'показываем', startIndex, '-', endIndex);
+                
+                // Отображаем данные текущей страницы
+                teachersTable.innerHTML = pageData.map(teacher => `
                     <tr>
                         <td>${teacher.id}</td>
                         <td>${teacher.lastName} ${teacher.firstName}</td>
@@ -1035,34 +1201,33 @@
                         </td>
                     </tr>
                 `).join('');
+                
+                // Обновляем пагинацию
+                updateTeachersPagination(usersData.teachers.length, window.teachersCurrentPage, totalPages, startIndex + 1, endIndex);
+            } else {
+                console.log('Таблица учителей не найдена или данных нет');
             }
             
-            // Загрузка родителей
-            const parentsTable = document.getElementById('parents-table-body');
-            if (parentsTable && usersData.parents) {
-                parentsTable.innerHTML = usersData.parents.map(parent => `
-                    <tr>
-                        <td>${parent.id}</td>
-                        <td>${parent.lastName} ${parent.firstName}</td>
-                        <td>${parent.children}</td>
-                        <td>${parent.email}</td>
-                        <td>${parent.phone}</td>
-                        <td>
-                            <button class="MuiButton-root MuiButton-outlined" onclick="editUser('parent', '${parent.id}')">
-                                <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">edit</i>
-                            </button>
-                            <button class="MuiButton-root MuiButton-outlined" style="color: #f44336; border-color: #f44336;" onclick="deleteUser('parent', '${parent.id}')">
-                                <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">delete</i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-            
-            // Загрузка администраторов
+            // Загрузка администраторов с пагинацией
             const adminsTable = document.getElementById('admins-table-body');
             if (adminsTable && usersData.admins) {
-                adminsTable.innerHTML = usersData.admins.map(admin => `
+                console.log('Загрузка администраторов, всего:', usersData.admins.length);
+                
+                // Сохраняем данные для пагинации
+                window.allAdminsData = usersData.admins;
+                window.adminsCurrentPage = window.adminsCurrentPage || 1;
+                
+                // Получаем настройки пагинации
+                const pageSize = parseInt(document.getElementById('admins-page-size').value) || 5;
+                const totalPages = Math.ceil(usersData.admins.length / pageSize);
+                const startIndex = (window.adminsCurrentPage - 1) * pageSize;
+                const endIndex = Math.min(startIndex + pageSize, usersData.admins.length);
+                const pageData = usersData.admins.slice(startIndex, endIndex);
+                
+                console.log('Пагинация администраторов: страница', window.adminsCurrentPage, 'из', totalPages, 'показываем', startIndex, '-', endIndex);
+                
+                // Отображаем данные текущей страницы
+                adminsTable.innerHTML = pageData.map(admin => `
                     <tr>
                         <td>${admin.id}</td>
                         <td>${admin.lastName} ${admin.firstName}</td>
@@ -1079,10 +1244,256 @@
                         </td>
                     </tr>
                 `).join('');
+                
+                // Обновляем пагинацию
+                updateAdminsPagination(usersData.admins.length, window.adminsCurrentPage, totalPages, startIndex + 1, endIndex);
+            } else {
+                console.log('Таблица администраторов не найдена или данных нет');
             }
         }
 
-        // Загрузка классов
+        // Обновление пагинации учителей
+        function updateTeachersPagination(totalRecords, currentPage, totalPages, startRecord, endRecord) {
+            // Обновляем информацию о записях
+            document.getElementById('teachers-start-record').textContent = totalRecords > 0 ? startRecord : 0;
+            document.getElementById('teachers-end-record').textContent = endRecord;
+            document.getElementById('teachers-total-records').textContent = totalRecords;
+            
+            // Обновляем состояние кнопок
+            document.getElementById('teachers-first-page').disabled = currentPage === 1;
+            document.getElementById('teachers-prev-page').disabled = currentPage === 1;
+            document.getElementById('teachers-next-page').disabled = currentPage === totalPages;
+            document.getElementById('teachers-last-page').disabled = currentPage === totalPages;
+            
+            // Генерируем номера страниц
+            const pageNumbers = document.getElementById('teachers-page-numbers');
+            pageNumbers.innerHTML = '';
+            
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.onclick = () => goToTeachersPage(i);
+                pageButton.style.cssText = `
+                    padding: 6px 10px;
+                    border: 1px solid ${i === currentPage ? '#3f51b5' : '#ddd'};
+                    background: ${i === currentPage ? '#3f51b5' : 'white'};
+                    color: ${i === currentPage ? 'white' : '#333'};
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 0.8rem;
+                `;
+                pageNumbers.appendChild(pageButton);
+            }
+        }
+
+        // Обновление пагинации администраторов
+        function updateAdminsPagination(totalRecords, currentPage, totalPages, startRecord, endRecord) {
+            // Обновляем информацию о записях
+            document.getElementById('admins-start-record').textContent = totalRecords > 0 ? startRecord : 0;
+            document.getElementById('admins-end-record').textContent = endRecord;
+            document.getElementById('admins-total-records').textContent = totalRecords;
+            
+            // Обновляем состояние кнопок
+            document.getElementById('admins-first-page').disabled = currentPage === 1;
+            document.getElementById('admins-prev-page').disabled = currentPage === 1;
+            document.getElementById('admins-next-page').disabled = currentPage === totalPages;
+            document.getElementById('admins-last-page').disabled = currentPage === totalPages;
+            
+            // Генерируем номера страниц
+            const pageNumbers = document.getElementById('admins-page-numbers');
+            pageNumbers.innerHTML = '';
+            
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.onclick = () => goToAdminsPage(i);
+                pageButton.style.cssText = `
+                    padding: 6px 10px;
+                    border: 1px solid ${i === currentPage ? '#3f51b5' : '#ddd'};
+                    background: ${i === currentPage ? '#3f51b5' : 'white'};
+                    color: ${i === currentPage ? 'white' : '#333'};
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 0.8rem;
+                `;
+                pageNumbers.appendChild(pageButton);
+            }
+        }
+
+        // Обновление пагинации учеников
+        function updateStudentsPagination(totalRecords, currentPage, totalPages, startRecord, endRecord) {
+            // Обновляем информацию о записях
+            document.getElementById('students-start-record').textContent = totalRecords > 0 ? startRecord : 0;
+            document.getElementById('students-end-record').textContent = endRecord;
+            document.getElementById('students-total-records').textContent = totalRecords;
+            
+            // Обновляем состояние кнопок
+            document.getElementById('students-first-page').disabled = currentPage === 1;
+            document.getElementById('students-prev-page').disabled = currentPage === 1;
+            document.getElementById('students-next-page').disabled = currentPage === totalPages;
+            document.getElementById('students-last-page').disabled = currentPage === totalPages;
+            
+            // Генерируем номера страниц
+            const pageNumbers = document.getElementById('students-page-numbers');
+            pageNumbers.innerHTML = '';
+            
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.onclick = () => goToStudentsPage(i);
+                pageButton.style.cssText = `
+                    padding: 6px 10px;
+                    border: 1px solid ${i === currentPage ? '#3f51b5' : '#ddd'};
+                    background: ${i === currentPage ? '#3f51b5' : 'white'};
+                    color: ${i === currentPage ? 'white' : '#333'};
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 0.8rem;
+                `;
+                pageNumbers.appendChild(pageButton);
+            }
+        }
+
+        // Функции навигации по страницам учеников
+        function goToStudentsFirstPage() {
+            window.studentsCurrentPage = 1;
+            loadUsers();
+        }
+
+        function goToStudentsPrevPage() {
+            if (window.studentsCurrentPage > 1) {
+                window.studentsCurrentPage--;
+                loadUsers();
+            }
+        }
+
+        function goToStudentsNextPage() {
+            const pageSize = parseInt(document.getElementById('students-page-size').value) || 5;
+            const totalPages = Math.ceil((window.allStudentsData || []).length / pageSize);
+            if (window.studentsCurrentPage < totalPages) {
+                window.studentsCurrentPage++;
+                loadUsers();
+            }
+        }
+
+        function goToStudentsLastPage() {
+            const pageSize = parseInt(document.getElementById('students-page-size').value) || 5;
+            const totalPages = Math.ceil((window.allStudentsData || []).length / pageSize);
+            window.studentsCurrentPage = totalPages;
+            loadUsers();
+        }
+
+        function goToStudentsPage(pageNumber) {
+            window.studentsCurrentPage = pageNumber;
+            loadUsers();
+        }
+
+        function changeStudentsPageSize() {
+            window.studentsCurrentPage = 1; // Сбрасываем на первую страницу
+            loadUsers();
+        }
+
+        // Функции навигации по страницам учителей
+        function goToTeachersFirstPage() {
+            window.teachersCurrentPage = 1;
+            loadUsers();
+        }
+
+        function goToTeachersPrevPage() {
+            if (window.teachersCurrentPage > 1) {
+                window.teachersCurrentPage--;
+                loadUsers();
+            }
+        }
+
+        function goToTeachersNextPage() {
+            const pageSize = parseInt(document.getElementById('teachers-page-size').value) || 5;
+            const totalPages = Math.ceil((window.allTeachersData || []).length / pageSize);
+            if (window.teachersCurrentPage < totalPages) {
+                window.teachersCurrentPage++;
+                loadUsers();
+            }
+        }
+
+        function goToTeachersLastPage() {
+            const pageSize = parseInt(document.getElementById('teachers-page-size').value) || 5;
+            const totalPages = Math.ceil((window.allTeachersData || []).length / pageSize);
+            window.teachersCurrentPage = totalPages;
+            loadUsers();
+        }
+
+        function goToTeachersPage(pageNumber) {
+            window.teachersCurrentPage = pageNumber;
+            loadUsers();
+        }
+
+        function changeTeachersPageSize() {
+            window.teachersCurrentPage = 1; // Сбрасываем на первую страницу
+            loadUsers();
+        }
+
+        // Функции навигации по страницам администраторов
+        function goToAdminsFirstPage() {
+            window.adminsCurrentPage = 1;
+            loadUsers();
+        }
+
+        function goToAdminsPrevPage() {
+            if (window.adminsCurrentPage > 1) {
+                window.adminsCurrentPage--;
+                loadUsers();
+            }
+        }
+
+        function goToAdminsNextPage() {
+            const pageSize = parseInt(document.getElementById('admins-page-size').value) || 5;
+            const totalPages = Math.ceil((window.allAdminsData || []).length / pageSize);
+            if (window.adminsCurrentPage < totalPages) {
+                window.adminsCurrentPage++;
+                loadUsers();
+            }
+        }
+
+        function goToAdminsLastPage() {
+            const pageSize = parseInt(document.getElementById('admins-page-size').value) || 5;
+            const totalPages = Math.ceil((window.allAdminsData || []).length / pageSize);
+            window.adminsCurrentPage = totalPages;
+            loadUsers();
+        }
+
+        function goToAdminsPage(pageNumber) {
+            window.adminsCurrentPage = pageNumber;
+            loadUsers();
+        }
+
+        function changeAdminsPageSize() {
+            window.adminsCurrentPage = 1; // Сбрасываем на первую страницу
+            loadUsers();
+        }
         function loadClasses() {
             const classesData = JSON.parse(localStorage.getItem('classesData') || '[]');
             const classesTable = document.getElementById('classes-table-body');
@@ -1110,6 +1521,127 @@
             // Обновляем селекторы
             updateClassSelectors();
         }
+
+        // Загрузка объявлений
+        function loadAnnouncements() {
+            const announcementsData = JSON.parse(localStorage.getItem('announcementsData') || '[]');
+            const announcementsTable = document.getElementById('announcements-table-body');
+            
+            if (announcementsTable) {
+                // Сортируем по дате (новые сверху)
+                const sortedAnnouncements = announcementsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                announcementsTable.innerHTML = sortedAnnouncements.map(announcement => {
+                    const typeLabels = {
+                        'info': 'Информация',
+                        'important': 'Важное',
+                        'urgent': 'Срочное',
+                        'event': 'Событие'
+                    };
+                    
+                    const audienceLabels = {
+                        'all': 'Все',
+                        'students': 'Ученики',
+                        'teachers': 'Учителя',
+                        'admins': 'Администраторы'
+                    };
+                    
+                    const typeColors = {
+                        'info': '#2196f3',
+                        'important': '#ff9800',
+                        'urgent': '#f44336',
+                        'event': '#4caf50'
+                    };
+                    
+                    return `
+                        <tr>
+                            <td>${announcement.id}</td>
+                            <td>
+                                <div style="font-weight: 500;">${announcement.title}</div>
+                                <div style="font-size: 0.85rem; color: #666; margin-top: 4px;">${announcement.content.substring(0, 100)}${announcement.content.length > 100 ? '...' : ''}</div>
+                            </td>
+                            <td>
+                                <span style="background: ${typeColors[announcement.type]}20; color: ${typeColors[announcement.type]}; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 500;">
+                                    ${typeLabels[announcement.type]}
+                                </span>
+                            </td>
+                            <td>${audienceLabels[announcement.audience]}</td>
+                            <td>${new Date(announcement.date).toLocaleDateString('ru-RU')}</td>
+                            <td>
+                                <button class="MuiButton-root MuiButton-outlined" onclick="editAnnouncement('${announcement.id}')" title="Редактировать">
+                                    <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">edit</i>
+                                </button>
+                                <button class="MuiButton-root MuiButton-outlined" style="color: #f44336; border-color: #f44336;" onclick="deleteAnnouncement('${announcement.id}')" title="Удалить">
+                                    <i class="material-icons" style="font-size: 1rem; vertical-align: middle;">delete</i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            // Устанавливаем текущую дату в форме
+            const dateInput = document.getElementById('announcement-date');
+            if (dateInput) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+        }
+
+        // Добавление объявления
+        window.addAnnouncement = function() {
+            const title = document.getElementById('announcement-title').value;
+            const content = document.getElementById('announcement-content').value;
+            const type = document.getElementById('announcement-type').value;
+            const audience = document.getElementById('announcement-audience').value;
+            const date = document.getElementById('announcement-date').value;
+            
+            if (!title || !content) {
+                alert('Пожалуйста, заполните заголовок и текст объявления!');
+                return;
+            }
+            
+            const announcementsData = JSON.parse(localStorage.getItem('announcementsData') || '[]');
+            const newAnnouncement = {
+                id: 'announcement' + Date.now(),
+                title,
+                content,
+                type,
+                audience,
+                date,
+                author: 'admin1'
+            };
+            
+            announcementsData.push(newAnnouncement);
+            localStorage.setItem('announcementsData', JSON.stringify(announcementsData));
+            
+            // Очищаем форму
+            document.getElementById('announcement-title').value = '';
+            document.getElementById('announcement-content').value = '';
+            document.getElementById('announcement-type').value = 'info';
+            document.getElementById('announcement-audience').value = 'all';
+            document.getElementById('announcement-date').value = new Date().toISOString().split('T')[0];
+            
+            // Перезагружаем данные
+            loadAnnouncements();
+            
+            alert('Объявление успешно опубликовано!');
+        };
+
+        // Редактирование объявления
+        window.editAnnouncement = function(announcementId) {
+            alert(`Редактирование объявления с ID: ${announcementId}`);
+        };
+
+        // Удаление объявления
+        window.deleteAnnouncement = function(announcementId) {
+            if (confirm('Вы уверены, что хотите удалить это объявление?')) {
+                const announcementsData = JSON.parse(localStorage.getItem('announcementsData') || '[]');
+                const updatedAnnouncements = announcementsData.filter(announcement => announcement.id !== announcementId);
+                localStorage.setItem('announcementsData', JSON.stringify(updatedAnnouncements));
+                loadAnnouncements();
+                alert('Объявление успешно удалено!');
+            }
+        };
 
         // Загрузка расписания
         function loadSchedule() {
@@ -1146,17 +1678,47 @@
         function loadSettings() {
             const settings = JSON.parse(localStorage.getItem('systemSettings') || '{}');
             
-            // Устанавливаем значения toggle switches
-            document.getElementById('registration-toggle').classList.toggle('active', settings.registration);
-            document.getElementById('email-notifications-toggle').classList.toggle('active', settings.emailNotifications);
-            document.getElementById('backup-toggle').classList.toggle('active', settings.backup);
+            // Проверяем существование элементов перед обращением к ним
+            const registrationToggle = document.getElementById('registration-toggle');
+            if (registrationToggle) {
+                registrationToggle.classList.toggle('active', settings.registration);
+            }
             
-            // Устанавливаем значения полей
-            document.getElementById('min-grade').value = settings.minGrade || 2;
-            document.getElementById('max-grade').value = settings.maxGrade || 5;
-            document.getElementById('school-start-time').value = settings.schoolStartTime || '08:30';
-            document.getElementById('school-end-time').value = settings.schoolEndTime || '15:00';
-            document.getElementById('lesson-duration').value = settings.lessonDuration || 45;
+            const emailNotificationsToggle = document.getElementById('email-notifications-toggle');
+            if (emailNotificationsToggle) {
+                emailNotificationsToggle.classList.toggle('active', settings.emailNotifications);
+            }
+            
+            const backupToggle = document.getElementById('backup-toggle');
+            if (backupToggle) {
+                backupToggle.classList.toggle('active', settings.backup);
+            }
+            
+            // Устанавливаем значения полей с проверкой существования
+            const minGrade = document.getElementById('min-grade');
+            if (minGrade) {
+                minGrade.value = settings.minGrade || 2;
+            }
+            
+            const maxGrade = document.getElementById('max-grade');
+            if (maxGrade) {
+                maxGrade.value = settings.maxGrade || 5;
+            }
+            
+            const schoolStartTime = document.getElementById('school-start-time');
+            if (schoolStartTime) {
+                schoolStartTime.value = settings.schoolStartTime || '08:30';
+            }
+            
+            const schoolEndTime = document.getElementById('school-end-time');
+            if (schoolEndTime) {
+                schoolEndTime.value = settings.schoolEndTime || '15:00';
+            }
+            
+            const lessonDuration = document.getElementById('lesson-duration');
+            if (lessonDuration) {
+                lessonDuration.value = settings.lessonDuration || 45;
+            }
         }
 
         // Обновление селекторов классов
@@ -1168,7 +1730,7 @@
                 const selector = document.getElementById(selectorId);
                 if (selector) {
                     const currentValue = selector.value;
-                    selector.innerHTML = '<option value="">Выберите класс</option>' +
+                    selector.innerHTML = '<option value="">Выберите группу</option>' +
                         classesData.map(cls => `<option value="${cls.name}">${cls.name}</option>`).join('');
                     selector.value = currentValue;
                 }
@@ -1219,8 +1781,6 @@
                 newUser.class = document.getElementById('user-class').value;
             } else if (activeTab === 'teachers') {
                 newUser.subjects = document.getElementById('user-subjects').value;
-            } else if (activeTab === 'parents') {
-                newUser.children = 'Не указано';
             } else if (activeTab === 'admins') {
                 newUser.role = 'Администратор';
             }
@@ -1240,12 +1800,36 @@
             document.getElementById('user-class').value = '';
             document.getElementById('user-subjects').value = '';
             
+            // Если добавили ученика, обновляем данные для пагинации и сбрасываем на первую страницу
+            if (activeTab === 'students') {
+                window.allStudentsData = usersData.students;
+                window.studentsCurrentPage = 1;
+            } else if (activeTab === 'teachers') {
+                window.allTeachersData = usersData.teachers;
+                window.teachersCurrentPage = 1;
+            } else if (activeTab === 'admins') {
+                window.allAdminsData = usersData.admins;
+                window.adminsCurrentPage = 1;
+            }
+            
             // Перезагружаем данные
             loadUsers();
             loadStatistics();
             
             alert('Пользователь успешно добавлен!');
         };
+
+        // Делаем функции пагинации глобально доступными
+        window.goToStudentsFirstPage = goToStudentsFirstPage;
+        window.goToStudentsPrevPage = goToStudentsPrevPage;
+        window.goToStudentsNextPage = goToStudentsNextPage;
+        window.goToStudentsLastPage = goToStudentsLastPage;
+        window.goToStudentsPage = goToStudentsPage;
+        window.changeStudentsPageSize = changeStudentsPageSize;
+        
+        // Делаем функции вкладок глобально доступными
+        window.initializeTabs = initializeTabs;
+        window.reinitializeData = reinitializeData;
 
         window.addClass = function() {
             const name = document.getElementById('class-name').value;
@@ -1278,7 +1862,7 @@
             loadClasses();
             loadStatistics();
             
-            alert('Класс успешно добавлен!');
+            alert('Группа успешно добавлена!');
         };
 
         window.addScheduleItem = function() {
@@ -1344,15 +1928,118 @@
         };
 
         window.editUser = function(type, userId) {
-            alert(`Редактирование пользователя ${type} с ID: ${userId}`);
+            console.log('=== НАЧАЛО РЕДАКТИРОВАНИЯ ===');
+            console.log('Тип пользователя:', type);
+            console.log('ID пользователя:', userId);
+            
+            // Исправляем несоответствие в названиях типов
+            const dataKey = type === 'student' ? 'students' : type === 'teacher' ? 'teachers' : type === 'admin' ? 'admins' : type;
+            console.log('Ключ для данных:', dataKey);
+            
+            const usersData = JSON.parse(localStorage.getItem('usersData') || '{}');
+            console.log('Все данные пользователей:', usersData);
+            console.log('Массив пользователей типа', dataKey, ':', usersData[dataKey]);
+            
+            const user = usersData[dataKey]?.find(u => u.id === userId);
+            console.log('Найденный пользователь:', user);
+            
+            if (!user) {
+                console.error('Пользователь не найден!');
+                alert(`Пользователь типа "${type}" с ID "${userId}" не найден!`);
+                return;
+            }
+            
+            // Сохраняем текущего пользователя для редактирования с правильным ключом
+            window.currentEditingUser = { type: dataKey, userId };
+            
+            // Заполняем форму данными пользователя
+            document.getElementById('edit-user-firstname').value = user.firstName || '';
+            document.getElementById('edit-user-lastname').value = user.lastName || '';
+            document.getElementById('edit-user-email').value = user.email || '';
+            document.getElementById('edit-user-phone').value = user.phone || '';
+            
+            // Скрываем все специфичные поля
+            document.getElementById('edit-student-class-group').style.display = 'none';
+            document.getElementById('edit-teacher-subjects-group').style.display = 'none';
+            document.getElementById('edit-admin-role-group').style.display = 'none';
+            
+            // Показываем нужные поля и заполняем их
+            if (dataKey === 'students') {
+                document.getElementById('edit-student-class-group').style.display = 'block';
+                const classSelect = document.getElementById('edit-user-class');
+                classSelect.innerHTML = `
+                    <option value="1СА-25">1СА-25</option>
+                    <option value="1КСК-25">1КСК-25</option>
+                    <option value="1КСК-25/у">1КСК-25/у</option>
+                    <option value="1БД-25">1БД-25</option>
+                    <option value="1РЕ-25">1РЕ-25</option>
+                `;
+                classSelect.value = user.class || '';
+            } else if (dataKey === 'teachers') {
+                document.getElementById('edit-teacher-subjects-group').style.display = 'block';
+                document.getElementById('edit-user-subjects').value = user.subjects || '';
+            } else if (dataKey === 'admins') {
+                document.getElementById('edit-admin-role-group').style.display = 'block';
+                document.getElementById('edit-user-role').value = user.role || '';
+            }
+            
+            // Показываем модальное окно
+            const modal = document.getElementById('edit-user-modal');
+            console.log('Элемент модального окна:', modal);
+            console.log('Текущий стиль display:', modal ? modal.style.display : 'не найден');
+            
+            if (modal) {
+                modal.style.display = 'flex';
+                console.log('Установлен display: flex');
+                console.log('Новый стиль display:', modal.style.display);
+                
+                // Проверяем видимость
+                setTimeout(() => {
+                    console.log('Проверка через 100мс - display:', modal.style.display);
+                    console.log('Проверка видимости:', modal.offsetWidth > 0 && modal.offsetHeight > 0);
+                }, 100);
+            } else {
+                console.error('Модальное окно не найдено в DOM!');
+            }
         };
 
         window.deleteUser = function(type, userId) {
             if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+                // Исправляем несоответствие в названиях типов
+                const dataKey = type === 'student' ? 'students' : type === 'teacher' ? 'teachers' : type === 'admin' ? 'admins' : type;
+                
                 const usersData = JSON.parse(localStorage.getItem('usersData') || '{}');
-                if (usersData[type]) {
-                    usersData[type] = usersData[type].filter(user => user.id !== userId);
+                if (usersData[dataKey]) {
+                    usersData[dataKey] = usersData[dataKey].filter(user => user.id !== userId);
                     localStorage.setItem('usersData', JSON.stringify(usersData));
+                    
+                    // Обновляем данные для пагинации в зависимости от типа
+                    if (dataKey === 'students') {
+                        window.allStudentsData = usersData.students;
+                        // Проверяем не вышли ли за пределы страниц
+                        const pageSize = parseInt(document.getElementById('students-page-size').value) || 5;
+                        const totalPages = Math.ceil(usersData.students.length / pageSize);
+                        if (window.studentsCurrentPage > totalPages && totalPages > 0) {
+                            window.studentsCurrentPage = totalPages;
+                        }
+                    } else if (dataKey === 'teachers') {
+                        window.allTeachersData = usersData.teachers;
+                        // Проверяем не вышли ли за пределы страниц
+                        const pageSize = parseInt(document.getElementById('teachers-page-size').value) || 5;
+                        const totalPages = Math.ceil(usersData.teachers.length / pageSize);
+                        if (window.teachersCurrentPage > totalPages && totalPages > 0) {
+                            window.teachersCurrentPage = totalPages;
+                        }
+                    } else if (dataKey === 'admins') {
+                        window.allAdminsData = usersData.admins;
+                        // Проверяем не вышли ли за пределы страниц
+                        const pageSize = parseInt(document.getElementById('admins-page-size').value) || 5;
+                        const totalPages = Math.ceil(usersData.admins.length / pageSize);
+                        if (window.adminsCurrentPage > totalPages && totalPages > 0) {
+                            window.adminsCurrentPage = totalPages;
+                        }
+                    }
+                    
                     loadUsers();
                     loadStatistics();
                     alert('Пользователь успешно удален!');
@@ -1371,7 +2058,7 @@
                 localStorage.setItem('classesData', JSON.stringify(updatedClasses));
                 loadClasses();
                 loadStatistics();
-                alert('Класс успешно удален!');
+                alert('Группа успешно удалена!');
             }
         };
 
@@ -1393,6 +2080,143 @@
             localStorage.removeItem('adminId');
             window.location.href = 'index.html';
         }
+
+        // Функция для переинициализации данных
+        function reinitializeData() {
+            if (confirm('Вы уверены, что хотите переинициализировать все данные? Это очистит текущие данные и создаст новые с 20 учениками.')) {
+                // Очищаем все данные
+                localStorage.removeItem('usersData');
+                localStorage.removeItem('classesData');
+                localStorage.removeItem('scheduleData');
+                localStorage.removeItem('systemSettings');
+                localStorage.removeItem('adminData');
+                
+                // Сбрасываем пагинацию
+                window.studentsCurrentPage = 1;
+                window.allStudentsData = null;
+                
+                // Перезагружаем страницу для инициализации новых данных
+                window.location.reload();
+            }
+        }
+
+        // Функции для модального окна редактирования
+        function closeEditUserModal() {
+            document.getElementById('edit-user-modal').style.display = 'none';
+            window.currentEditingUser = null;
+        }
+
+        // Закрытие модального окна при клике вне его
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('edit-user-modal');
+            if (event.target === modal) {
+                closeEditUserModal();
+            }
+        });
+
+        // Закрытие модального окна по клавише Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeEditUserModal();
+            }
+        });
+
+        function saveUserChanges() {
+            if (!window.currentEditingUser) {
+                alert('Ошибка: не выбран пользователь для редактирования!');
+                return;
+            }
+            
+            const { type, userId } = window.currentEditingUser;
+            
+            // Получаем данные из формы
+            const firstName = document.getElementById('edit-user-firstname').value.trim();
+            const lastName = document.getElementById('edit-user-lastname').value.trim();
+            const email = document.getElementById('edit-user-email').value.trim();
+            const phone = document.getElementById('edit-user-phone').value.trim();
+            
+            // Валидация
+            if (!firstName || !lastName || !email) {
+                alert('Пожалуйста, заполните обязательные поля: Имя, Фамилия, Email!');
+                return;
+            }
+            
+            // Загружаем текущие данные
+            const usersData = JSON.parse(localStorage.getItem('usersData') || '{}');
+            const userIndex = usersData[type]?.findIndex(u => u.id === userId);
+            
+            if (userIndex === -1) {
+                alert('Пользователь не найден!');
+                return;
+            }
+            
+            // Обновляем данные пользователя
+            const updatedUser = {
+                ...usersData[type][userIndex],
+                firstName,
+                lastName,
+                email,
+                phone
+            };
+            
+            // Добавляем специфичные поля
+            if (type === 'students') {
+                updatedUser.class = document.getElementById('edit-user-class').value;
+            } else if (type === 'teachers') {
+                updatedUser.subjects = document.getElementById('edit-user-subjects').value.trim();
+            } else if (type === 'admins') {
+                updatedUser.role = document.getElementById('edit-user-role').value.trim();
+            }
+            
+            // Сохраняем изменения
+            usersData[type][userIndex] = updatedUser;
+            localStorage.setItem('usersData', JSON.stringify(usersData));
+            
+            // Если редактировали ученика, обновляем данные для пагинации
+            if (type === 'students') {
+                window.allStudentsData = usersData.students;
+            }
+            
+            // Обновляем интерфейс
+            loadUsers();
+            loadStatistics();
+            
+            // Закрываем модальное окно
+            closeEditUserModal();
+            
+            alert('Данные пользователя успешно обновлены!');
+        }
+
+        // Делаем функции глобально доступными
+        window.closeEditUserModal = closeEditUserModal;
+        window.saveUserChanges = saveUserChanges;
+        
+        // Тестовая функция для отладки
+        function testEditUser() {
+            console.log('=== ТЕСТ РЕДАКТИРОВАНИЯ ===');
+            
+            const usersData = JSON.parse(localStorage.getItem('usersData') || '{}');
+            console.log('Данные в localStorage:', usersData);
+            
+            if (usersData.students && usersData.students.length > 0) {
+                const firstStudent = usersData.students[0];
+                console.log('Первый ученик:', firstStudent);
+                console.log('Вызываем editUser с параметрами:', 'student', firstStudent.id);
+                editUser('student', firstStudent.id);
+            } else {
+                console.log('Ученики не найдены, пробуем учителей');
+                if (usersData.teachers && usersData.teachers.length > 0) {
+                    const firstTeacher = usersData.teachers[0];
+                    console.log('Первый учитель:', firstTeacher);
+                    editUser('teacher', firstTeacher.id);
+                } else {
+                    console.log('Пользователи не найдены!');
+                    alert('Пользователи не найдены в localStorage! Нажмите кнопку обновления данных.');
+                }
+            }
+        }
+        
+        window.testEditUser = testEditUser;
     </script>
 </body>
 </html>
