@@ -489,7 +489,8 @@
                                     <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Дата</th>
                                     <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Тип работы</th>
                                     <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Оценка</th>
-                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Итоговая оценка</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Средний балл</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Итоговая</th>
                                 </tr>
                             </thead>
                             <tbody id="grades-table-body">
@@ -728,21 +729,21 @@
             
             // Mock данные для оценок (расширенные для демонстрации пагинации)
             const gradesData = [
-                { id: 1, student: 'Петров А.С.', group: '2ПО-25', subject: 'Информатика', date: '28.01.2026', type: 'Контрольная работа', grade: '5', finalGrade: '4.5' },
-                { id: 2, student: 'Иванов П.И.', group: '2ПО-25', subject: 'Информатика', date: '27.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '4.2' },
-                { id: 3, student: 'Сидорова М.И.', group: '2ПО-25', subject: 'Информатика', date: '26.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '4.8' },
-                { id: 4, student: 'Козлов Д.В.', group: '1КСК-25', subject: 'Базы данных', date: '25.01.2026', type: 'Устный ответ', grade: '3', finalGrade: '3.5' },
-                { id: 5, student: 'Новикова Е.А.', group: '1КСК-25', subject: 'Базы данных', date: '24.01.2026', type: 'Контрольная работа', grade: '4', finalGrade: '4.1' },
-                { id: 6, student: 'Морозов К.С.', group: '1КСК-25', subject: 'Базы данных', date: '23.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '4.7' },
-                { id: 7, student: 'Волкова О.Н.', group: '2ПО-25', subject: 'Информатика', date: '22.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '4.0' },
-                { id: 8, student: 'Лебедев А.М.', group: '2ПО-25', subject: 'Информатика', date: '21.01.2026', type: 'Контрольная работа', grade: '5', finalGrade: '4.6' },
-                { id: 9, student: 'Соколов В.И.', group: '1КСК-25', subject: 'Базы данных', date: '20.01.2026', type: 'Устный ответ', grade: '4', finalGrade: '4.3' },
-                { id: 10, student: 'Коваленко Н.П.', group: '2ПО-25', subject: 'Информатика', date: '19.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '4.9' },
-                { id: 11, student: 'Мельникова Т.А.', group: '1КСК-25', subject: 'Базы данных', date: '18.01.2026', type: 'Контрольная работа', grade: '3', finalGrade: '3.8' },
-                { id: 12, student: 'Тарасов Р.С.', group: '2ПО-25', subject: 'Информатика', date: '17.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '4.1' },
-                { id: 13, student: 'Белова А.В.', group: '1КСК-25', subject: 'Базы данных', date: '16.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '4.7' },
-                { id: 14, student: 'Григорьев М.И.', group: '2ПО-25', subject: 'Информатика', date: '15.01.2026', type: 'Контрольная работа', grade: '4', finalGrade: '4.2' },
-                { id: 15, student: 'Дмитриева Е.С.', group: '1КСК-25', subject: 'Базы данных', date: '14.01.2026', type: 'Устный ответ', grade: '5', finalGrade: '4.8' }
+                { id: 1, student: 'Петров А.С.', group: '2ПО-25', subject: 'Информатика', date: '28.01.2026', type: 'Контрольная работа', grade: '5', finalGrade: '4' },
+                { id: 2, student: 'Иванов П.И.', group: '2ПО-25', subject: 'Информатика', date: '27.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '4' },
+                { id: 3, student: 'Сидорова М.И.', group: '2ПО-25', subject: 'Информатика', date: '26.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '5' },
+                { id: 4, student: 'Козлов Д.В.', group: '1КСК-25', subject: 'Базы данных', date: '25.01.2026', type: 'Устный ответ', grade: '3', finalGrade: '3' },
+                { id: 5, student: 'Новикова Е.А.', group: '1КСК-25', subject: 'Базы данных', date: '24.01.2026', type: 'Контрольная работа', grade: '4', finalGrade: '' },
+                { id: 6, student: 'Морозов К.С.', group: '1КСК-25', subject: 'Базы данных', date: '23.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '5' },
+                { id: 7, student: 'Волкова О.Н.', group: '2ПО-25', subject: 'Информатика', date: '22.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '4' },
+                { id: 8, student: 'Лебедев А.М.', group: '2ПО-25', subject: 'Информатика', date: '21.01.2026', type: 'Контрольная работа', grade: '5', finalGrade: '' },
+                { id: 9, student: 'Соколов В.И.', group: '1КСК-25', subject: 'Базы данных', date: '20.01.2026', type: 'Устный ответ', grade: '4', finalGrade: '4' },
+                { id: 10, student: 'Коваленко Н.П.', group: '2ПО-25', subject: 'Информатика', date: '19.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '5' },
+                { id: 11, student: 'Мельникова Т.А.', group: '1КСК-25', subject: 'Базы данных', date: '18.01.2026', type: 'Контрольная работа', grade: '3', finalGrade: '3' },
+                { id: 12, student: 'Тарасов Р.С.', group: '2ПО-25', subject: 'Информатика', date: '17.01.2026', type: 'Самостоятельная работа', grade: '4', finalGrade: '' },
+                { id: 13, student: 'Белова А.В.', group: '1КСК-25', subject: 'Базы данных', date: '16.01.2026', type: 'Лабораторная работа', grade: '5', finalGrade: '5' },
+                { id: 14, student: 'Григорьев М.И.', group: '2ПО-25', subject: 'Информатика', date: '15.01.2026', type: 'Контрольная работа', grade: '4', finalGrade: '4' },
+                { id: 15, student: 'Дмитриева Е.С.', group: '1КСК-25', subject: 'Базы данных', date: '14.01.2026', type: 'Устный ответ', grade: '5', finalGrade: '' }
             ];
             
             // Сохраняем данные для фильтрации и пагинации
@@ -859,12 +860,59 @@
             const tableBody = document.getElementById('grades-table-body');
             
             if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Данные не найдены</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Данные не найдены</td></tr>';
                 return;
             }
             
             let html = '';
             data.forEach(item => {
+                // Рассчитываем средний балл для ученика по предмету
+                const studentSubjectGrades = window.allGradesData.filter(g => 
+                    g.student === item.student && g.subject === item.subject
+                );
+                const averageGrade = studentSubjectGrades.length > 0 
+                    ? (studentSubjectGrades.reduce((sum, g) => sum + parseInt(g.grade), 0) / studentSubjectGrades.length).toFixed(2)
+                    : '0.00';
+                
+                // Определяем итоговую оценку (целое число от 2 до 5 или прочерк)
+                let finalGradeDisplay = '';
+                if (item.finalGrade && item.finalGrade !== '') {
+                    const finalGrade = parseInt(item.finalGrade);
+                    if (finalGrade >= 2 && finalGrade <= 5) {
+                        finalGradeDisplay = `
+                            <input type="number" 
+                                   value="${finalGrade}" 
+                                   min="2" 
+                                   max="5" 
+                                   step="1"
+                                   onchange="updateFinalGrade(${item.id}, this.value)"
+                                   style="width: 50px; padding: 4px; border: 1px solid #ddd; border-radius: 4px; text-align: center; background: ${getGradeColor(finalGrade.toString())}; color: white; font-weight: bold;">
+                        `;
+                    } else {
+                        finalGradeDisplay = `
+                            <input type="number" 
+                                   value="" 
+                                   min="2" 
+                                   max="5" 
+                                   step="1"
+                                   placeholder="—"
+                                   onchange="updateFinalGrade(${item.id}, this.value)"
+                                   style="width: 50px; padding: 4px; border: 1px solid #ddd; border-radius: 4px; text-align: center;">
+                        `;
+                    }
+                } else {
+                    finalGradeDisplay = `
+                        <input type="number" 
+                               value="" 
+                               min="2" 
+                               max="5" 
+                               step="1"
+                               placeholder="—"
+                               onchange="updateFinalGrade(${item.id}, this.value)"
+                               style="width: 50px; padding: 4px; border: 1px solid #ddd; border-radius: 4px; text-align: center;">
+                    `;
+                }
+                
                 html += `
                     <tr style="border-bottom: 1px solid #ddd;">
                         <td style="padding: 12px;">${item.student}</td>
@@ -877,13 +925,10 @@
                             </span>
                         </td>
                         <td style="padding: 12px;">
-                            <input type="number" 
-                                   value="${item.finalGrade}" 
-                                   min="2" 
-                                   max="5" 
-                                   step="0.1"
-                                   onchange="updateFinalGrade(${item.id}, this.value)"
-                                   style="width: 60px; padding: 4px; border: 1px solid #ddd; border-radius: 4px; text-align: center;">
+                            <span style="color: #666; font-weight: 600;">${averageGrade}</span>
+                        </td>
+                        <td style="padding: 12px;">
+                            ${finalGradeDisplay}
                         </td>
                     </tr>
                 `;
@@ -938,15 +983,16 @@
 
         // Обновление итоговой оценки
         function updateFinalGrade(studentId, newGrade) {
-            console.log(`Обновление итоговой оценки для студента ${studentId}: ${newGrade}`);
-            
             // Находим студента в данных
             const studentIndex = window.allGradesData.findIndex(item => item.id === studentId);
             if (studentIndex !== -1) {
                 window.allGradesData[studentIndex].finalGrade = newGrade;
                 
+                // Обновляем отображение таблицы
+                displayGradesWithPagination();
+                
                 // Показываем уведомление об успешном обновлении
-                showNotification(`Итоговая оценка обновлена: ${newGrade}`);
+                showNotification(`Итоговая оценка обновлена: ${newGrade || '—'}`);
             }
         }
 

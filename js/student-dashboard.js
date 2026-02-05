@@ -621,17 +621,13 @@ function displayGradesPage(page) {
             grade.topic.toLowerCase().includes('выпускной экзамен')
         );
         
-        console.log(`Grade ${index}:`, grade.subject, 'Topic:', grade.topic, 'Is final exam/test:', isFinalExamOrTest, 'Subject has final exam:', hasFinalExam);
-        
         let subjectTotalDisplay = '';
         if (isFinalExamOrTest && hasFinalExam) {
             // Рассчитываем итоговую оценку как средний балл (максимум 5)
             const subjectAverage = (subjectAllGrades.reduce((sum, g) => sum + parseInt(g.grade), 0) / subjectAllGrades.length).toFixed(1);
             subjectTotalDisplay = `<span class="subject-total">${subjectAverage}</span>`;
-            console.log(`  -> Showing average: ${subjectAverage}`);
         } else {
             subjectTotalDisplay = '<span class="subject-total">—</span>';
-            console.log(`  -> Showing dash`);
         }
         
         html += `
